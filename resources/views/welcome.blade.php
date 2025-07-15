@@ -1,19 +1,22 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
-        <h1 class="text-5xl font-bold underline">
-            Hello world!
+@section('content')
+<section class="min-h-screen flex items-center justify-center bg-gradient-to-r from-emerald-500 via-lime-500 to-green-500">
+    <div class="text-center text-white px-4">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            Build Better. Live Smarter.
         </h1>
-    </body>
-</html>
+        <p class="text-lg md:text-xl mb-8 max-w-xl mx-auto">
+            Explore digital products that boost productivity, simplify life, and power up your potential.
+        </p>
+        <div class="space-x-4">
+            <a href="{{ route('login') }}" class="inline-block px-6 py-3 bg-white text-teal-600 font-semibold rounded-lg shadow-md hover:bg-gray-100 transition">
+                Get Started
+            </a>
+            <a href="#products" class="inline-block px-6 py-3 border border-white font-semibold rounded-lg hover:bg-white hover:text-teal-600 transition">
+                Browse Products
+            </a>
+        </div>
+    </div>
+</section>
+@endsection

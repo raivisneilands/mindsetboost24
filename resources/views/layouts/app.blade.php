@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body class="bg-white text-gray-800 antialiased">
+    @include('layouts.navigation')
     @yield('content')
 </body>
 </html>

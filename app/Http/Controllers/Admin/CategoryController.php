@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -35,6 +36,8 @@ class CategoryController extends Controller
             'description' => 'nullable|string',
         ]);
 
+        $validated['slug'] = Str::slug($validated['name']);
+
         Category::create($validated);
 
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
@@ -45,7 +48,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('admin.categories.show', compact('category'));
+        // return view('admin.categories.show', compact('category'));
     }
 
     /**
@@ -65,6 +68,8 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255|unique:categories,name,'.$category->id,
             'description' => 'nullable|string',
         ]);
+
+        $validated['slug']=Str::slug($validated['name']);
 
         $category->update($validated);
 

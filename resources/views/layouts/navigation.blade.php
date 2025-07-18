@@ -18,7 +18,9 @@
             <!-- User Dropdown -->
             <div class="relative">
                 <button class="flex items-center space-x-2 text-gray-700 hover:text-blue-600 focus:outline-none" onclick="document.getElementById('dropdown-menu').classList.toggle('hidden')">
-                    <span>{{ Auth::user()->name }}</span>
+                    @auth
+                        <span>{{ Auth::user()->name }}</span>
+                    @endauth
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M19 9l-7 7-7-7" />
                     </svg>

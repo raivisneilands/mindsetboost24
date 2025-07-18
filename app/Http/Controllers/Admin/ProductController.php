@@ -6,83 +6,106 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $products = Product::with('category')->paginate(15);
+        // eager load categories (many-to-many)
+        $products = Product::with('categories')->paginate(15);
         return view('admin.products.index', compact('products'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $categories = Category::all();
         return view('admin.products.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'category_id' => 'required|exists:categories,id',
-            'file_url' => 'nullable|url',
+            'file_path' => 'required|file|mimes:pdf,zip,docx',
+            'cover_image' => 'nullable|image|max:2048',
+            'status' => 'required|in:draft,published',
+            'categories' => 'required|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
-        Product::create($validated);
+        // create slug from title
+        $validated['slug'] = Str::slug($validated['title']);
+
+        if ($request->hasFile('file_path')) {
+            $validated['file_path'] = $request->file('file_path')->store('products/files', 'public');
+        }
+
+        if ($request->hasFile('cover_image')) {
+            $validated['cover_image'] = $request->file('cover_image')->store('products/images', 'public');
+        }
+
+        // create product (exclude categories)
+        $categories = $validated['categories'];
+        unset($validated['categories']);
+
+        $product = Product::create($validated);
+
+        // attach categories (many-to-many)
+        $product->categories()->attach($categories);
 
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Product $product)
     {
+        $product->load('categories');
         return view('admin.products.show', compact('product'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Product $product)
     {
         $categories = Category::all();
+        $product->load('categories');
         return view('admin.products.edit', compact('product', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'category_id' => 'required|exists:categories,id',
-            'file_url' => 'nullable|url',
+            'file_path' => 'required|file|mimes:pdf,zip,docx',
+            'cover_image' => 'nullable|image|max:2048',
+            'status' => 'required|in:draft,published',
+            'categories' => 'required|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
+        $validated['slug'] = Str::slug($validated['title']);
+
+        if ($request->hasFile('file_path')) {
+            $validated['file_path'] = $request->file('file_path')->store('products/files', 'public');
+        }
+
+        if ($request->hasFile('cover_image')) {
+            $validated['cover_image'] = $request->file('cover_image')->store('products/images', 'public');
+        }
+
+        $categories = $validated['categories'];
+        unset($validated['categories']);
+
         $product->update($validated);
+
+        // sync categories
+        $product->categories()->sync($categories);
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Product $product)
     {
         $product->delete();

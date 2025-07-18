@@ -17,8 +17,8 @@
         <table class="min-w-full table-auto">
             <thead class="bg-gray-100 text-left">
                 <tr>
-                    <th class="px-4 py-2">Name</th>
-                    <th class="px-4 py-2">Category</th>
+                    <th class="px-4 py-2">Title</th>
+                    <th class="px-4 py-2">Categories</th>
                     <th class="px-4 py-2">Price</th>
                     <th class="px-4 py-2">Actions</th>
                 </tr>
@@ -26,8 +26,14 @@
             <tbody>
                 @forelse ($products as $product)
                     <tr class="border-t">
-                        <td class="px-4 py-2">{{ $product->name }}</td>
-                        <td class="px-4 py-2">{{ $product->category->name ?? '—' }}</td>
+                        <td class="px-4 py-2">{{ $product->title }}</td>
+                        <td class="px-4 py-2">
+                            @foreach($product->categories as $category)
+                                <span class="inline-block bg-gray-200 px-2 py-1 text-xs rounded">
+                                    {{ $category->name }}
+                                </span>
+                            @endforeach
+                        </td>
                         <td class="px-4 py-2">${{ number_format($product->price, 2) }}</td>
                         <td class="px-4 py-2">
                             <a href="{{ route('admin.products.edit', $product) }}" class="text-blue-600 hover:underline mr-2">Edit</a>

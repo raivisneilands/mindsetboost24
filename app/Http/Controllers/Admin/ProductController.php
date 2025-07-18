@@ -13,7 +13,7 @@ class ProductController extends Controller
     public function index()
     {
         // eager load categories (many-to-many)
-        $products = Product::with('categories')->paginate(15);
+        $products = Product::with('categories')->latest()->paginate(15);
         return view('admin.products.index', compact('products'));
     }
 
@@ -78,7 +78,7 @@ class ProductController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'file_path' => 'required|file|mimes:pdf,zip,docx',
+            'file_path' => 'nullable|file|mimes:pdf,zip,docx',
             'cover_image' => 'nullable|image|max:2048',
             'status' => 'required|in:draft,published',
             'categories' => 'required|array',
@@ -87,13 +87,21 @@ class ProductController extends Controller
 
         $validated['slug'] = Str::slug($validated['title']);
 
-        if ($request->hasFile('file_path')) {
-            $validated['file_path'] = $request->file('file_path')->store('products/files', 'public');
+
+        // Handle cover image if uploaded
+        if ($request->hasFile('cover_image')) {
+            $validated['cover_image'] = $request->file('cover_image')->store('product_covers', 'public');
+        } else {
+            unset($validated['cover_image']); // Keep existing
         }
 
-        if ($request->hasFile('cover_image')) {
-            $validated['cover_image'] = $request->file('cover_image')->store('products/images', 'public');
+        // Handle product file if uploaded
+        if ($request->hasFile('file_path')) {
+            $validated['file_path'] = $request->file('file_path')->store('product_files', 'public');
+        } else {
+            unset($validated['file_path']); // Keep existing
         }
+
 
         $categories = $validated['categories'];
         unset($validated['categories']);

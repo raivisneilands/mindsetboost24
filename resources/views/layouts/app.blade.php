@@ -8,7 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body class="bg-white text-gray-800 antialiased">
-    @include('layouts.navigation')
+    @if(auth()->check() && auth()->user()->is_admin)
+        @include('components.admin-navigation')
+    @else
+        @if (!Request::is('/'))
+            @include('components.navigation')
+        @endif
+    @endif
     @yield('content')
 </body>
 </html>

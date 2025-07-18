@@ -54,17 +54,59 @@
             </select>
         </div>
 
+        {{-- Cover Image Upload --}}
         <div class="mb-4">
             <label for="cover_image" class="block font-semibold">Cover Image</label>
+
+            @if ($product->cover_image)
+                <div class="mb-2">
+                    <img src="{{ asset('storage/' . $product->cover_image) }}" alt="Cover Image" class="h-32 rounded shadow">
+                </div>
+            @endif
+
             <input type="file" name="cover_image" id="cover_image" class="w-full">
         </div>
 
+        {{-- Product File --}}
         <div class="mb-4">
-            <label for="file_path" class="block font-semibold">Product File</label>
-            <input type="file" name="file_path" id="file_path" class="w-full">
+            <label class="block font-semibold">Current Product File</label>
+
+            @if ($product->file_path)
+                <div class="mb-2">
+                    <span class="inline-block px-3 py-1 bg-gray-200 rounded">
+                        {{ basename($product->file_path) }}
+                    </span>
+                </div>
+            @else
+                <p class="text-gray-500">No file uploaded yet.</p>
+            @endif
+
+            <button type="button" id="changeFileBtn" class="text-green-600 underline mb-2">
+                Change File
+            </button>
+
+            <input type="file" name="file_path" id="file_path" class="w-full hidden" disabled>
         </div>
 
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update Product</button>
     </form>
 </div>
+
+<script>
+    const changeFileBtn = document.getElementById('changeFileBtn');
+    const fileInput = document.getElementById('file_path');
+
+    changeFileBtn.addEventListener('click', () => {
+        if (fileInput.disabled) {
+            fileInput.disabled = false;
+            fileInput.classList.remove('hidden');
+            changeFileBtn.textContent = 'Cancel Change';
+        } else {
+            fileInput.disabled = true;
+            fileInput.classList.add('hidden');
+            changeFileBtn.textContent = 'Change File';
+            fileInput.value = null; // clear selected file
+        }
+    });
+</script>
 @endsection

@@ -10,6 +10,7 @@
         <a href="{{ route('products.index') }}" class="text-green-200 hover:underline hover:text-green-900 transition">
             Browse Products
         </a>
+        <a href="{{ route('admin.download_logs.index') }}" class="text-green-200 hover:underline hover:text-green-900 transition">Download Log</a>
 
         <form action="{{ route('logout') }}" method="POST" class="inline">
             @csrf

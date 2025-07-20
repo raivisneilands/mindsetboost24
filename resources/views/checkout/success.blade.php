@@ -14,6 +14,11 @@
         <li><strong>Purchased On:</strong> {{ $order->created_at->format('F j, Y, g:i a') }}</li>
     </ul>
 
+    <a href="{{ URL::signedRoute('download.file', ['order' => $order->id, 'product' => $product->slug]) }}"
+        class="bg-emerald-500 text-white p-4 rounded block text-center my-3">
+        Download
+    </a>
+
     <a href="{{ route('products.index') }}" class="text-green-700 hover:underline">Continue Shopping</a>
 </div>
 @endsection

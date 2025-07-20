@@ -32,18 +32,26 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
         ]);
     })->name('dashboard');
 
+    // Products
     Route::resource('/products', \App\Http\Controllers\Admin\ProductController::class);
+
+    // Categories
     Route::resource('/categories', \App\Http\Controllers\Admin\CategoryController::class);
 
+    // Orders
     Route::get('/orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'show'])->name('orders.show');
+
+    // Download Logs
+    Route::get('/download-logs', [App\Http\Controllers\Admin\DownloadLogController::class, 'index'])->name('download_logs.index');
+
 
 });
 
 Route::get('/products', [ProductPageController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [ProductPageController::class, 'show'])->name('products.show');
 
-Route::get('/download/{product}', [DownloadController::class, 'download'])
+Route::get('/download/{order}/{product}', [DownloadController::class, 'download'])
     ->middleware(['auth', 'signed'])
     ->name('download.file');
 

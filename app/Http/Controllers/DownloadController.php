@@ -14,7 +14,10 @@ class DownloadController extends Controller
     public function download(Request $request, Order $order, Product $product)
     {
         // Ensure the product belongs to the order
-        if ($order->user_id !== auth()->id() || !$order->products->contains($product->id)) {
+        if (
+            $order->user_id !== auth()->id() ||
+            !$order->products->contains('id', $product->id)
+        ) {
             abort(403, 'Unauthorized');
         }
 
@@ -27,7 +30,6 @@ class DownloadController extends Controller
         ]);
 
         // Return file download
-        return Storage::download($product->file_path); // or response()->download()
+        return Storage::download($product->file_path);
     }
 }
-

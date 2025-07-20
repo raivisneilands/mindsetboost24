@@ -18,10 +18,30 @@
                 <p class="text-3xl font-bold text-gray-800">{{ \App\Models\Category::count() }}</p>
             </div>
 
-            <!-- Placeholder -->
-            <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
-                <h2 class="text-gray-500 text-sm uppercase mb-1">Coming Soon</h2>
-                <p class="text-gray-500">More insights on orders, users, downloads...</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <!-- Total Products -->
+                <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
+                    <h2 class="text-sm text-gray-500 uppercase mb-1">Products</h2>
+                    <p class="text-2xl font-bold text-emerald-600">{{ $totalProducts }}</p>
+                </div>
+
+                <!-- Total Orders -->
+                <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
+                    <h2 class="text-sm text-gray-500 uppercase mb-1">Orders</h2>
+                    <p class="text-2xl font-bold text-lime-600">{{ $totalOrders }}</p>
+                </div>
+
+                <!-- Total Users -->
+                <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
+                    <h2 class="text-sm text-gray-500 uppercase mb-1">Users</h2>
+                    <p class="text-2xl font-bold text-green-600">{{ $totalUsers }}</p>
+                </div>
+
+                <!-- Total Downloads -->
+                <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
+                    <h2 class="text-sm text-gray-500 uppercase mb-1">Downloads</h2>
+                    <p class="text-2xl font-bold text-emerald-500">{{ $totalDownloads }}</p>
+                </div>
             </div>
         </div>
 
@@ -46,7 +66,7 @@
                     <ul class="divide-y divide-gray-200">
                         @foreach (\App\Models\Product::latest()->take(5)->get() as $product)
                             <li class="py-2 flex justify-between">
-                                <span class="font-medium text-gray-700">{{ $product->name }}</span>
+                                <span class="font-medium text-gray-700">{{ $product->title }}</span>
                                 <span class="text-sm text-gray-500">${{ number_format($product->price, 2) }}</span>
                             </li>
                         @endforeach

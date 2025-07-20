@@ -54,6 +54,10 @@
             </select>
         </div>
 
+        <label for="images" class="block font-medium text-sm text-gray-700">Preview Images</label>
+        <input type="file" name="images[]" multiple class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+
+
         {{-- Cover Image Upload --}}
         <div class="mb-4">
             <label for="cover_image" class="block font-semibold">Cover Image</label>

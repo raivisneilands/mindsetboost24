@@ -53,6 +53,13 @@ class ProductController extends Controller
 
         $product = Product::create($validated);
 
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('product_images', 'public');
+                $product->images()->create(['image_path' => $path]);
+            }
+        }
+
         // attach categories (many-to-many)
         $product->categories()->attach($categories);
 
@@ -107,6 +114,13 @@ class ProductController extends Controller
         unset($validated['categories']);
 
         $product->update($validated);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('product_images', 'public');
+                $product->images()->create(['image_path' => $path]);
+            }
+        }
 
         // sync categories
         $product->categories()->sync($categories);

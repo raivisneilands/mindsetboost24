@@ -32,12 +32,29 @@
                 </div>
             @endif
 
-            @if(Str::endsWith($product->file_path, '.pdf'))
-                <div class="mt-6">
-                    <h2 class="text-lg font-semibold text-lime-700 mb-2">Preview:</h2>
-                    <iframe src="{{ asset('storage/' . $product->file_path) }}" class="w-full h-[500px]" frameborder="0"></iframe>
+            @if ($product->images->count())
+                <div class="mt-10">
+                    <h2 class="text-xl font-semibold text-emerald-600 mb-4">Preview Images</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        @foreach ($product->images as $image)
+                            <div class="overflow-hidden rounded-xl shadow-md hover:shadow-lg transition">
+                                <img src="{{ asset('storage/' . $image->image_path) }}" 
+                                    alt="Product Preview"
+                                    class="w-full h-48 object-cover" />
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             @endif
+
+            <form action="{{ route('checkout.process', $product) }}" method="POST" class="mt-6">
+                @csrf
+                <button type="submit" 
+                    class="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                    Buy Now
+                </button>
+            </form>
+
         </div>
     </div>
 </div>

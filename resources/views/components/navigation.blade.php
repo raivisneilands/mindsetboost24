@@ -4,6 +4,10 @@
 
     <div class="space-x-4">
         <a href="{{ route('products.index') }}" class="text-white hover:underline hover:text-green-900 transition">Browse Products</a>
+        <a href="{{ route('about') }}" 
+            class="text-white hover:underline hover:text-green-900 transition">
+            About
+        </a>
 
         @guest
             <a href="{{ route('login') }}" class="text-white hover:underline hover:text-green-900 transition">Login</a>

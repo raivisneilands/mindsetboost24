@@ -14,6 +14,7 @@
                         Get Started
                     </a>
                 @endguest
+                <a href="{{ route('about') }}" class="bg-white text-emerald-500 hover:text-emerald-600 font-semibold px-6 py-3 rounded-lg border border-white transition">About</a>
                 <a href="{{ route('products.index') }}" class="bg-white text-emerald-500 hover:text-emerald-600 font-semibold px-6 py-3 rounded-lg border border-white transition">
                     Browse Products
                 </a>

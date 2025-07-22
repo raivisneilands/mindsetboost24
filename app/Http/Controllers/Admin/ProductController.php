@@ -34,6 +34,7 @@ class ProductController extends Controller
             'status' => 'required|in:draft,published',
             'categories' => 'required|array',
             'categories.*' => 'exists:categories,id',
+            'keywords' => 'nullable|string',
         ]);
 
         // create slug from title
@@ -90,6 +91,7 @@ class ProductController extends Controller
             'status' => 'required|in:draft,published',
             'categories' => 'required|array',
             'categories.*' => 'exists:categories,id',
+            'keywords' => 'nullable|string',
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);

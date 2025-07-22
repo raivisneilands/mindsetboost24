@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@push('meta')
+    <meta name="description" content="Discover powerful motivational and mindset-boosting digital products.">
+    <meta name="keywords" content="motivation, self-help, productivity, mindset, ebooks, digital downloads">
+@endpush
+
 @section('content')
 <div class="max-w-7xl mx-auto py-10 px-4">
     <h1 class="text-3xl font-bold text-emerald-500 mb-8">All Products</h1>

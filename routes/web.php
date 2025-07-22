@@ -5,6 +5,8 @@ use App\Http\Controllers\ProductPageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DownloadController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestEmail;
 
 Route::get('/', function () {
     $latestProducts = \App\Models\Product::latest()->take(6)->get();
@@ -54,5 +56,10 @@ Route::get('/products/{slug}', [ProductPageController::class, 'show'])->name('pr
 Route::get('/download/{order}/{product}', [DownloadController::class, 'download'])
     ->middleware(['auth', 'signed'])
     ->name('download.file');
+
+Route::get('/test-email', function () {
+    Mail::to('test@example.com')->send(new TestEmail());
+    return 'Test email sent!';
+});
 
 require __DIR__.'/auth.php';

@@ -92,6 +92,12 @@
             <input type="file" name="file_path" id="file_path" class="w-full hidden" disabled>
         </div>
 
+        {{-- SEO Optimization --}}
+        <div class="mb-4">
+            <label for="keywords" class="block font-medium">SEO Keywords (comma-separated)</label>
+            <input type="text" name="keywords" id="keywords" class="w-full border rounded p-2" value="{{ old('keywords', $product->keywords ?? '') }}">
+        </div>
+
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update Product</button>
     </form>
 </div>

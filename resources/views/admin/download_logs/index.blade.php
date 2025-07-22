@@ -1,32 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="text-2xl font-bold mb-6">Download Logs</h1>
+<div class="max-w-6xl mx-auto py-10 px-4">
+    <h1 class="text-3xl font-bold text-emerald-500 mb-8">Download Logs</h1>
 
-    <table class="w-full table-auto border-collapse border border-gray-300">
-        <thead>
-            <tr class="bg-gray-100">
-                <th class="border border-gray-300 px-4 py-2">User</th>
-                <th class="border border-gray-300 px-4 py-2">Product</th>
-                <th class="border border-gray-300 px-4 py-2">Order ID</th>
-                <th class="border border-gray-300 px-4 py-2">IP Address</th>
-                <th class="border border-gray-300 px-4 py-2">Downloaded At</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($logs as $log)
-                <tr>
-                    <td class="border border-gray-300 px-4 py-2">{{ $log->user->name ?? 'N/A' }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ $log->product->title ?? 'N/A' }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ $log->order_id }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ $log->ip_address }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ $log->created_at->format('Y-m-d H:i:s') }}</td>
+    <div class="overflow-x-auto bg-white shadow rounded-lg">
+        <table class="min-w-full table-auto border-collapse">
+            <thead>
+                <tr class="bg-emerald-100 text-left text-gray-700 text-sm uppercase tracking-wider">
+                    <th class="px-6 py-3 border-b">User</th>
+                    <th class="px-6 py-3 border-b">Product</th>
+                    <th class="px-6 py-3 border-b">Order ID</th>
+                    <th class="px-6 py-3 border-b">IP Address</th>
+                    <th class="px-6 py-3 border-b">Downloaded At</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="text-sm text-gray-600">
+                @forelse ($logs as $log)
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 border-b">{{ $log->user->name ?? 'N/A' }}</td>
+                        <td class="px-6 py-4 border-b">{{ $log->product->title ?? 'N/A' }}</td>
+                        <td class="px-6 py-4 border-b">{{ $log->order_id }}</td>
+                        <td class="px-6 py-4 border-b">{{ $log->ip_address }}</td>
+                        <td class="px-6 py-4 border-b">{{ $log->created_at->format('d.m.Y H:i') }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center px-6 py-4 text-gray-500">No logs found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 
     <div class="mt-6">
         {{ $logs->links() }}
     </div>
+</div>
 @endsection

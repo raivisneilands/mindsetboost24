@@ -1,4 +1,16 @@
+{{-- resources/views/products/show.blade.php --}}
+
 @extends('layouts.app')
+
+@push('meta')
+    <meta name="description" content="{{ Str::limit(strip_tags($product->description), 160) }}">
+    <meta name="keywords" content="{{ $product->keywords }}">
+    <meta property="og:title" content="{{ $product->title }}">
+    <meta property="og:description" content="{{ Str::limit(strip_tags($product->description), 160) }}">
+    <meta property="og:image" content="{{ asset('storage/' . $product->cover_image) }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta name="twitter:card" content="summary_large_image">
+@endpush
 
 @section('content')
 <div class="max-w-4xl mx-auto py-10 px-4">

@@ -8,6 +8,8 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
+use App\Mail\OrderConfirmation;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -52,14 +54,16 @@ class CheckoutController extends Controller
         $session = $stripe->checkout->sessions->retrieve($sessionId);
 
         if ($session->payment_status === 'paid') {
-            // Check if order already created for this session to avoid duplicates (optional)
             $existingOrder = Order::where('stripe_session_id', $sessionId)->first();
+
+            \Log::info('Authenticated user ID:', ['id' => auth()->id()]);
+
             if (!$existingOrder) {
                 $order = Order::create([
                     'user_id' => auth()->id(),
                     'status' => 'completed',
-                    'total_price' => $session->amount_total / 100, // Stripe amounts are in cents
-                    'stripe_session_id' => $sessionId, // add this column to orders table!
+                    'total_price' => $session->amount_total / 100,
+                    'stripe_session_id' => $sessionId,
                 ]);
 
                 OrderItem::create([
@@ -68,12 +72,19 @@ class CheckoutController extends Controller
                     'quantity' => 1,
                     'price' => $product->price,
                 ]);
+
+                $order->load('user');  // Eager load user relation
+
+                if ($order->user) {
+                    Mail::to($order->user->email)->send(new OrderConfirmation($order, $product));
+                }
             } else {
                 $order = $existingOrder;
             }
 
             return view('checkout.success', compact('product', 'order'));
         }
+
 
         abort(404);
     }

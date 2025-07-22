@@ -25,7 +25,6 @@
                 <a href="{{ route('login') }}" class="text-white hover:underline hover:text-green-900 transition">Login</a>
                 <a href="{{ route('register') }}" class="text-white hover:underline hover:text-green-900 transition">Register</a>
             @else
-                <span class="text-white">Hi, {{ auth()->user()->name }}</span>
                 <form action="{{ route('logout') }}" method="POST" class="inline">
                     @csrf
                     <button type="submit" class="text-red-200 font-bold hover:underline">Logout</button>

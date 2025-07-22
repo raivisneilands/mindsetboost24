@@ -8,19 +8,23 @@
         <div class="container mx-auto text-center px-4">
             <h1 class="text-4xl md:text-5xl font-bold mb-4">Discover Powerful Digital Tools</h1>
             <p class="text-lg md:text-xl mb-6">Explore journals, challenges, and guides to boost your motivation and productivity.</p>
-            <div class="flex justify-center space-x-4">
+            
+            <div class="flex flex-col items-center space-y-4 md:flex-row md:justify-center md:space-y-0 md:space-x-4">
                 @guest
-                    <a href="{{ route('login') }}" class="bg-lime-500 hover:bg-lime-600 text-white font-semibold px-6 py-3 rounded-lg transition">
+                    <a href="{{ route('login') }}" class="bg-lime-500 hover:bg-lime-600 text-white font-semibold px-6 py-3 rounded-lg transition w-full md:w-auto">
                         Get Started
                     </a>
                 @endguest
-                <a href="{{ route('about') }}" class="bg-white text-emerald-500 hover:text-emerald-600 font-semibold px-6 py-3 rounded-lg border border-white transition">About</a>
-                <a href="{{ route('products.index') }}" class="bg-white text-emerald-500 hover:text-emerald-600 font-semibold px-6 py-3 rounded-lg border border-white transition">
+                <a href="{{ route('about') }}" class="bg-white text-emerald-500 hover:text-emerald-600 font-semibold px-6 py-3 rounded-lg border border-white transition w-full md:w-auto">
+                    About
+                </a>
+                <a href="{{ route('products.index') }}" class="bg-white text-emerald-500 hover:text-emerald-600 font-semibold px-6 py-3 rounded-lg border border-white transition w-full md:w-auto">
                     Browse Products
                 </a>
             </div>
         </div>
     </section>
+
 
     {{-- Latest Products --}}
     <section class="py-12">

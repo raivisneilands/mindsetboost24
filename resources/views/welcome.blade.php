@@ -9,16 +9,18 @@
             <h1 class="text-4xl md:text-5xl font-bold mb-4">Discover Powerful Digital Tools</h1>
             <p class="text-lg md:text-xl mb-6">Explore journals, challenges, and guides to boost your motivation and productivity.</p>
 
-            <div class="flex flex-col items-center md:flex-row md:justify-center md:space-x-4 w-full max-w-md mx-auto space-y-4 md:space-y-0">
+            <div class="flex flex-col items-center space-y-4 md:flex-row md:justify-center md:space-y-0 md:space-x-4 w-full">
                 @guest
-                    <a href="{{ route('login') }}" class="bg-lime-500 hover:bg-lime-600 text-white font-semibold px-6 py-3 rounded-lg transition w-full md:w-auto text-center min-h-[48px] flex items-center justify-center">
+                    <a href="{{ route('login') }}" class="bg-lime-500 hover:bg-lime-600 text-white font-semibold px-6 py-3 rounded-lg transition w-full md:w-auto text-center">
                         Get Started
                     </a>
                 @endguest
-                <a href="{{ route('about') }}" class="bg-white text-emerald-500 hover:text-emerald-600 font-semibold px-6 py-3 rounded-lg border border-white transition w-full md:w-auto text-center min-h-[48px] flex items-center justify-center">
+
+                <a href="{{ route('about') }}" class="bg-white text-emerald-500 hover:text-emerald-600 font-semibold px-6 py-3 rounded-lg border border-white transition w-full md:w-auto text-center">
                     About
                 </a>
-                <a href="{{ route('products.index') }}" class="bg-white text-emerald-500 hover:text-emerald-600 font-semibold px-6 py-3 rounded-lg border border-white transition w-full md:w-auto text-center min-h-[48px] flex items-center justify-center">
+
+                <a href="{{ route('products.index') }}" class="bg-white text-emerald-500 hover:text-emerald-600 font-semibold px-6 py-3 rounded-lg border border-white transition w-full md:w-auto text-center">
                     Browse Products
                 </a>
             </div>

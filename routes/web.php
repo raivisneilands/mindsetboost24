@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductPageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TestEmail;
 
@@ -22,6 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout/{product}', [CheckoutController::class, 'show'])->name('checkout.show');
     Route::post('/checkout/{product}', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/checkout/{product}/success', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
+
 });
 
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {

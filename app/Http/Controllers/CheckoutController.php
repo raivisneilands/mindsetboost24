@@ -23,6 +23,10 @@ class CheckoutController extends Controller
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $session = Session::create([
+            'metadata' => [
+                'user_id' => auth()->id(),
+                'product_id' => $product->id,
+            ],
             'payment_method_types' => ['card'],
             'line_items' => [[
                 'price_data' => [
@@ -35,58 +39,28 @@ class CheckoutController extends Controller
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => route('checkout.success', ['product' => $product->slug]) . '?session_id={CHECKOUT_SESSION_ID}',
+            'success_url' => url("/checkout/{$product->slug}/success") . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('checkout.show', $product->slug),
         ]);
 
         return redirect($session->url);
     }
 
-    public function success(Request $request, Product $product)
+    public function success(Request $request, $slug)
     {
+        $product = Product::where('slug', $slug)->firstOrFail();
+        
         $sessionId = $request->query('session_id');
-
         if (!$sessionId) {
             abort(400, 'Missing session_id');
         }
 
-        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
-        $session = $stripe->checkout->sessions->retrieve($sessionId);
-
-        if ($session->payment_status === 'paid') {
-            $existingOrder = Order::where('stripe_session_id', $sessionId)->first();
-
-            \Log::info('Authenticated user ID:', ['id' => auth()->id()]);
-
-            if (!$existingOrder) {
-                $order = Order::create([
-                    'user_id' => auth()->id(),
-                    'status' => 'completed',
-                    'total_price' => $session->amount_total / 100,
-                    'stripe_session_id' => $sessionId,
-                ]);
-
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $product->id,
-                    'quantity' => 1,
-                    'price' => $product->price,
-                ]);
-
-                $order->load('user');  // Eager load user relation
-
-                if ($order->user) {
-                    Mail::to($order->user->email)->send(new OrderConfirmation($order, $product));
-                }
-            } else {
-                $order = $existingOrder;
-            }
-
-            return view('checkout.success', compact('product', 'order'));
+        $order = Order::where('stripe_session_id', $sessionId)->first();
+        if (!$order) {
+            abort(404, 'Order not found');
         }
 
-
-        abort(404);
+        return view('checkout.success', compact('product', 'order'));
     }
 
 }

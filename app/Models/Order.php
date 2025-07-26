@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Order extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'status', 'total_price'];
+    protected $fillable = ['user_id', 'status', 'total_price', 'stripe_session_id'];
 
     public function user(): BelongsTo
     {

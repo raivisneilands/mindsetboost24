@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Log;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use App\Mail\OrderConfirmation;
@@ -46,21 +47,23 @@ class CheckoutController extends Controller
         return redirect($session->url);
     }
 
-    public function success(Request $request, $slug)
+    public function success(Request $request)
     {
-        $product = Product::where('slug', $slug)->firstOrFail();
-        
         $sessionId = $request->query('session_id');
+
         if (!$sessionId) {
             abort(400, 'Missing session_id');
         }
 
         $order = Order::where('stripe_session_id', $sessionId)->first();
+
         if (!$order) {
             abort(404, 'Order not found');
         }
 
-        return view('checkout.success', compact('product', 'order'));
+        $product = $order->orderItems->first()?->product; // Load product through relationship
+
+        return view('checkout.success', compact('order', 'product'));
     }
 
 }

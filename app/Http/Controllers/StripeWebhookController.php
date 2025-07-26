@@ -3,74 +3,84 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Product;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\OrderConfirmation;
 use Stripe\Stripe;
 use Stripe\Webhook;
 use App\Models\User;
+use App\Models\Product;
+use App\Models\Order;
+use App\Models\OrderItem;
 
 class StripeWebhookController extends Controller
 {
     public function handleWebhook(Request $request)
     {
         $payload = $request->getContent();
-        $sigHeader = $request->server('HTTP_STRIPE_SIGNATURE');
+        $sigHeader = $request->header('Stripe-Signature');
         $secret = config('services.stripe.webhook_secret');
 
         try {
             $event = Webhook::constructEvent($payload, $sigHeader, $secret);
-        } catch (\Exception $e) {
-            Log::error('Stripe webhook signature verification failed.', ['error' => $e->getMessage()]);
-            return response()->json(['error' => 'Invalid signature'], 400);
+        } catch (\UnexpectedValueException $e) {
+            Log::error('Invalid payload');
+            return response('Invalid payload', 400);
+        } catch (\Stripe\Exception\SignatureVerificationException $e) {
+            Log::error('Invalid signature');
+            return response('Invalid signature', 400);
         }
 
         if ($event->type === 'checkout.session.completed') {
             $session = $event->data->object;
 
-            \Log::info('Webhook received', ['session_id' => $session->id]);
+            Log::info('Webhook received', [
+                'type' => $event->type,
+                'metadata' => $session->metadata ?? null,
+                'session_id' => $session->id,
+            ]);
 
-            $existingOrder = Order::where('stripe_session_id', $session->id)->first();
+            $userId = $session->metadata->user_id ?? null;
+            $productId = $session->metadata->product_id ?? null;
 
-            if ($existingOrder) {
-                Log::info('Order already exists', ['order_id' => $existingOrder->id]);
-            } else {
-                $user = User::find($session->metadata->user_id ?? null);
-                $product = Product::find($session->metadata->product_id ?? null);
-
-                if (!$user) {
-                    Log::error('User not found from session metadata', ['metadata' => $session->metadata]);
-                }
-                if (!$product) {
-                    Log::error('Product not found from session metadata', ['metadata' => $session->metadata]);
-                }
-
-                if ($user && $product) {
-                    $order = Order::create([
-                        'user_id' => $user->id,
-                        'stripe_session_id' => $session->id,
-                        'status' => 'completed',
-                        'total_price' => $session->amount_total / 100,
-                    ]);
-
-                    OrderItem::create([
-                        'order_id' => $order->id,
-                        'product_id' => $product->id,
-                        'quantity' => 1,
-                        'price' => $product->price,
-                    ]);
-
-                    Log::info('Order created successfully', ['order_id' => $order->id]);
-
-                    // Mail::to($user->email)->send(new OrderConfirmation($order, $product));
-                }
+            if (!$userId || !$productId) {
+                Log::error('Missing user_id or product_id in metadata', ['metadata' => $session->metadata ?? null]);
+                return response('Missing metadata', 400);
             }
+
+            $user = User::find($userId);
+            $product = Product::find($productId);
+
+            if (!$user || !$product) {
+                Log::error('User or Product not found', [
+                    'user_id' => $userId,
+                    'product_id' => $productId,
+                ]);
+                return response('User or product not found', 404);
+            }
+
+            // Check if order already exists
+            $existing = Order::where('stripe_session_id', $session->id)->first();
+            if ($existing) {
+                Log::info('Order already exists, skipping creation.', ['order_id' => $existing->id]);
+                return response('Order already exists', 200);
+            }
+
+            // Create the order
+            $order = Order::create([
+                'user_id' => $user->id,
+                'stripe_session_id' => $session->id,
+                'total_price' => $product->price,
+            ]);
+
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $product->id,
+                'price' => $product->price,
+                'quantity' => 1,
+            ]);
+
+            Log::info('Order created successfully', ['order_id' => $order->id]);
         }
 
-        return response()->json(['status' => 'success'], 200);
+        return response('Webhook handled', 200);
     }
 }
-

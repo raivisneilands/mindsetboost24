@@ -8,10 +8,10 @@ use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TestEmail;
-use App\Http\Controllers\StripeWebhookController;
+// use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\SitemapController;
 
-Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']);
+// Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']);
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 
 Route::get('/', function () {
@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/checkout/{product}', [CheckoutController::class, 'show'])->name('checkout.show');
     Route::post('/checkout/{product}', [CheckoutController::class, 'process'])->name('checkout.process');
-    Route::get('/checkout/{slug}/success', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/checkout/{product}/success', [CheckoutController::class, 'success'])->name('checkout.success');
     Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
 
 });

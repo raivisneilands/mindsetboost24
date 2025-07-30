@@ -13,6 +13,7 @@
 @endpush
 
 @section('content')
+
 <div class="max-w-4xl mx-auto py-10 px-4">
     <div class="bg-white shadow-md rounded-xl overflow-hidden">
         @if($product->cover_image)
@@ -52,12 +53,31 @@
                             <div class="overflow-hidden rounded-xl shadow-md hover:shadow-lg transition">
                                 <img src="{{ asset('storage/' . $image->image_path) }}" 
                                     alt="Product Preview"
-                                    class="w-full h-48 object-cover" />
+                                    class="w-full h-48 object-cover preview-image" />
                             </div>
                         @endforeach
                     </div>
                 </div>
             @endif
+
+            <!-- The Modal -->
+            <div id="modal"
+                class="hidden fixed top-0 left-0 z-80 
+                        w-screen h-screen bg-black/70 flex 
+                        justify-center items-center">
+
+                <!-- The close button -->
+                <a class="fixed z-90 top-6 right-8 
+                        text-white text-5xl font-bold" 
+                href="javascript:void(0)"
+                onclick="closeModal()">
+                    ×
+                </a>
+
+                <!-- A big image will be displayed here -->
+                <img id="modal-img"
+                    class="max-w-[1000px] max-h-[1000px] object-cover"/>
+            </div>
 
             <form action="{{ route('checkout.process', $product) }}" method="POST" class="mt-6">
                 @csrf
@@ -70,4 +90,34 @@
         </div>
     </div>
 </div>
+<script>
+    // Get all the img elements in the grid
+    var images = document.querySelectorAll('.preview-image');
+
+    // Loop through each img element
+    images.forEach(function (img) {
+        
+    // Add a click event listener to each img element
+        img.addEventListener('click', function () {
+            showModal(img.src);
+        });
+    });
+
+    // Get the modal by id
+    var modal = document.getElementById("modal");
+
+    // Get the modal image tag
+    var modalImg = document.getElementById("modal-img");
+
+    // This function is called when a small image is clicked
+    function showModal(src) {
+        modal.classList.remove('hidden');
+        modalImg.src = src;
+    }
+
+    // This function is called when the close button is clicked
+    function closeModal() {
+        modal.classList.add('hidden');
+    }
+</script>
 @endsection

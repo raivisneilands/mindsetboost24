@@ -25,8 +25,9 @@
         </div>
 
         <div class="mb-4">
-            <label for="description" class="block font-semibold">Description</label>
-            <textarea name="description" id="description" class="w-full border px-3 py-2 rounded">{{ old('description', $product->description) }}</textarea>
+            <label class="block font-semibold ">Description</label>
+            <input id="description" type="hidden" name="description" value="{{ old('description', $product->description) }}">
+            <trix-editor input="description" class="trix-content rounded"></trix-editor>
         </div>
 
         <div class="mb-4">

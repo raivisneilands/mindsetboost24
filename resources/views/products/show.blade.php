@@ -23,9 +23,9 @@
 
         <div class="p-6">
             <h1 class="text-3xl font-bold text-lime-700 mb-4">{{ $product->title }}</h1>
-
-            <p class="text-gray-700 mb-4">{{ $product->description }}</p>
-
+            <div class="trix-content">
+                <p class="text-gray-700 mb-4">{!! $product->description !!}</p>
+            </div>
             <div class="mb-4">
                 <span class="text-green-700 font-semibold text-lg">
                     ${{ number_format($product->price, 2) }}
@@ -53,7 +53,7 @@
                             <div class="overflow-hidden rounded-xl shadow-md hover:shadow-lg transition">
                                 <img src="{{ asset('storage/' . $image->image_path) }}" 
                                     alt="Product Preview"
-                                    class="w-full h-48 object-cover preview-image" />
+                                    class="w-full h-48 object-cover preview-image hover:cursor-pointer transition-all duration-300 hover:scale-110" />
                             </div>
                         @endforeach
                     </div>

@@ -8,6 +8,11 @@
     @vite('resources/css/app.css')
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @stack('meta')
+
+    {{-- Trix Editor --}}
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    
 </head>
 <body class="bg-white text-gray-800 antialiased">
     @if(auth()->check() && auth()->user()->is_admin)

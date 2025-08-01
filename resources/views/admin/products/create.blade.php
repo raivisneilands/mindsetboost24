@@ -25,7 +25,9 @@
 
         <div class="mb-4">
             <label for="description" class="block font-semibold">Description</label>
-            <textarea name="description" id="description" class="w-full border px-3 py-2 rounded">{{ old('description') }}</textarea>
+            <input id="description" type="hidden" name="description" value="{{ old('description') }}" class="w-full border px-3 py-2 rounded">
+            <trix-editor input="description" class="trix-content rounded"></trix-editor>
+            @error('description') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
         <div class="mb-4">
@@ -76,7 +78,7 @@
             <input type="text" name="keywords" id="keywords" class="w-full border rounded p-2" value="{{ old('keywords', $product->keywords ?? '') }}">
         </div>
 
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save Product</button>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded mb-6">Save Product</button>
     </form>
 </div>
 @endsection

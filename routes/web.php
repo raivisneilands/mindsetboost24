@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\TestEmail;
 // use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\ReviewController;
 
 // Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']);
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);
@@ -29,7 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout/{product}', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/checkout/{product}/success', [CheckoutController::class, 'success'])->name('checkout.success');
     Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
-
+    Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/products/{product}/reviews/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+    Route::put('/products/{product}/reviews', [ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/products/{product}/reviews', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {

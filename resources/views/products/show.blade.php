@@ -86,6 +86,66 @@
                     Buy Now
                 </button>
             </form>
+            @if ($product->reviews->count())
+                <div class="mt-10">
+                    <h2 class="text-xl font-semibold mb-4 text-emerald-600">User Reviews</h2>
+
+                    @foreach ($product->reviews as $review)
+                        <div class="mb-4 p-4 border rounded-xl bg-gray-50 shadow-sm">
+                            <div class="flex justify-between items-center mb-1">
+                                <strong>{{ $review->user->name }}</strong>
+                                <span class="text-yellow-500">
+                                    {{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}
+                                </span>
+                            </div>
+                            @if ($review->review)
+                                <p class="text-sm text-gray-700">{{ $review->review }}</p>
+                            @endif
+                            @if ($review->user_id === auth()->id())
+                                <div class="text-sm text-right mt-2 space-x-2">
+                                    <a href="{{ route('reviews.edit', $product) }}" class="text-blue-600 hover:underline">Edit</a>
+
+                                    <form action="{{ route('reviews.destroy', $product) }}" method="POST" class="inline-block"
+                                        onsubmit="return confirm('Delete your review?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="text-red-600 hover:underline">Delete</button>
+                                    </form>
+                                </div>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <h2 class="text-xl my-4 text-gray-400">There are no reviews for this product yet. Be the first one to leave one</h2>
+            @endif    
+
+            @auth
+                <div class="mt-10">
+                    <h2 class="text-xl font-semibold mb-3 text-emerald-700">Leave a Review</h2>
+
+                    <form method="POST" action="{{ route('reviews.store', $product) }}" class="space-y-4">
+                        @csrf
+                        <div>
+                            <label for="rating" class="block text-sm font-medium">Rating</label>
+                            <select name="rating" id="rating" class="w-20 border rounded p-1">
+                                @for ($i = 5; $i >= 1; $i--)
+                                    <option value="{{ $i }}">{{ $i }} ★</option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="review" class="block text-sm font-medium">Comment (optional)</label>
+                            <textarea name="review" id="review" rows="3" class="w-full border rounded p-2"></textarea>
+                        </div>
+
+                        <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700">
+                            Submit Review
+                        </button>
+                    </form>
+                </div>
+            @endauth
 
         </div>
     </div>

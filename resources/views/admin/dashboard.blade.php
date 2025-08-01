@@ -3,7 +3,7 @@
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 px-4 py-10">
     <div class="max-w-7xl mx-auto">
-        <h1 class="text-4xl font-extrabold text-gray-800 mb-10 text-center">Admin Dashboard</h1>
+        <h1 class="text-4xl font-extrabold text-emerald-500 mb-10 text-center">Admin Dashboard</h1>
 
         <!-- Stats Overview -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">

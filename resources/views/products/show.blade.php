@@ -62,21 +62,16 @@
 
             <!-- The Modal -->
             <div id="modal"
-                class="hidden fixed top-0 left-0 z-80 
-                        w-screen h-screen bg-black/70 flex 
-                        justify-center items-center">
+                class="hidden fixed inset-0 z-80 bg-black/70 backdrop-blur-sm 
+                        flex justify-center items-center">
 
-                <!-- The close button -->
-                <a class="fixed z-90 top-6 right-8 
-                        text-white text-5xl font-bold" 
-                href="javascript:void(0)"
-                onclick="closeModal()">
-                    ×
-                </a>
+                <!-- Close button -->
+                <a class="fixed z-90 top-6 right-8 text-white text-4xl font-bold"
+                href="javascript:void(0)" onclick="closeModal()">×</a>
 
-                <!-- A big image will be displayed here -->
+                <!-- Modal Image -->
                 <img id="modal-img"
-                    class="max-w-[1000px] max-h-[1000px] object-cover"/>
+                    class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-lg" />
             </div>
 
             <form action="{{ route('checkout.process', $product) }}" method="POST" class="mt-6">
@@ -173,11 +168,13 @@
     function showModal(src) {
         modal.classList.remove('hidden');
         modalImg.src = src;
+        document.body.classList.add('overflow-hidden');
     }
 
     // This function is called when the close button is clicked
     function closeModal() {
         modal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
     }
 </script>
 @endsection

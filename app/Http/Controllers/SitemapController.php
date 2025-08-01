@@ -42,7 +42,7 @@ class SitemapController extends Controller
             $urls[] = [
                 'loc' => URL::to('/posts/' . $product->slug),
                 'lastmod' => $product->updated_at->toAtomString(),
-                'changefreq' => 'almost never',
+                'changefreq' => 'never',
                 'priority' => '1.0'
             ];
         }

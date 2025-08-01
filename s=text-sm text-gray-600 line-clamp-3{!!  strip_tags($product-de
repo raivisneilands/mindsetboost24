@@ -1,0 +1,22 @@
+[33m4376780[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m implement WYSIWYG editor for product descriptions
+[33ma009a52[m add image preview modal
+[33m47df3f9[m fix stripe webhook issue
+[33m0f0c5d1[m add sitemap and webhook
+[33m6e0cb54[m change color of my purchases tab title
+[33m3c16a06[m add my purchases tab for logged in user
+[33m60b6be6[m update favicon
+[33me7bb727[m update navigation and hero section button layout
+[33m48a26f4[m once again update buttons on hero section
+[33m6d4ee6d[m update hero section to be mobile-friendly
+[33m464dcac[m route fix
+[33m470818a[m remove remember me? and forgot options from login screen
+[33ma1a391b[m remove extra greeting from navigation
+[33m3bbe650[m ui & ux improvements
+[33mc51f59f[m secure digital file download functionality
+[33ma02a3bd[m stripe integration
+[33md7be3b7[m add orders to admin dashboard & update home screen
+[33mdbcf377[m Admin panel for products & categories
+[33mf63e77e[m create admin dashboard & order and order item models & migrations
+[33m71d377d[m product & category migrations
+[33m21ea083[m auth & welcome screen implementation
+[33m60d3d8b[m initial commit

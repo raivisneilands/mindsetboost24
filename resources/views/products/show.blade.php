@@ -34,7 +34,7 @@
 
             @if($product->categories->count())
                 <div class="mb-4">
-                    <span class="text-sm text-gray-600">Categories:</span>
+                    <span class="text-sm text-gray-600">Category:</span>
                     <div class="flex flex-wrap gap-2 mt-1">
                         @foreach ($product->categories as $category)
                             <span class="bg-lime-100 text-lime-700 px-3 py-1 rounded-full text-xs">
@@ -84,7 +84,23 @@
             @if ($product->reviews->count())
                 <div class="mt-10">
                     <h2 class="text-xl font-semibold mb-4 text-emerald-600">User Reviews</h2>
-
+                    @if($product->reviews->count())
+                        @php
+                            $average = number_format($product->reviews->avg('rating'), 1);
+                        @endphp
+                        <div class="flex items-center text-yellow-500 text-sm my-3">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= round($average))
+                                    ★
+                                @else
+                                    ☆
+                                @endif
+                            @endfor
+                            <span class="ml-2 text-gray-500">({{ $product->reviews->count() }})</span>
+                        </div>
+                    @else
+                        <div class="text-gray-400 text-sm mt-1 italic">No ratings</div>
+                    @endif
                     @foreach ($product->reviews as $review)
                         <div class="mb-4 p-4 border rounded-xl bg-gray-50 shadow-sm">
                             <div class="flex justify-between items-center mb-1">
@@ -116,7 +132,7 @@
             @endif    
 
             @auth
-                <div class="mt-10">
+                <div class="mt-10 p-3 border rounded-xl border-gray-200 bg-gray-100">
                     <h2 class="text-xl font-semibold mb-3 text-emerald-700">Leave a Review</h2>
 
                     <form method="POST" action="{{ route('reviews.store', $product) }}" class="space-y-4">

@@ -66,18 +66,41 @@
                     <div class="p-4 flex flex-col flex-grow">
                         <div class="mb-3">
                             <h3 class="text-lg font-semibold text-green-800 truncate">{{ $product->title }}</h3>
+                            @if($product->reviews->count())
+                                @php
+                                    $average = number_format($product->reviews->avg('rating'), 1);
+                                @endphp
+                                <div class="flex items-center text-yellow-500 text-sm mt-1">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= round($average))
+                                            ★
+                                        @else
+                                            ☆
+                                        @endif
+                                    @endfor
+                                    <span class="ml-2 text-gray-500">({{ $product->reviews->count() }})</span>
+                                </div>
+                            @else
+                                <div class="text-gray-400 text-sm mt-1 italic">No ratings</div>
+                            @endif
                             <p class="text-sm text-gray-600 line-clamp-3">{!!  strip_tags($product->description) !!}</p>
                         </div>
 
                         <div class="flex items-center justify-between mt-auto">
                             <span class="text-lime-700 font-bold text-base">€{{ number_format($product->price, 2) }}</span>
-
                             <a href="{{ route('products.show', $product->slug) }}"
                                 class="inline-block px-3 py-1 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition">
                                 View
                             </a>
                         </div>
                     </div>
+                    @if($product->order_items_count > 0)
+                        <div class="text-sm text-gray-600 m-4">
+                            {{ $product->order_items_count }} {{ Str::plural('purchase', $product->order_items_count) }}
+                        </div>
+                    @else
+                        <div class="text-sm text-gray-400 m-4 italic">No purchases yet</div>
+                    @endif
                 </div>
             @endforeach
         </div>

@@ -10,7 +10,7 @@ class ProductPageController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::query();
+        $query = Product::withCount('orderItems'); // Add this line to count purchases
 
         // Filter by category if selected
         if ($request->filled('category')) {
@@ -30,6 +30,7 @@ class ProductPageController extends Controller
 
         return view('products.index', compact('products', 'categories'));
     }
+
 
     public function show($slug)
     {

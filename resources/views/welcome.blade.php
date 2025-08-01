@@ -44,10 +44,10 @@
                             @endif
                         </div>
 
-                        <div class="p-4 flex flex-col justify-between h-52">
+                        <div class="p-4 flex flex-col justify-between">
                             <div class="mb-3">
                                 <h3 class="text-lg font-semibold text-green-800 truncate">{{ $product->title }}</h3>
-                                <p class="text-sm text-gray-600 line-clamp-2">{{ $product->description }}</p>
+                                <p class="text-sm text-gray-600 line-clamp-3">{!!  strip_tags($product->description) !!}</p>
                             </div>
 
                             <div class="flex items-center justify-between">

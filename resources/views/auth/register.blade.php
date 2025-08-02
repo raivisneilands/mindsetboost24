@@ -12,6 +12,18 @@
 
     <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-8 mx-4">
         <h2 class="text-3xl font-bold text-center text-emerald-700 mb-6">Register</h2>
+        @if ($errors->any())
+            <div class="mb-4 rounded-md bg-red-100 border border-red-400 px-4 py-3 text-red-700 relative">
+                <button class="absolute top-2 right-3 text-red-500 hover:text-red-700" onclick="this.parentElement.remove();">
+                    X
+                </button>
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <form method="POST" action="{{ route('register') }}" class="space-y-5">
             @csrf

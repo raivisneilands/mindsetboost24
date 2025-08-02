@@ -11,9 +11,26 @@ use App\Mail\TestEmail;
 // use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\ReviewController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 // Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']);
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/dashboard'); // or wherever you want to redirect
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('status', 'verification-link-sent');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
 
 Route::get('/', function () {
     $latestProducts = \App\Models\Product::latest()->take(6)->get();
@@ -66,7 +83,7 @@ Route::get('/products', [ProductPageController::class, 'index'])->name('products
 Route::get('/products/{slug}', [ProductPageController::class, 'show'])->name('products.show');
 
 Route::get('/download/{order}/{product}', [DownloadController::class, 'download'])
-    ->middleware(['auth', 'signed'])
+    ->middleware(['auth', 'verified', 'signed'])
     ->name('download.file');
 
 Route::get('/test-email', function () {

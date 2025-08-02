@@ -1,5 +1,5 @@
 <!-- resources/views/components/navigation.blade.php -->
-<nav x-data="{ open: false }" class="bg-gradient-to-r from-emerald-500 via-lime-500 to-green-500 px-6 py-4 shadow-sm">
+<nav x-data="{ open: false }" class="bg-gradient-to-br from-emerald-600 via-emerald-400 to-emerald-500 px-6 py-4 shadow-sm">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <!-- Logo -->
         <a href="{{ route('home') }}" class="text-white font-bold text-2xl">Mindset Boost 24</a>

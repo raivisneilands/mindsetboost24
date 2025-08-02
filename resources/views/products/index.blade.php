@@ -97,7 +97,7 @@
 
                     <div class="p-4 flex flex-col flex-grow">
                         <div class="mb-3">
-                            <h3 class="text-lg font-semibold text-green-800 truncate">{{ $product->title }}</h3>
+                            <h3 class="text-lg font-semibold text-emerald-900 truncate">{{ $product->title }}</h3>
                             @if($product->reviews->count())
                                 @php
                                     $average = number_format($product->reviews->avg('rating'), 1);
@@ -119,9 +119,9 @@
                         </div>
 
                         <div class="flex items-center justify-between mt-auto">
-                            <span class="text-lime-700 font-bold text-base">€{{ number_format($product->price, 2) }}</span>
+                            <span class="text-emerald-800 font-bold text-base">€{{ number_format($product->price, 2) }}</span>
                             <a href="{{ route('products.show', $product->slug) }}"
-                                class="inline-block px-3 py-1 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition">
+                                class="inline-block px-3 py-1 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-md transition">
                                 View
                             </a>
                         </div>

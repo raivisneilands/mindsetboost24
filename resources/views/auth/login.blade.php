@@ -39,13 +39,13 @@
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
             </div>
 
-            {{-- <div class="flex items-center justify-between">
-                <label class="flex items-center text-sm text-gray-600">
+            <div class="flex items-center justify-between">
+                {{-- <label class="flex items-center text-sm text-gray-600">
                     <input type="checkbox" name="remember" class="mr-2">
                     Remember me
-                </label>
+                </label> --}}
                 <a href="{{ route('password.request') }}" class="text-sm text-teal-600 hover:underline">Forgot?</a>
-            </div> --}}
+            </div>
 
             <button type="submit"
                 class="w-full bg-emerald-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-emerald-700 transition">

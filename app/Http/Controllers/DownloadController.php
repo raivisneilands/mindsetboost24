@@ -13,6 +13,7 @@ class DownloadController extends Controller
 {
     public function download(Request $request, Order $order, Product $product)
     {
+        logger('Download method hit');
         // Ensure the product belongs to the order
         if (
             $order->user_id !== auth()->id() ||

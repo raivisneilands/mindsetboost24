@@ -30,6 +30,6 @@ class DownloadController extends Controller
         ]);
 
         // Return file download
-        return Storage::download($product->file_path);
+        return Storage::download($product->file_path, $product->title . '.pdf');
     }
 }

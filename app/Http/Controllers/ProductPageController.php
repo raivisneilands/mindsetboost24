@@ -10,11 +10,14 @@ class ProductPageController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::withCount('orderItems'); // Add this line to count purchases
+        $query = Product::withCount('orderItems') // For purchase count
+                    ->withAvg('reviews', 'rating'); // For average rating
 
         // Filter by category if selected
         if ($request->filled('category')) {
-            $query->where('id', $request->category);
+            $query->whereHas('categories', function ($q) use ($request) {
+                $q->where('categories.id', $request->category);
+            });
         }
 
         // Search by keyword
@@ -25,11 +28,32 @@ class ProductPageController extends Controller
             });
         }
 
-        $products = $query->latest()->paginate(12);
+        // Sorting
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'rating':
+                    $query->orderByDesc('reviews_avg_rating');
+                    break;
+                case 'purchases':
+                    $query->orderByDesc('order_items_count');
+                    break;
+                case 'price_low_high':
+                    $query->orderBy('price');
+                    break;
+                case 'price_high_low':
+                    $query->orderByDesc('price');
+                    break;
+            }
+        } else {
+            $query->latest(); // default sort
+        }
+
+        $products = $query->paginate(12)->withQueryString(); // <– this preserves filters when paginating
         $categories = Category::orderBy('name')->get();
 
         return view('products.index', compact('products', 'categories'));
     }
+
 
 
     public function show($slug)

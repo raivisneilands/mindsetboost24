@@ -9,45 +9,77 @@
 <div class="max-w-7xl mx-auto py-10 px-4">
     <h1 class="text-3xl font-bold text-emerald-500 mb-8">All Products</h1>
 
-    <form method="GET" action="{{ route('products.index') }}" class="mb-8 flex flex-col md:flex-row md:items-end gap-4">
-        {{-- Category Filter --}}
-        <div>
-            <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-            <select name="category" id="category" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500">
-                <option value="">All Categories</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+    <form method="GET" action="{{ route('products.index') }}" class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+        {{-- Search input --}}
+        <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            placeholder="Search products..."
+            class="border border-gray-300 rounded-md px-4 py-2 w-full"
+        />
 
-        {{-- Search --}}
-        <div class="flex-1">
-            <label for="search" class="block text-sm font-medium text-gray-700">Search</label>
-            <input type="text" name="search" id="search" value="{{ request('search') }}"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
-                placeholder="Search by title or description">
-        </div>
+        {{-- Category dropdown --}}
+        <select name="category" class="border-gray-300 rounded-md px-4 py-2 w-full">
+            <option value="">All Categories</option>
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                    {{ $category->name }}
+                </option>
+            @endforeach
+        </select>
 
-        {{-- Submit --}}
-        <div>
-            <button type="submit"
-                class="inline-flex items-center px-4 py-2 bg-emerald-500 border border-transparent rounded-md font-semibold text-white hover:bg-emerald-600 transition">
-                Filter
-            </button>
-        </div>
+        {{-- Sort dropdown --}}
+        <select name="sort" class="border-gray-300 rounded-md px-4 py-2 w-full">
+            <option value="">Default Sort</option>
+            <option value="rating" {{ request('sort') === 'rating' ? 'selected' : '' }}>Highest Rating</option>
+            <option value="purchases" {{ request('sort') === 'purchases' ? 'selected' : '' }}>Most Purchased</option>
+            <option value="price_low_high" {{ request('sort') === 'price_low_high' ? 'selected' : '' }}>Price: Low to High</option>
+            <option value="price_high_low" {{ request('sort') === 'price_high_low' ? 'selected' : '' }}>Price: High to Low</option>
+        </select>
 
-        <div class="flex gap-2">
-            <a
-                href="{{ route('products.index') }}"
-                class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg"
-            >
-                Clear Filters
-            </a>
-        </div>
+        {{-- Submit button --}}
+        <button type="submit"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-md">
+            Apply Filters
+        </button>
     </form>
+
+    @if(request()->filled('search') || request()->filled('category') || request()->filled('sort'))
+        <div class="mb-6 text-sm text-gray-600 space-y-1">
+            <p class="font-medium text-emerald-700">Filtered By:</p>
+
+            <div class="flex">
+                @if(request()->filled('search'))
+                    <p class="mr-3">Search: <span class="font-semibold">{{ request('search') }}</span></p>
+                @endif
+
+                @if(request()->filled('category'))
+                    @php
+                        $selectedCategory = $categories->firstWhere('id', request('category'));
+                    @endphp
+                    @if($selectedCategory)
+                        <p class="mr-3">Category: <span class="font-semibold">{{ $selectedCategory->name }}</span></p>
+                    @endif
+                @endif
+
+                @if(request()->filled('sort'))
+                    <p>Sort by:
+                        <span class="font-semibold">
+                            @switch(request('sort'))
+                                @case('rating') Highest Rating @break
+                                @case('purchases') Most Purchased @break
+                                @case('price_low_high') Price: Low to High @break
+                                @case('price_high_low') Price: High to Low @break
+                                @default {{ request('sort') }}
+                            @endswitch
+                        </span>
+                    </p>
+                @endif
+            </div>
+        </div>
+    @endif
+
 
 
     @if ($products->count())

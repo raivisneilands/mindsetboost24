@@ -34,7 +34,7 @@
                                 </span>
                             @endforeach
                         </td>
-                        <td class="px-4 py-2">${{ number_format($product->price, 2) }}</td>
+                        <td class="px-4 py-2">€{{ number_format($product->price, 2) }}</td>
                         <td class="px-4 py-2">
                             <a href="{{ route('admin.products.edit', $product) }}" class="text-blue-600 hover:underline mr-2">Edit</a>
                             <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure?');">

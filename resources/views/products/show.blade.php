@@ -28,7 +28,7 @@
             </div>
             <div class="mb-4">
                 <span class="text-green-700 font-semibold text-lg">
-                    ${{ number_format($product->price, 2) }}
+                    €{{ number_format($product->price, 2) }}
                 </span>
             </div>
 

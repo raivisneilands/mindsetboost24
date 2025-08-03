@@ -53,7 +53,7 @@
                         @foreach (\App\Models\Product::latest()->take(5)->get() as $product)
                             <li class="py-3 flex justify-between items-center">
                                 <span class="font-medium text-gray-700 truncate max-w-[70%]">{{ $product->title }}</span>
-                                <span class="text-sm text-gray-500">${{ number_format($product->price, 2) }}</span>
+                                <span class="text-sm text-gray-500">€{{ number_format($product->price, 2) }}</span>
                             </li>
                         @endforeach
                     </ul>

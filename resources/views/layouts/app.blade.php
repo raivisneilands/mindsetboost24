@@ -14,6 +14,31 @@
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
     
 </head>
+<style>
+    /* Hide attachment button */
+    trix-toolbar [data-trix-action="attachFiles"] {
+        display: none !important;
+        }
+
+        /* Mobile & tablets: multi-row and bigger buttons */
+        @media (max-width: 768px) {
+        .trix-button-row {
+            white-space: normal !important;
+            flex-wrap: wrap !important;
+        }
+
+        .trix-button {
+            padding: 0.6rem 1rem !important;
+            font-size: 1.25rem !important;
+            margin: 0.25rem !important;
+        }
+
+        .trix-toolbar {
+            padding: 0.75rem 1rem !important;
+            height: auto !important;
+        }
+    }
+</style>
 <body class="bg-white text-gray-800 antialiased">
     @if(auth()->check() && auth()->user()->is_admin)
         @include('components.admin-navigation')

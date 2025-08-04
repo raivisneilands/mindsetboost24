@@ -22,6 +22,7 @@
             <a href="{{ route('about') }}" class="text-white hover:underline hover:text-green-900 transition">About</a>
             @auth
                 <a href="{{ route('purchases.index') }}" class="text-white hover:underline">My Purchases</a>
+                <a href="{{ route('journal.index') }}" class="text-white hover:underline">My Journal</a>
             @endauth
             @guest
                 <a href="{{ route('login') }}" class="text-white hover:underline hover:text-green-900 transition">Login</a>
@@ -42,7 +43,10 @@
         @endauth
         <a href="{{ route('products.index') }}" class="block text-white hover:bg-emerald-600 px-4 py-2 rounded">Browse Products</a>
         <a href="{{ route('about') }}" class="block text-white hover:bg-emerald-600 px-4 py-2 rounded">About</a>
-
+        @auth
+            <a href="{{ route('purchases.index') }}" class="block text-white hover:bg-emerald-600 px-4 py-2 rounded">My Purchases</a>
+            <a href="{{ route('journal.index') }}" class="block text-white hover:bg-emerald-600 px-4 py-2 rounded">My Journal</a>
+        @endauth
         @guest
             <a href="{{ route('login') }}" class="block text-white hover:bg-emerald-600 px-4 py-2 rounded">Login</a>
             <a href="{{ route('register') }}" class="block text-white hover:bg-emerald-600 px-4 py-2 rounded">Register</a>

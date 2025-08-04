@@ -11,6 +11,7 @@ use App\Mail\TestEmail;
 // use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\JournalEntryController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
@@ -69,6 +70,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/{product}/reviews/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
     Route::put('/products/{product}/reviews', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/products/{product}/reviews', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::resource('journal', JournalEntryController::class);
+    Route::post('/trix-upload', function (Request $request) {
+        $request->validate([
+            'image' => 'required|image|max:2048',
+        ]);
+
+        $path = $request->file('image')->store('trix_images', 'public');
+
+        return response()->json([
+            'url' => Storage::url($path),
+        ]);
+    });
 });
 
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {

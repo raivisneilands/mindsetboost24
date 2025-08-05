@@ -33,6 +33,12 @@
                 <input id="name" type="text" name="name" required autofocus
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
             </div>
+                        
+            <div>
+                <label for="username" class="block mb-1 text-gray-700">Username</label>
+                <input id="username" type="text" name="username" required autofocus
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            </div>
 
             <div>
                 <label for="email" class="block mb-1 text-gray-700">Email</label>

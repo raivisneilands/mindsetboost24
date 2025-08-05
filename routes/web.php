@@ -57,10 +57,12 @@ Route::get('/', function () {
 })->name('home');
 
 Route::view('/about', 'about')->name('about');
+Route::get('/users/{username}', [ProfileController::class, 'show'])->name('profile.show');
+
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/checkout/{product}', [CheckoutController::class, 'show'])->name('checkout.show');
     Route::post('/checkout/{product}', [CheckoutController::class, 'process'])->name('checkout.process');

@@ -40,11 +40,10 @@
     }
 </style>
 <body class="bg-white text-gray-800 antialiased">
-    @if(auth()->check() && auth()->user()->is_admin)
-        @include('components.admin-navigation')
-    @else
-        @if (!Request::is('/'))
-            @include('components.navigation')
+    @if (!Request::is('/'))
+        @include('components.navigation')
+        @if(auth()->check() && auth()->user()->is_admin)
+            @include('components.admin-navigation')
         @endif
     @endif
     @yield('content')

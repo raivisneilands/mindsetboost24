@@ -21,7 +21,7 @@
 
     <!-- Bio -->
     @if($user->bio)
-        <p class="text-emerald-100/90 italic text-sm max-w-xl mx-auto mb-6">{{ $user->bio }}</p>
+        <p class="text-emerald-800/90 italic text-sm max-w-xl mx-auto mb-6">{{ $user->bio }}</p>
     @else
         <p class="text-gray-400 italic mb-6">No bio provided yet.</p>
     @endif

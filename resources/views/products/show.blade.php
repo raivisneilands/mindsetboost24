@@ -1,5 +1,3 @@
-{{-- resources/views/products/show.blade.php --}}
-
 @extends('layouts.app')
 
 @push('meta')
@@ -22,7 +20,7 @@
         @endif
 
         <div class="p-6">
-            <h1 class="text-3xl font-bold text-lime-700 mb-4">{{ $product->title }}</h1>
+            <h1 class="text-3xl font-bold text-emerald-700 mb-4">{{ $product->title }}</h1>
             <div class="trix-content">
                 <p class="text-gray-700 mb-4">{!! $product->description !!}</p>
             </div>
@@ -37,7 +35,7 @@
                     <span class="text-sm text-gray-600">Category:</span>
                     <div class="flex flex-wrap gap-2 mt-1">
                         @foreach ($product->categories as $category)
-                            <span class="bg-lime-100 text-lime-700 px-3 py-1 rounded-full text-xs">
+                            <span class="bg-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs">
                                 {{ $category->name }}
                             </span>
                         @endforeach
@@ -49,11 +47,12 @@
                 <div class="mt-10">
                     <h2 class="text-xl font-semibold text-emerald-600 mb-4">Preview Images</h2>
                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        @foreach ($product->images as $image)
+                        @foreach ($product->images as $index => $image)
                             <div class="overflow-hidden rounded-xl shadow-md hover:shadow-lg transition">
                                 <img src="{{ asset('storage/' . $image->image_path) }}" 
                                     alt="Product Preview"
-                                    class="w-full h-48 object-cover preview-image hover:cursor-pointer transition-all duration-300 hover:scale-110" />
+                                    class="w-full h-48 object-cover preview-image hover:cursor-pointer transition-all duration-300 hover:scale-110"
+                                    data-index="{{ $index }}" />
                             </div>
                         @endforeach
                     </div>
@@ -63,15 +62,29 @@
             <!-- The Modal -->
             <div id="modal"
                 class="hidden fixed inset-0 z-80 bg-black/70 backdrop-blur-sm 
-                        flex justify-center items-center">
+                       flex flex-col justify-center items-center px-4">
 
                 <!-- Close button -->
-                <a class="fixed z-90 top-6 right-8 text-white text-4xl font-bold"
-                href="javascript:void(0)" onclick="closeModal()">×</a>
+                <button class="self-end mb-4 text-white text-4xl font-bold" onclick="closeModal()">×</button>
 
-                <!-- Modal Image -->
-                <img id="modal-img"
-                    class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-lg" />
+                <!-- Modal Image Container -->
+                <div class="relative max-w-full max-h-[90vh] w-full flex justify-center items-center">
+
+                    <!-- Prev Button -->
+                    <button id="prevBtn" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-white text-4xl px-4 py-2 hover:text-lime-400 select-none">
+                        ‹
+                    </button>
+
+                    <!-- Modal Image -->
+                    <img id="modal-img"
+                        class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-lg" />
+
+                    <!-- Next Button -->
+                    <button id="nextBtn" class="absolute right-0 top-1/2 transform -translate-y-1/2 text-white text-4xl px-4 py-2 hover:text-lime-400 select-none">
+                        ›
+                    </button>
+
+                </div>
             </div>
 
             <form action="{{ route('checkout.process', $product) }}" method="POST" class="mt-6">
@@ -81,26 +94,24 @@
                     Buy Now
                 </button>
             </form>
+
             @if ($product->reviews->count())
                 <div class="mt-10">
                     <h2 class="text-xl font-semibold mb-4 text-emerald-600">User Reviews</h2>
-                    @if($product->reviews->count())
-                        @php
-                            $average = number_format($product->reviews->avg('rating'), 1);
-                        @endphp
-                        <div class="flex items-center text-yellow-500 text-sm my-3">
-                            @for ($i = 1; $i <= 5; $i++)
-                                @if ($i <= round($average))
-                                    ★
-                                @else
-                                    ☆
-                                @endif
-                            @endfor
-                            <span class="ml-2 text-gray-500">({{ $product->reviews->count() }})</span>
-                        </div>
-                    @else
-                        <div class="text-gray-400 text-sm mt-1 italic">No ratings</div>
-                    @endif
+                    @php
+                        $average = number_format($product->reviews->avg('rating'), 1);
+                    @endphp
+                    <div class="flex items-center text-yellow-500 text-sm my-3">
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= round($average))
+                                ★
+                            @else
+                                ☆
+                            @endif
+                        @endfor
+                        <span class="ml-2 text-gray-500">({{ $product->reviews->count() }})</span>
+                    </div>
+
                     @foreach ($product->reviews as $review)
                         <div class="mb-4 p-4 border rounded-xl bg-gray-50 shadow-sm">
                             <div class="flex justify-between items-center mb-1">
@@ -161,36 +172,71 @@
         </div>
     </div>
 </div>
+
 <script>
     // Get all the img elements in the grid
-    var images = document.querySelectorAll('.preview-image');
+    const images = document.querySelectorAll('.preview-image');
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modal-img");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
 
-    // Loop through each img element
-    images.forEach(function (img) {
-        
-    // Add a click event listener to each img element
-        img.addEventListener('click', function () {
-            showModal(img.src);
-        });
-    });
+    // Store all image URLs in an array
+    const imageSources = Array.from(images).map(img => img.src);
+    let currentIndex = 0;
 
-    // Get the modal by id
-    var modal = document.getElementById("modal");
-
-    // Get the modal image tag
-    var modalImg = document.getElementById("modal-img");
-
-    // This function is called when a small image is clicked
-    function showModal(src) {
+    // Function to show modal with a specific image index
+    function showModal(index) {
+        currentIndex = index;
         modal.classList.remove('hidden');
-        modalImg.src = src;
+        modalImg.src = imageSources[currentIndex];
         document.body.classList.add('overflow-hidden');
     }
 
-    // This function is called when the close button is clicked
+    // Function to close modal
     function closeModal() {
         modal.classList.add('hidden');
         document.body.classList.remove('overflow-hidden');
     }
+
+    // Show modal on clicking any preview image
+    images.forEach((img, index) => {
+        img.addEventListener('click', () => {
+            showModal(index);
+        });
+    });
+
+    // Navigate to previous image
+    prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + imageSources.length) % imageSources.length;
+        modalImg.src = imageSources[currentIndex];
+    });
+
+    // Navigate to next image
+    nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % imageSources.length;
+        modalImg.src = imageSources[currentIndex];
+    });
+
+    // Close modal when clicking outside the image
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Keyboard navigation support
+    document.addEventListener('keydown', (e) => {
+        if (modal.classList.contains('hidden')) return;
+
+        if (e.key === 'ArrowLeft') {
+            prevBtn.click();
+        } else if (e.key === 'ArrowRight') {
+            nextBtn.click();
+        } else if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
 </script>
+
 @endsection

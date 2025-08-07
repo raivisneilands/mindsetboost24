@@ -12,6 +12,7 @@ use App\Mail\TestEmail;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\JournalEntryController;
+use App\Http\Controllers\PostController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
@@ -53,10 +54,16 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 Route::get('/', function () {
     $latestProducts = \App\Models\Product::latest()->take(6)->get();
-    return view('welcome',  compact('latestProducts'));
+    $userCount = \App\Models\User::count();
+    $featuredProduct = \App\Models\Product::withCount('orderItems')
+                        ->orderByDesc('order_items_count')
+                        ->first();
+
+    return view('welcome',  compact('latestProducts', 'userCount', 'featuredProduct'));
 })->name('home');
 
 Route::view('/about', 'about')->name('about');
+Route::get('/the-ascend', [PostController::class, 'index'])->name('ascend.index');
 Route::get('/users/{username}', [ProfileController::class, 'show'])->name('profile.show');
 
 
@@ -84,6 +91,13 @@ Route::middleware('auth')->group(function () {
             'url' => Storage::url($path),
         ]);
     });
+    Route::post('/journey', [PostController::class, 'store'])->name('journey.store');
+    Route::delete('/journey/{post}', [PostController::class, 'destroy'])->name('journey.destroy');
+    Route::post('/posts/{post}/like', [PostController::class, 'toggle'])->name('posts.like');
+    Route::post('/users/{user}/follow', [ProfileController::class, 'toggle'])->name('users.follow');
+    Route::post('/posts/{post}/comments', [PostController::class, 'storeComment'])->middleware('auth')->name('comments.store');
+    Route::get('/posts/{post}/comments', [PostController::class, 'indexComments']);
+
 });
 
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {

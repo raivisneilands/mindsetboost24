@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
     public function show($username)
     {
-        $user = \App\Models\User::where('username', $username)->firstOrFail();
+        $user = User::where('username', $username)->with('posts')->firstOrFail();
         return view('profile.show', compact('user'));
     }
     public function edit()
@@ -40,4 +41,29 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.show', auth()->user()->username)->with('success', 'Profile updated successfully.');
     }
+    // This is for the follow functionality
+    public function toggle(User $user)
+    {
+        $authUser = auth()->user();
+
+        if ($authUser->id === $user->id) {
+            return response()->json(['error' => 'Cannot follow yourself'], 403);
+        }
+
+        $following = false;
+
+        if ($authUser->isFollowing($user)) {
+            $authUser->following()->detach($user->id);
+        } else {
+            $authUser->following()->attach($user->id);
+            $following = true;
+        }
+
+        return response()->json([
+            'following' => $following,
+            'count' => $user->followers()->count(),
+        ]);
+    }
+
+
 }

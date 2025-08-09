@@ -47,10 +47,10 @@
         <div class="container mx-auto px-6 flex flex-col md:flex-row gap-12">
             <div class="md:w-1/2">
                 <img src="{{ asset('storage/' . $featuredProduct->cover_image) }}" alt="{{ $featuredProduct->title }}"
-                     class="rounded-xl shadow-lg w-full object-cover">
+                     class="rounded-xl shadow-lg object-cover">
             </div>
 
-            <div class="md:w-1/2">
+            <div class="self-center md:w-1/2">
                 <h2 class="text-4xl font-bold text-emerald-800 mb-4">{{ $featuredProduct->title }}</h2>
                 <p class="text-lg text-gray-700 leading-relaxed mb-6">{!! strip_tags($featuredProduct->description) !!}</p>
 
@@ -66,7 +66,7 @@
                     </a>
                 </div>
 
-                <p class="text-sm text-gray-500">Instant download · Lifetime access · PDF + Notion + Printable</p>
+                <p class="text-sm text-gray-500">Buy it once · Get it forever</p>
             </div>
         </div>
     </section>

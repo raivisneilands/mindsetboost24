@@ -2,6 +2,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MND8WHRQNG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-MND8WHRQNG');
+    </script>
     <meta charset="UTF-8">
     <title>{{ config('app.name') }}</title>
     <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">

@@ -10,7 +10,8 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Jobs\SendOrderConfirmationEmail;
+use App\Mail\OrderConfirmation;
+use Illuminate\Support\Facades\Mail;
 
 class StripeWebhookController extends Controller
 {
@@ -80,7 +81,7 @@ class StripeWebhookController extends Controller
                 'quantity' => 1,
             ]);
 
-            SendOrderConfirmationEmail::dispatch($order);
+            Mail::to($user->email)->send(new OrderConfirmation($order));
 
             Log::info('Order created successfully, email job dispatched', ['order_id' => $order->id]);
         }

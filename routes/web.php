@@ -106,7 +106,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
             'totalProducts' => \App\Models\Product::count(),
             'totalOrders' => \App\Models\Order::count(),
             'totalUsers' => \App\Models\User::count(),
-            'totalDownloads' => \App\Models\OrderItem::sum('quantity'), // or your custom logic
+            'totalDownloads' => \App\Models\DownloadLog::count(), // or your custom logic
         ]);
     })->name('dashboard');
 

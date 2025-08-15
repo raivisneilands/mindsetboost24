@@ -69,6 +69,7 @@ class StripeWebhookController extends Controller
                 'user_id' => $user->id,
                 'stripe_session_id' => $session->id,
                 'total_price' => $product->price,
+                'status' => 'Completed',
             ]);
 
             OrderItem::create([

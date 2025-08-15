@@ -81,7 +81,7 @@ class StripeWebhookController extends Controller
                 'quantity' => 1,
             ]);
 
-            Mail::to($user->email)->send(new OrderConfirmation($order));
+            Mail::to($user->email)->send(new OrderConfirmation($order, $product));
 
             Log::info('Order created successfully, email job dispatched', ['order_id' => $order->id]);
         }

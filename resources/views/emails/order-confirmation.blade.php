@@ -9,7 +9,7 @@
 
         <h1 style="color: #10B981; font-size: 24px;">Thank you for your purchase!</h1>
 
-        <p>You have successfully purchased <strong>{{ $order->items->first()->product->title }}</strong>.</p>
+        <p>You have successfully purchased <strong>{{ $product->title }}</strong>.</p>
 
         <h2 style="margin-top: 20px;">Order Details:</h2>
         <ul>
@@ -20,7 +20,7 @@
         </ul>
 
         <p style="margin-top: 20px;">
-            <a href="{{ URL::signedRoute('download.file', ['order' => $order->id, 'product' => $order->items->first()->product->slug]) }}"
+            <a href="{{ URL::signedRoute('download.file', ['order' => $order->id, 'product' => $product->slug]) }}"
                style="display: inline-block; background-color: #10B981; color: white; padding: 12px 20px; border-radius: 5px; text-decoration: none;">
                Download Your Product
             </a>

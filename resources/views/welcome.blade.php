@@ -5,56 +5,80 @@
 
     {{-- 🔥 HERO: Attention-Grabbing Start --}}
     <section class="relative bg-cover bg-center bg-no-repeat text-white py-32 overflow-hidden" style="background-image: url('{{ asset('images/hero-background.jpg') }}');">
-        {{-- Optional overlay for gradient + contrast --}}
         <div class="absolute inset-0 bg-gradient-to-br from-green-500/80 via-green-600/60 to-green-700/50"></div>
-
-        {{-- Optional animated radial light effect --}}
         <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent opacity-30 animate-pulse pointer-events-none"></div>
 
         <div class="container mx-auto px-6 text-center relative z-10 max-w-3xl">
             <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight drop-shadow-xl text-shadow-lg">
-                Discipline is the Gateway to Everything You Want
+                Discipline Wins. Your Transformation Starts Now.
             </h1>
             <p class="text-xl md:text-2xl font-light mb-10 text-white/90">
-                Master your mind, control your habits, and become the version of yourself you were meant to be — starting today.
+                Stop waiting. Start mastering your habits, focus, and results today.
             </p>
 
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
                 <a href="{{ route('products.index') }}" class="px-8 py-4 bg-white text-emerald-800 font-bold rounded-full shadow-lg hover:shadow-xl hover:bg-emerald-100 transition text-lg">
-                    Browse Tools
+                    Browse Products
                 </a>
                 <a href="{{ route('ascend.index') }}" class="px-8 py-4 bg-white/20 border border-white text-white backdrop-blur-md rounded-full font-medium hover:bg-white/30 transition text-lg">
-                    The Ascend
+                    Share Your Journey
                 </a>
                 @guest
-                    <a href="{{ route('register') }}" class="px-8 py-4 bg-white/20 border border-white text-white backdrop-blur-md rounded-full font-medium hover:bg-white/30 transition text-lg">
-                        Join the Movement
+                    <a href="{{ route('login') }}" class="px-8 py-4 bg-white/20 border border-white text-white backdrop-blur-md rounded-full font-medium hover:bg-white/30 transition text-lg">
+                        Become One of the Few
                     </a>
                 @endguest
             </div>
 
-            {{-- <p class="mt-6 text-sm text-white/70">Trusted by {{ $userCount }} creators, students, athletes, and professionals.</p> --}}
+            <p class="mt-12  text-sm text-white/70">Every moment you wait is a moment wasted. Take control now.</p>
+
         </div>
     </section>
 
-
     {{-- 🌟 FEATURED PRODUCT --}}
     @if(isset($featuredProduct))
-    <section class="py-20 bg-white">
+    <section class="py-20 bg-white relative">
         <h2 class="text-3xl font-extrabold text-emerald-800 mb-24 text-center uppercase tracking-wide">
             Top Pick for the Relentless
         </h2>
+
+        {{-- Sticky Buy Button (Mobile Only) --}}
+        <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 sm:hidden">
+            <a href="{{ route('products.show', $featuredProduct->slug) }}" class="px-8 py-4 bg-emerald-600 text-white font-semibold rounded-full shadow-lg hover:bg-emerald-700 transition flex items-center gap-2">
+                Get It Now
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+            </a>
+        </div>
+
         <div class="container mx-auto px-6 flex flex-col md:flex-row gap-12">
-            <div class="md:w-1/2">
-                <img src="{{ asset('storage/' . $featuredProduct->cover_image) }}" alt="{{ $featuredProduct->title }}"
-                     class="rounded-xl shadow-lg object-cover">
+            <div class="md:w-1/2 cursor-pointer" x-data="{
+                open: false,
+                index: 0,
+                images: ['{{ asset('storage/' . $featuredProduct->cover_image) }}'],
+                next() { this.index = (this.index + 1) % this.images.length },
+                prev() { this.index = (this.index - 1 + this.images.length) % this.images.length },
+                close() { this.open = false }
+            }">
+                <img src="{{ asset('storage/' . $featuredProduct->cover_image) }}" alt="{{ $featuredProduct->title }}" 
+                     class="rounded-xl shadow-lg object-cover w-full h-full" loading="lazy"
+                     @click="open = true">
+
+                {{-- Modal --}}
+                <div x-show="open" x-transition class="fixed inset-0 bg-black/70 flex items-center justify-center z-50" @keydown.escape.window="close()" style="display: none;">
+                    <button class="absolute top-6 right-6 text-white text-3xl font-bold" @click="close()">×</button>
+                    <button class="absolute left-6 text-white text-3xl font-bold" @click="prev()">‹</button>
+                    <img :src="images[index]" class="max-h-[80vh] max-w-[90vw] rounded-lg shadow-lg">
+                    <button class="absolute right-6 text-white text-3xl font-bold" @click="next()">›</button>
+                </div>
             </div>
 
-            <div class="self-center md:w-1/2">
-                <h2 class="text-4xl font-bold text-emerald-800 mb-4">{{ $featuredProduct->title }}</h2>
-                <p class="text-lg text-gray-700 leading-relaxed mb-6">{!! strip_tags($featuredProduct->description) !!}</p>
+            <div class="self-center md:w-1/2 flex flex-col gap-6">
+                <h2 class="text-4xl font-bold text-emerald-800">{{ $featuredProduct->title }}</h2>
+                <p class="text-lg text-gray-700 leading-relaxed">{!! strip_tags($featuredProduct->description) !!}</p>
 
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-6">
                     <span class="text-2xl font-bold text-emerald-700">€{{ number_format($featuredProduct->price, 2) }}</span>
                     <a href="{{ route('products.show', $featuredProduct->slug) }}" class="inline-flex items-center px-6 py-3 bg-emerald-600 text-white font-semibold rounded-full shadow hover:bg-emerald-700 transition">
                         Get It Now
@@ -82,8 +106,7 @@
                     <div class="bg-white/60 backdrop-blur-md border border-emerald-100 rounded-2xl shadow-xl hover:scale-[1.02] hover:shadow-emerald-200 hover:border-emerald-300 transition overflow-hidden flex flex-col">
                         <div class="relative w-full h-52 bg-lime-50 flex items-center justify-center border-b border-emerald-100">
                             @if($product->cover_image)
-                                <img src="{{ asset('storage/' . $product->cover_image) }}" alt="{{ $product->title }}"
-                                     class="object-contain w-full h-full p-6" />
+                                <img src="{{ asset('storage/' . $product->cover_image) }}" alt="{{ $product->title }}" class="object-contain w-full h-full p-6" loading="lazy" />
                             @else
                                 <span class="text-gray-400 text-sm">No Image</span>
                             @endif
@@ -97,7 +120,6 @@
 
                             <div class="flex items-center justify-between pt-2">
                                 <span class="text-emerald-800 font-semibold text-base">€{{ number_format($product->price, 2) }}</span>
-
                                 <a href="{{ route('products.show', $product->slug) }}"
                                    class="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-full hover:bg-emerald-700 transition">
                                     View

@@ -1,15 +1,16 @@
 @extends('layouts.app')
 
 @push('meta')
-    <meta name="description" content="Discover powerful motivational and mindset-boosting digital products.">
+    <meta name="description" content="Discover powerful motivational and mindset-boosting digital products to transform your life today.">
     <meta name="keywords" content="motivation, self-help, productivity, mindset, ebooks, digital downloads">
 @endpush
 
 @section('content')
 <div class="max-w-7xl mx-auto py-12 px-6">
 
+    {{-- Heading --}}
     <h1 class="text-4xl font-extrabold text-emerald-600 mb-12 text-center tracking-wide">
-        Explore Our Collection
+        Transform Your Life with Our Digital Products
     </h1>
 
     {{-- Filters Panel --}}
@@ -57,6 +58,7 @@
         </button>
     </form>
 
+    {{-- Active Filters --}}
     @if(request()->filled('search') || request()->filled('category') || request()->filled('sort'))
         <div class="mb-8 max-w-5xl mx-auto text-center text-sm text-emerald-700 space-y-1 select-none">
             <p class="font-semibold">Filtered By:</p>
@@ -92,6 +94,7 @@
         </div>
     @endif
 
+    {{-- Products Grid --}}
     @if ($products->count())
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             @foreach ($products as $product)
@@ -100,6 +103,7 @@
                     role="article"
                     aria-label="{{ $product->title }}"
                 >
+                    {{-- Product Image --}}
                     <div class="relative w-full h-52 bg-gradient-to-br from-emerald-100 to-lime-100 flex items-center justify-center overflow-hidden">
                         @if($product->cover_image)
                             <img src="{{ asset('storage/' . $product->cover_image) }}" alt="{{ $product->title }}"
@@ -110,6 +114,7 @@
                         @endif
                     </div>
 
+                    {{-- Product Info --}}
                     <div class="p-5 flex flex-col flex-grow">
                         <h3 class="text-xl font-semibold text-emerald-900 truncate mb-2" title="{{ $product->title }}">
                             {{ $product->title }}
@@ -118,7 +123,7 @@
                         {{-- Rating --}}
                         @if($product->reviews->count())
                             @php $average = round($product->reviews->avg('rating'), 1); @endphp
-                            <div class="flex items-center text-yellow-400 text-sm mb-3" aria-label="Average rating {{ $average }} out of 5 stars">
+                            <div class="flex items-center text-yellow-400 text-sm mb-2" aria-label="Average rating {{ $average }} out of 5 stars">
                                 @for ($i = 1; $i <= 5; $i++)
                                     @if ($i <= round($average))
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.49 7.91l6.564-.955L10 1l2.946 5.955 6.564.955-4.755 4.635 1.123 6.545z"/></svg>
@@ -126,47 +131,81 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 stroke-current text-yellow-400 fill-transparent" viewBox="0 0 20 20"><path stroke="currentColor" stroke-width="1" d="M10 15l-5.878 3.09 1.123-6.545L.49 7.91l6.564-.955L10 1l2.946 5.955 6.564.955-4.755 4.635 1.123 6.545z"/></svg>
                                     @endif
                                 @endfor
-                                <span class="ml-2 text-gray-500">({{ $product->reviews->count() }})</span>
+                                <span class="ml-2 text-gray-500">({{ $product->reviews->count() }} reviews)</span>
                             </div>
                         @else
-                            <p class="italic text-gray-400 text-sm mb-3">No ratings yet</p>
+                            <p class="italic text-gray-400 text-sm mb-2">Be the first to rate!</p>
                         @endif
 
+                        {{-- Description --}}
                         <p class="text-gray-700 text-sm flex-grow line-clamp-4" title="{{ strip_tags($product->description) }}">
                             {!! strip_tags($product->description) !!}
                         </p>
 
-                        <div class="mt-6 flex items-center justify-between">
-                            <span class="text-emerald-800 font-bold text-lg select-none">€{{ number_format($product->price, 2) }} - Lifetime Access</span>
+                        {{-- Price & CTA --}}
+                        <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div class="text-emerald-900 font-extrabold text-2xl sm:text-xl select-none">
+                                €{{ number_format($product->price, 2) }}
+                                <span class="text-sm font-medium text-gray-500 block">— Instant Download</span>
+                            </div>
 
                             <a href="{{ route('products.show', $product->slug) }}"
-                                class="inline-block px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold transition"
+                                class="w-full sm:w-auto text-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md transition-transform transform hover:scale-105"
                                 aria-label="View details for {{ $product->title }}">
-                                View
+                                Buy
                             </a>
                         </div>
+
                     </div>
 
+                    {{-- Social Proof --}}
                     <div class="p-4 border-t border-emerald-100 text-sm text-gray-600 select-none">
                         @if($product->order_items_count > 0)
-                            {{ $product->order_items_count }} {{ Str::plural('purchase', $product->order_items_count) }}
+                            🔥 {{ $product->order_items_count }} {{ Str::plural('person', $product->order_items_count) }} purchased
                         @else
-                            <span class="italic text-gray-400">No purchases yet</span>
+                            <span class="italic text-gray-400">Be the first to grab this!</span>
                         @endif
                     </div>
                 </div>
             @endforeach
         </div>
 
-        <div class="mt-12 flex justify-center">
-            {{ $products->links() }}
-        </div>
+        {{-- Custom Pagination --}}
+        @if ($products->hasPages())
+            <div class="mt-12 flex justify-center">
+                <nav class="inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                    {{-- Previous Page Link --}}
+                    @if ($products->onFirstPage())
+                        <span class="px-4 py-2 ml-0 text-gray-400 bg-gray-100 cursor-not-allowed rounded-l-md select-none">&laquo;</span>
+                    @else
+                        <a href="{{ $products->previousPageUrl() }}" class="px-4 py-2 ml-0 text-gray-700 bg-white hover:bg-emerald-100 rounded-l-md transition">&laquo;</a>
+                    @endif
+
+                    {{-- Pagination Elements --}}
+                    @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+                        @if ($page == $products->currentPage())
+                            <span class="px-4 py-2 text-white bg-emerald-600 font-semibold select-none">{{ $page }}</span>
+                        @else
+                            <a href="{{ $url }}" class="px-4 py-2 text-gray-700 bg-white hover:bg-emerald-100 transition">{{ $page }}</a>
+                        @endif
+                    @endforeach
+
+                    {{-- Next Page Link --}}
+                    @if ($products->hasMorePages())
+                        <a href="{{ $products->nextPageUrl() }}" class="px-4 py-2 text-gray-700 bg-white hover:bg-emerald-100 rounded-r-md transition">&raquo;</a>
+                    @else
+                        <span class="px-4 py-2 text-gray-400 bg-gray-100 cursor-not-allowed rounded-r-md select-none">&raquo;</span>
+                    @endif
+                </nav>
+            </div>
+        @endif
     @else
+        {{-- No Products Found --}}
         <div class="text-center text-gray-400 italic mt-20">
             <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-16 w-16 mb-4 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L15 12l-5.25-5" />
             </svg>
-            No products found matching your criteria.
+            No products found matching your criteria. Try broadening your search!
         </div>
     @endif
 </div>

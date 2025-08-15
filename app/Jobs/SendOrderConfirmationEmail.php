@@ -1,34 +1,26 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Mail;
 
+use Illuminate\Mail\Mailable;
 use App\Models\Order;
-use App\Mail\OrderConfirmation;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Product;
 
-class SendOrderConfirmationEmail implements ShouldQueue
+class SendOrderConfirmationEmail extends Mailable
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    public $order;
+    public $product;
 
-    /**
-     * Create a new job instance.
-     */
-    public function __construct(Order $order)
+    public function __construct(Order $order, Product $product)
     {
         $this->order = $order;
+        $this->product = $product;
     }
 
-    /**
-     * Execute the job.
-     */
-    public function handle(): void
+    public function build()
     {
-        $user = $this->order->user;
-        Mail::to($user->email)->send(new OrderConfirmation($this->order));
+        return $this->subject('Your Order Confirmation')
+                    ->view('emails.order-confirmation');
     }
 }
+

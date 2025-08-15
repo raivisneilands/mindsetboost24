@@ -33,7 +33,7 @@
                 @endguest
             </div>
 
-            <p class="mt-6 text-sm text-white/70">Trusted by {{ $userCount }} creators, students, athletes, and professionals.</p>
+            {{-- <p class="mt-6 text-sm text-white/70">Trusted by {{ $userCount }} creators, students, athletes, and professionals.</p> --}}
         </div>
     </section>
 

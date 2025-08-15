@@ -3,46 +3,27 @@
 namespace App\Mail;
 
 use App\Models\Order;
-use App\Models\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class OrderConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public Order $order;
-    public Product $product;
+    public $order;
 
-    public function __construct(Order $order, Product $product)
+    public function __construct(Order $order)
     {
         $this->order = $order;
-        $this->product = $product;
     }
 
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Order Confirmation',
-        );
-    }
-
-    public function content(): Content
-    {
-        return new Content(
-            view: 'emails.order-confirmation', // Make sure this file exists
-            with: [
-                'order' => $this->order,
-                'product' => $this->product
-            ],
-        );
-    }
-
-    public function attachments(): array
-    {
-        return [];
+        return $this->subject('Your Order Confirmation')
+                    ->markdown('emails.order-confirmation')
+                    ->with([
+                        'order' => $this->order,
+                    ]);
     }
 }

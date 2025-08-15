@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Jobs\SendOrderConfirmationEmail;
 
 class StripeWebhookController extends Controller
 {
@@ -79,7 +80,9 @@ class StripeWebhookController extends Controller
                 'quantity' => 1,
             ]);
 
-            Log::info('Order created successfully', ['order_id' => $order->id]);
+            SendOrderConfirmationEmail::dispatch($order);
+
+            Log::info('Order created successfully, email job dispatched', ['order_id' => $order->id]);
         }
 
         return response('Webhook handled', 200);

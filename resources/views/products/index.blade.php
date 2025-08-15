@@ -137,7 +137,7 @@
                         </p>
 
                         <div class="mt-6 flex items-center justify-between">
-                            <span class="text-emerald-800 font-bold text-lg select-none">€{{ number_format($product->price, 2) }}</span>
+                            <span class="text-emerald-800 font-bold text-lg select-none">€{{ number_format($product->price, 2) }} - Lifetime Access</span>
 
                             <a href="{{ route('products.show', $product->slug) }}"
                                 class="inline-block px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold transition"

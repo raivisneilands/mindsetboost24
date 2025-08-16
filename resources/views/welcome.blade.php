@@ -42,16 +42,6 @@
             Top Pick for the Relentless
         </h2>
 
-        {{-- Sticky Buy Button (Mobile Only) --}}
-        <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 sm:hidden">
-            <a href="{{ route('products.show', $featuredProduct->slug) }}" class="px-8 py-4 bg-emerald-600 text-white font-semibold rounded-full shadow-lg hover:bg-emerald-700 transition flex items-center gap-2">
-                Get the Featured Product
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                </svg>
-            </a>
-        </div>
-
         <div class="container mx-auto px-6 flex flex-col md:flex-row gap-12">
             <div class="md:w-1/2 cursor-pointer" x-data="{
                 open: false,

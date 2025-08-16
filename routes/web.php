@@ -65,7 +65,9 @@ Route::get('/', function () {
 Route::view('/about', 'about')->name('about');
 Route::get('/the-ascend', [PostController::class, 'index'])->name('ascend.index');
 Route::get('/users/{username}', [ProfileController::class, 'show'])->name('profile.show');
-
+Route::view('/return-policy', 'return-policy')->name('return.policy');
+Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy');
+Route::view('/terms', 'terms')->name('terms');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

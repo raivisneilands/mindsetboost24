@@ -71,6 +71,18 @@
         @endif
     @endif
     @yield('content')
+
+    <footer class="bg-emerald-800 text-white py-8 mt-16">
+        <div class="container mx-auto px-6 flex flex-col sm:flex-row justify-between items-center text-sm">
+            <p>&copy; {{ date('Y') }} Mindset Boost 24. All rights reserved.</p>
+            <div class="flex gap-6 mt-4 sm:mt-0">
+                <a href="{{ route('return.policy') }}" class="hover:underline">Return Policy</a>
+                <a href="{{ route('privacy.policy') }}" class="hover:underline">Privacy Policy</a>
+                <a href="{{ route('terms') }}" class="hover:underline">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
     <!-- Include Alpine.js -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
@@ -80,5 +92,57 @@
         });
     </script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-consent-banner" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-emerald-100 border border-emerald-300 rounded-lg p-4 shadow-lg max-w-xl w-full z-50 hidden">
+        <p class="text-gray-700 text-sm">
+            We use cookies to improve your experience and analyze site traffic. 
+            <span class="font-semibold">You can accept all cookies or manage your preferences.</span>
+        </p>
+        <div class="mt-2 flex justify-end gap-2">
+            <button id="accept-cookies" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
+                Accept
+            </button>
+            <button id="decline-cookies" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">
+                Decline
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Check if user already made a choice
+        if (!localStorage.getItem('cookiesAccepted')) {
+            document.getElementById('cookie-consent-banner').style.display = 'block';
+        }
+
+        document.getElementById('accept-cookies').addEventListener('click', function() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            document.getElementById('cookie-consent-banner').style.display = 'none';
+            loadGoogleAnalytics();
+        });
+
+        document.getElementById('decline-cookies').addEventListener('click', function() {
+            localStorage.setItem('cookiesAccepted', 'false');
+            document.getElementById('cookie-consent-banner').style.display = 'none';
+        });
+
+        function loadGoogleAnalytics() {
+            // Replace GA_MEASUREMENT_ID with your Google Analytics ID
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'GA_MEASUREMENT_ID', { 'anonymize_ip': true });
+
+            var gaScript = document.createElement('script');
+            gaScript.src = "https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID";
+            gaScript.async = true;
+            document.head.appendChild(gaScript);
+        }
+
+        // Load GA automatically if previously accepted
+        if (localStorage.getItem('cookiesAccepted') === 'true') {
+            loadGoogleAnalytics();
+        }
+    </script>
+
 </body>
 </html>

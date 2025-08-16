@@ -148,16 +148,6 @@
     <button id="nextBtn" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-white text-4xl px-4 py-2 hover:text-lime-400 select-none">›</button>
 </div>
 
-{{-- Sticky mobile CTA --}}
-<div class="fixed bottom-0 left-0 right-0 md:hidden bg-green-600 p-4 z-40">
-    <form action="{{ route('checkout.process', $product) }}" method="POST">
-        @csrf
-        <button type="submit" class="w-full text-white font-semibold px-4 py-3 rounded-lg">
-            Buy Now - €{{ number_format($product->price, 2) }}
-        </button>
-    </form>
-</div>
-
 {{-- Modal JS --}}
 <script>
     const images = document.querySelectorAll('.preview-image');

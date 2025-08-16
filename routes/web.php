@@ -17,6 +17,9 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\CurrencyController;
+
+Route::post('/set-currency', [CurrencyController::class, 'set'])->name('currency.set');
 
 // Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']);
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);

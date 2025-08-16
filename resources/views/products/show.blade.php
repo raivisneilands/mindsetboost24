@@ -28,7 +28,7 @@
             {{-- Price & Buy Button --}}
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <span class="text-emerald-800 font-bold text-2xl select-none">
-                    €{{ number_format($product->price, 2) }} - Lifetime Access
+                    {{ display_price($product->price) }} - Lifetime Access
                 </span>
 
                 <form action="{{ route('checkout.process', $product) }}" method="POST" class="w-full md:w-auto">

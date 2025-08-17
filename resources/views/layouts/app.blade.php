@@ -63,14 +63,15 @@
         letter-spacing: 0.05em;
     }
 </style>
-<body class="bg-emerald-50 text-gray-800 antialiased {{ !Request::is('/') ? 'pt-16' : '' }}">
-    @if (!Request::is('/'))
-        @include('components.navigation')
-        @if(auth()->check() && auth()->user()->is_admin)
-            @include('components.admin-navigation')
-        @endif
+<body class="bg-emerald-50 text-gray-800 antialiased min-h-screen flex flex-col {{ !Request::is('/') ? 'pt-16' : '' }}">
+    @include('components.navigation')
+    @if(auth()->check() && auth()->user()->is_admin)
+        @include('components.admin-navigation')
     @endif
-    @yield('content')
+
+    <main class="flex-grow">
+        @yield('content')
+    </main>
 
     <footer class="bg-emerald-800 text-white py-8 mt-16">
         <div class="container mx-auto px-6 flex flex-col sm:flex-row justify-between items-center text-sm">

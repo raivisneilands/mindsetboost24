@@ -93,7 +93,14 @@
         </div>
     </form>
     @else
-        <h2>You must be logged in to post</h2>
+    <div class="max-w-md mx-auto my-6 p-6 bg-emerald-100 border border-emerald-300 text-emerald-900 rounded-xl text-center shadow-md">
+        <h2 class="text-xl sm:text-2xl font-semibold mb-2">🚫 You must be logged in to post</h2>
+        <p class="text-sm sm:text-base text-emerald-800">
+            Please <a href="{{ route('login') }}" class="font-bold underline hover:text-emerald-700">log in</a> or 
+            <a href="{{ route('register') }}" class="font-bold underline hover:text-emerald-700">sign up</a> to start posting.
+        </p>
+    </div>
+
     @endauth
     <!-- Post feed -->
     <div id="post-feed">

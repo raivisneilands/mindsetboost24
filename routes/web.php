@@ -138,9 +138,4 @@ Route::get('/download/{order}/{product}', [DownloadController::class, 'download'
     ->middleware(['auth', 'verified', 'signed'])
     ->name('download.file');
 
-Route::get('/test-email', function () {
-    Mail::to('test@example.com')->send(new TestEmail());
-    return 'Test email sent!';
-});
-
 require __DIR__.'/auth.php';

@@ -5,6 +5,19 @@
 
     {{-- 🔥 HERO: Attention-Grabbing Start --}}
     <section class="relative bg-cover bg-center bg-no-repeat text-white py-32 overflow-hidden" style="background-image: url('{{ asset('images/hero-background.jpg') }}');">
+        {{-- Pre-signup welcome gift message --}}
+        @guest
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3 sm:py-4 mb-4 sm:mb-6 bg-emerald-100 border border-emerald-300 text-black rounded-xl text-center shadow text-sm sm:text-base">
+                🎁 Sign up today and receive a free welcome gift after verifying your email!
+            </div>
+        @endguest
+
+        @if(session('gift'))
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3 sm:py-4 mb-4 sm:mb-6 bg-emerald-100 border border-emerald-300 text-black rounded-xl text-center shadow text-sm sm:text-base">
+                {{ session('gift') }}
+            </div>
+        @endif
+
         <div class="absolute inset-0 bg-gradient-to-br from-green-500/80 via-green-600/60 to-green-700/50"></div>
         <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent opacity-30 animate-pulse pointer-events-none"></div>
 
@@ -25,7 +38,7 @@
                 </a>
                 @guest
                     <a href="{{ route('login') }}" class="px-8 py-4 bg-white/20 border border-white text-white backdrop-blur-md rounded-full font-medium hover:bg-white/30 transition text-lg">
-                        Become One of the Few
+                        Sign In / Register
                     </a>
                 @endguest
             </div>

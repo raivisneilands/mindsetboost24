@@ -20,6 +20,23 @@
             <a href="{{ route('about') }}" class="hover:underline hover:text-green-900 transition">About</a>
             <a href="{{ route('ascend.index') }}" class="hover:underline hover:text-green-900 transition">The Ascend</a>
 
+            {{-- Currency Selector --}}
+            <form action="{{ route('currency.set') }}" method="POST" class="ml-4">
+                @csrf
+                <select
+                    name="currency"
+                    onchange="this.form.submit()"
+                    class="border border-gray-300 rounded-lg pr-10 py-1 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
+                    aria-label="Select currency"
+                >
+                    @foreach(['EUR', 'USD', 'GBP', 'CAD', 'AUD'] as $cur)
+                        <option value="{{ $cur }}" {{ session('currency', 'EUR') === $cur ? 'selected' : '' }}>
+                            {{ $cur }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
+
             @auth
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open" class="flex items-center font-medium hover:text-green-900 focus:outline-none">
@@ -61,6 +78,22 @@
 
     <!-- Mobile Menu -->
     <div x-show="open" x-transition class="md:hidden mt-4 space-y-2 text-right text-white">
+        <div class="block px-4 py-2">
+            <form action="{{ route('currency.set') }}" method="POST">
+                @csrf
+                <select
+                    name="currency"
+                    onchange="this.form.submit()"
+                    class=" border border-gray-300 rounded-lg pr-10 py-2 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                >
+                    @foreach(['EUR', 'USD', 'GBP', 'CAD', 'AUD'] as $cur)
+                        <option value="{{ $cur }}" {{ session('currency', 'EUR') === $cur ? 'selected' : '' }}>
+                            {{ $cur }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
+        </div>
         <a href="{{ route('products.index') }}" class="block hover:bg-emerald-600 px-4 py-2 rounded">Browse Products</a>
         <a href="{{ route('about') }}" class="block hover:bg-emerald-600 px-4 py-2 rounded">About</a>
         <a href="{{ route('ascend.index') }}" class="block hover:bg-emerald-600 px-4 py-2 rounded">The Ascend</a>

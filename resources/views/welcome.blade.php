@@ -48,23 +48,6 @@
         </div>
     </section>
 
-    {{-- Currency Selector --}}
-    <form action="{{ route('currency.set') }}" method="POST" class="my-4 max-w-5xl mx-auto flex justify-center">
-        @csrf
-        <select
-            name="currency"
-            onchange="this.form.submit()"
-            class="border border-gray-300 rounded-xl px-5 py-3 pr-10 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 appearance-none transition"
-            aria-label="Select currency"
-        >
-            @foreach(['EUR', 'USD', 'GBP', 'CAD', 'AUD'] as $cur)
-                <option value="{{ $cur }}" {{ session('currency', 'EUR') === $cur ? 'selected' : '' }}>
-                    {{ $cur }}
-                </option>
-            @endforeach
-        </select>
-    </form>
-
     {{-- 🌟 FEATURED PRODUCT --}}
     @if(isset($featuredProduct))
     <section class="py-20 bg-gray-50 relative">

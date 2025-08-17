@@ -86,7 +86,13 @@
                 <p class="text-lg text-gray-700 leading-relaxed">{!! strip_tags($featuredProduct->description) !!}</p>
 
                 <div class="flex items-center gap-6">
-                    <span class="text-2xl font-bold text-emerald-700">{{ display_price($featuredProduct->price) }}</span>
+                    <span class="text-2xl font-bold text-emerald-700">
+                        @if ($featuredProduct->price == 0)
+                            Absolutely Free
+                        @else
+                            {{ display_price($featuredProduct->price) }}
+                        @endif
+                    </span>
                     <a href="{{ route('products.show', $featuredProduct->slug) }}" class="inline-flex items-center px-6 py-3 bg-emerald-600 text-white font-semibold rounded-full shadow hover:bg-emerald-700 transition">
                         Get It Now
                         <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"

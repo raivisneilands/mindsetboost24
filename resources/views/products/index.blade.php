@@ -58,22 +58,22 @@
         </button>
     </form>
 
-{{-- Currency Selector --}}
-<form action="{{ route('currency.set') }}" method="POST" class="mb-6 max-w-5xl mx-auto flex justify-end">
-    @csrf
-    <select
-        name="currency"
-        onchange="this.form.submit()"
-        class="border border-gray-300 rounded-xl px-5 py-3 pr-10 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 appearance-none transition"
-        aria-label="Select currency"
-    >
-        @foreach(['EUR', 'USD', 'GBP', 'CAD', 'AUD'] as $cur)
-            <option value="{{ $cur }}" {{ session('currency', 'EUR') === $cur ? 'selected' : '' }}>
-                {{ $cur }}
-            </option>
-        @endforeach
-    </select>
-</form>
+    {{-- Currency Selector --}}
+    <form action="{{ route('currency.set') }}" method="POST" class="mb-6 max-w-5xl mx-auto flex justify-end">
+        @csrf
+        <select
+            name="currency"
+            onchange="this.form.submit()"
+            class="border border-gray-300 rounded-xl px-5 py-3 pr-10 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 appearance-none transition"
+            aria-label="Select currency"
+        >
+            @foreach(['EUR', 'USD', 'GBP', 'CAD', 'AUD'] as $cur)
+                <option value="{{ $cur }}" {{ session('currency', 'EUR') === $cur ? 'selected' : '' }}>
+                    {{ $cur }}
+                </option>
+            @endforeach
+        </select>
+    </form>
 
 
     {{-- Active Filters --}}
@@ -163,15 +163,24 @@
                     {{-- Price & CTA --}}
                     <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div class="text-emerald-900 font-extrabold text-2xl sm:text-xl select-none">
-                            {{ display_price($product->price) }}
+                            @if ($product->price == 0)
+                                Free
+                            @else
+                                {{ display_price($product->price) }}
+                            @endif
                             <span class="text-sm font-medium text-gray-500 block">— Instant Download</span>
                         </div>
 
                         <a href="{{ route('products.show', $product->slug) }}"
-                            class="w-full sm:w-auto text-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md transition-transform transform hover:scale-105"
+                            class="w-full sm:w-auto text-center whitespace-nowrap px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md transition-transform transform hover:scale-105"
                             aria-label="View details for {{ $product->title }}">
-                            Buy
+                            @if ($product->price == 0)
+                                Download
+                            @else
+                                Buy
+                            @endif
                         </a>
+
                     </div>
 
 

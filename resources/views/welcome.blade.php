@@ -35,9 +35,26 @@
         </div>
     </section>
 
+    {{-- Currency Selector --}}
+    <form action="{{ route('currency.set') }}" method="POST" class="my-4 max-w-5xl mx-auto flex justify-center">
+        @csrf
+        <select
+            name="currency"
+            onchange="this.form.submit()"
+            class="border border-gray-300 rounded-xl px-5 py-3 pr-10 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 appearance-none transition"
+            aria-label="Select currency"
+        >
+            @foreach(['EUR', 'USD', 'GBP', 'CAD', 'AUD'] as $cur)
+                <option value="{{ $cur }}" {{ session('currency', 'EUR') === $cur ? 'selected' : '' }}>
+                    {{ $cur }}
+                </option>
+            @endforeach
+        </select>
+    </form>
+
     {{-- 🌟 FEATURED PRODUCT --}}
     @if(isset($featuredProduct))
-    <section class="py-20 bg-white relative">
+    <section class="py-20 bg-gray-50 relative">
         <h2 class="text-3xl font-extrabold text-emerald-800 mb-24 text-center uppercase tracking-wide">
             Top Pick for the Relentless
         </h2>
@@ -69,7 +86,7 @@
                 <p class="text-lg text-gray-700 leading-relaxed">{!! strip_tags($featuredProduct->description) !!}</p>
 
                 <div class="flex items-center gap-6">
-                    <span class="text-2xl font-bold text-emerald-700">€{{ number_format($featuredProduct->price, 2) }}</span>
+                    <span class="text-2xl font-bold text-emerald-700">{{ display_price($featuredProduct->price) }}</span>
                     <a href="{{ route('products.show', $featuredProduct->slug) }}" class="inline-flex items-center px-6 py-3 bg-emerald-600 text-white font-semibold rounded-full shadow hover:bg-emerald-700 transition">
                         Get It Now
                         <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"
@@ -109,7 +126,7 @@
                             </div>
 
                             <div class="flex items-center justify-between pt-2">
-                                <span class="text-emerald-800 font-semibold text-base">€{{ number_format($product->price, 2) }}</span>
+                                <span class="text-emerald-800 font-semibold text-base">{{ display_price($product->price) }}</span>
                                 <a href="{{ route('products.show', $product->slug) }}"
                                    class="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-full hover:bg-emerald-700 transition">
                                     View

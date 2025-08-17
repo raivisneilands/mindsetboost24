@@ -63,7 +63,7 @@
         letter-spacing: 0.05em;
     }
 </style>
-<body class="bg-white text-gray-800 antialiased {{ !Request::is('/') ? 'pt-16' : '' }}">
+<body class="bg-emerald-50 text-gray-800 antialiased {{ !Request::is('/') ? 'pt-16' : '' }}">
     @if (!Request::is('/'))
         @include('components.navigation')
         @if(auth()->check() && auth()->user()->is_admin)

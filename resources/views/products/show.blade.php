@@ -11,9 +11,9 @@
 @endpush
 
 @section('content')
-<div class="max-w-4xl mx-auto py-10 px-4">
+<div class="max-w-5xl mx-auto py-10 px-4">
 
-    <div class="bg-white shadow-md rounded-xl overflow-hidden">
+    <div class="shadow-xl rounded-xl overflow-hidden">
         {{-- Cover Image --}}
         @if($product->cover_image)
             <img src="{{ asset('storage/' . $product->cover_image) }}" 
@@ -28,14 +28,22 @@
             {{-- Price & Buy Button --}}
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <span class="text-emerald-800 font-bold text-2xl select-none">
-                    {{ display_price($product->price) }} - Lifetime Access
-                </span>
+                    @if ($product->price == 0)
+                        Free
+                    @else
+                        {{ display_price($product->price) }} - Lifetime Access
+                    @endif
+                    </span>
 
                 <form action="{{ route('checkout.process', $product) }}" method="POST" class="w-full md:w-auto">
                     @csrf
                     <button type="submit" 
                         class="w-full md:w-auto px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition">
-                        Buy Now
+                        @if ($product->price == 0)
+                            Download Now
+                        @else
+                            Buy now
+                        @endif
                     </button>
                 </form>
             </div>

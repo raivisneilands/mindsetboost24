@@ -112,31 +112,33 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                 @forelse ($latestProducts as $product)
-                    <div class="bg-white/60 backdrop-blur-md border border-emerald-100 rounded-2xl shadow-xl hover:scale-[1.02] hover:shadow-emerald-200 hover:border-emerald-300 transition overflow-hidden flex flex-col">
-                        <div class="relative w-full h-52 bg-lime-50 flex items-center justify-center border-b border-emerald-100">
-                            @if($product->cover_image)
-                                <img src="{{ asset('storage/' . $product->cover_image) }}" alt="{{ $product->title }}" class="object-contain w-full h-full p-6" loading="lazy" />
-                            @else
-                                <span class="text-gray-400 text-sm">No Image</span>
-                            @endif
-                        </div>
-
-                        <div class="flex-grow p-5 flex flex-col justify-between space-y-4">
-                            <div>
-                                <h3 class="text-xl font-bold text-emerald-800 truncate mb-1">{{ $product->title }}</h3>
-                                <p class="text-sm text-gray-700 line-clamp-3">{!! strip_tags($product->description) !!}</p>
+                    @if ($product->status == 'published')
+                        <div class="bg-white/60 backdrop-blur-md border border-emerald-100 rounded-2xl shadow-xl hover:scale-[1.02] hover:shadow-emerald-200 hover:border-emerald-300 transition overflow-hidden flex flex-col">
+                            <div class="relative w-full h-52 bg-lime-50 flex items-center justify-center border-b border-emerald-100">
+                                @if($product->cover_image)
+                                    <img src="{{ asset('storage/' . $product->cover_image) }}" alt="{{ $product->title }}" class="object-contain w-full h-full p-6" loading="lazy" />
+                                @else
+                                    <span class="text-gray-400 text-sm">No Image</span>
+                                @endif
                             </div>
 
-                            <div class="flex items-center justify-between pt-2">
-                                <span class="text-emerald-800 font-semibold text-base">{{ display_price($product->price) }}</span>
-                                <a href="{{ route('products.show', $product->slug) }}"
-                                   class="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-full hover:bg-emerald-700 transition">
-                                    View
-                                </a>
+                            <div class="flex-grow p-5 flex flex-col justify-between space-y-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-emerald-800 truncate mb-1">{{ $product->title }}</h3>
+                                    <p class="text-sm text-gray-700 line-clamp-3">{!! strip_tags($product->description) !!}</p>
+                                </div>
+
+                                <div class="flex items-center justify-between pt-2">
+                                    <span class="text-emerald-800 font-semibold text-base">{{ display_price($product->price) }}</span>
+                                    <a href="{{ route('products.show', $product->slug) }}"
+                                    class="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-full hover:bg-emerald-700 transition">
+                                        View
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @empty
+                    @endif
+                    @empty
                     <p class="text-center text-gray-500 col-span-full">No products available at this time. Check back soon!</p>
                 @endforelse
             </div>

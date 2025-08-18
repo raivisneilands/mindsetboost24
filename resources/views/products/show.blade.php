@@ -48,6 +48,13 @@
                 </form>
             </div>
 
+            <p class="text-sm text-gray-500 mt-2">
+                <strong>Note:</strong> All payments are processed in EUR. Prices shown in other currencies (USD, GBP, etc.) are approximate conversions for your convenience. Your bank may apply a small conversion fee and the final amount may differ slightly from the estimate.
+            </p>            
+            <p class="text-sm text-gray-500 mt-2">
+                <strong>Refund Policy:</strong> All products are digital and delivered instantly. Once your purchase is completed, refunds cannot be issued. If you experience any issues accessing your download, contact us at support@mindsetboost24.com, and we’ll help you resolve it.
+            </p>
+
             {{-- Categories --}}
             @if($product->categories->count())
                 <div class="flex flex-wrap gap-2 mt-2">

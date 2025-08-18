@@ -23,6 +23,13 @@
             Payments are securely processed by Stripe. By purchasing, you authorize us to charge 
             your selected payment method for the total order amount.
         </p>
+        <p class="text-gray-700 mb-6">
+            <span class="font-semibold">Currency Disclaimer:</span> All payments are processed in 
+            <span class="font-semibold">EUR (Euros)</span>. Prices displayed in other currencies 
+            (such as USD or GBP) are approximate conversions for your convenience. Your bank may 
+            apply a currency conversion fee and the final charge on your statement may differ 
+            slightly from the displayed estimate.
+        </p>
 
         <h2 class="text-xl font-bold text-emerald-700 mt-8 mb-3">3. License of Use</h2>
         <p class="text-gray-700 mb-6">

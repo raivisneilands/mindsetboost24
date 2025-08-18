@@ -21,7 +21,13 @@
                         <td class="px-6 py-4 border-b">{{ $log->user->name ?? 'N/A' }}</td>
                         <td class="px-6 py-4 border-b">{{ $log->product->title ?? 'N/A' }}</td>
                         <td class="px-6 py-4 border-b">{{ $log->order_id }}</td>
-                        <td class="px-6 py-4 border-b">{{ $log->ip_address }}</td>
+                        <td class="px-6 py-4 border-b">
+                            @php
+                                $ip = $log->ip_address;
+                                $maskedIp = preg_replace('/(\d+)$/', 'xxx', $ip); 
+                            @endphp
+                            {{ $maskedIp }}
+                        </td>
                         <td class="px-6 py-4 border-b">{{ $log->created_at->format('d.m.Y H:i') }}</td>
                     </tr>
                 @empty

@@ -18,6 +18,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\SupportController;
+
+Route::get('/contact-support', [SupportController::class, 'showForm'])->name('support.form');
+Route::post('/contact-support', [SupportController::class, 'submitForm'])->name('support.submit');
+
 
 Route::post('/set-currency', [CurrencyController::class, 'set'])->name('currency.set');
 

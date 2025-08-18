@@ -80,6 +80,7 @@
                 <a href="{{ route('return.policy') }}" class="hover:underline">Return Policy</a>
                 <a href="{{ route('privacy.policy') }}" class="hover:underline">Privacy Policy</a>
                 <a href="{{ route('terms') }}" class="hover:underline">Terms of Service</a>
+                <a href="{{ route('support.form') }}" class="hover:underline">Customer Support</a>
             </div>
         </div>
     </footer>

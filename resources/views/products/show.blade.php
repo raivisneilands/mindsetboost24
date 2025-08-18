@@ -11,7 +11,7 @@
 @endpush
 
 @section('content')
-<div class="max-w-5xl mx-auto py-10 px-4">
+<div class="bg-gray-50 max-w-5xl mx-auto py-10 px-4">
 
     <div class="shadow-xl rounded-xl overflow-hidden">
         {{-- Cover Image --}}

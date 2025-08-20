@@ -35,17 +35,20 @@
                     @endif
                     </span>
 
-                <form action="{{ route('checkout.process', $product) }}" method="POST" class="w-full md:w-auto">
-                    @csrf
-                    <button type="submit" 
+                    @if ($product->price == 0)
+                        <a href="{{ route('download.free', $product) }}" 
                         class="w-full md:w-auto px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition">
-                        @if ($product->price == 0)
-                            Download Now
-                        @else
-                            Buy now
-                        @endif
-                    </button>
-                </form>
+                        Download Now
+                        </a>
+                    @else
+                        <form action="{{ route('checkout.process', $product) }}" method="POST" class="w-full md:w-auto">
+                            @csrf
+                            <button type="submit" 
+                                class="w-full md:w-auto px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition">
+                                Buy now
+                            </button>
+                        </form>
+                    @endif
             </div>
 
             <p class="text-sm text-gray-500 mt-2">

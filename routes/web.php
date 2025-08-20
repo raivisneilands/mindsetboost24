@@ -146,6 +146,11 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
 Route::get('/products', [ProductPageController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [ProductPageController::class, 'show'])->name('products.show');
 
+// For free products
+Route::get('/download/free/{product}', [DownloadController::class, 'downloadFree'])
+    ->middleware(['auth', 'verified'])
+    ->name('download.free');
+
 Route::get('/download/{order}/{product}', [DownloadController::class, 'download'])
     ->middleware(['auth', 'verified', 'signed'])
     ->name('download.file');

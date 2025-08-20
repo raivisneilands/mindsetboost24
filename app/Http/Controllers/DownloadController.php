@@ -33,4 +33,25 @@ class DownloadController extends Controller
         // Return file download
         return Storage::download($product->file_path, $product->title . '.pdf');
     }
+
+    public function downloadFree(Request $request, Product $product)
+    {
+        logger('Free download hit');
+
+        // Ensure the product is free
+        if ($product->price > 0) {
+            abort(403, 'This product is not free.');
+        }
+
+        // Optional: log the download
+        DownloadLog::create([
+            'user_id' => auth()->id(),
+            'product_id' => $product->id,
+            'order_id' => null, // no order for free products
+            'ip_address' => $request->ip(),
+        ]);
+
+        // Return file
+        return Storage::download($product->file_path, $product->title . '.pdf');
+    }
 }

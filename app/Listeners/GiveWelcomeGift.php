@@ -42,7 +42,7 @@ class GiveWelcomeGift
             'price' => 0,
         ]);
 
-        session()->flash('gift', '🎉 Your free welcome gift is waiting in your purchases!');
+        session()->flash('gift', '🎉 Your free welcome gift is waiting in your <a href="' . route('purchases.index') . '" class="underline font-semibold text-white">purchases</a>!');
 
     }
 }

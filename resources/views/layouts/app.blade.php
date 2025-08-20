@@ -64,7 +64,10 @@
     }
 </style>
 <body class="bg-emerald-50 text-gray-800 antialiased min-h-screen flex flex-col {{ !Request::is('/') ? 'pt-16' : '' }}">
-    @include('components.navigation')
+    @if (!Request::is('/'))
+        @include('components.navigation')
+    @endif
+    
     @if(auth()->check() && auth()->user()->is_admin)
         @include('components.admin-navigation')
     @endif

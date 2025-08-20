@@ -105,6 +105,57 @@
     </section>
     @endif
 
+    {{-- 🎁 FREE RESOURCES --}}
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-extrabold text-emerald-700 mb-12 text-center uppercase tracking-wide">
+                Free Resources
+            </h2>
+
+            <div id="free-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                @forelse ($freeProducts as $product)
+                    @if ($product->status == 'published')
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-2xl shadow-md hover:shadow-lg hover:scale-[1.02] transition overflow-hidden flex flex-col">
+                            <div class="relative w-full h-52 bg-white flex items-center justify-center border-b border-emerald-100">
+                                @if($product->cover_image)
+                                    <img src="{{ asset('storage/' . $product->cover_image) }}" 
+                                        alt="{{ $product->title }}" 
+                                        class="object-contain w-full h-full p-6" 
+                                        loading="lazy" />
+                                @else
+                                    <span class="text-gray-400 text-sm">No Image</span>
+                                @endif
+                            </div>
+
+                            <div class="flex-grow p-5 flex flex-col justify-between space-y-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-emerald-800 truncate mb-1">{{ $product->title }}</h3>
+                                    <p class="text-sm text-gray-700 line-clamp-3">{!! strip_tags($product->description) !!}</p>
+                                </div>
+
+                                <div class="flex items-center justify-between pt-2">
+                                    <span class="text-emerald-600 font-semibold text-base">Free</span>
+                                    <a href="{{ route('products.show', $product->slug) }}"
+                                    class="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-full hover:bg-emerald-700 transition">
+                                        Get It
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                @empty
+                    <p class="text-center text-gray-500 col-span-full">
+                        No free resources available at this time. Check back soon!
+                    </p>
+                @endforelse
+                <div class="mt-6">
+                    {{ $freeProducts->links('vendor.pagination.custom') }} {{-- pagination controls --}}
+                </div>
+            </div>
+        </div>
+    </section>
+
+
     {{-- 🧰 LATEST DROPS --}}
     <section class="py-20 bg-emerald-50">
         <div class="container mx-auto px-6">
@@ -146,4 +197,14 @@
     </section>
 
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (window.location.search.includes("page=")) {
+            const el = document.getElementById("free-products");
+            if (el) {
+                el.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+    });
+</script>
 @endsection

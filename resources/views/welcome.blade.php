@@ -99,7 +99,7 @@
                     </a>
                 </div>
 
-                <p class="text-sm text-gray-500">Buy it once · Get it forever</p>
+                <p class="text-sm text-gray-500">Learn, apply, and master - forever.</p>
             </div>
         </div>
     </section>
@@ -148,8 +148,10 @@
                         No free resources available at this time. Check back soon!
                     </p>
                 @endforelse
-                <div class="mt-6">
-                    {{ $freeProducts->links('vendor.pagination.custom') }} {{-- pagination controls --}}
+            </div>
+            <div class="mt-8">
+                <div class="flex justify-center">
+                    {{ $freeProducts->onEachSide(1)->links('vendor.pagination.custom') }}
                 </div>
             </div>
         </div>

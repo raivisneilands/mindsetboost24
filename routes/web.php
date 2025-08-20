@@ -61,11 +61,14 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 
 Route::get('/', function () {
-    $latestProducts = \App\Models\Product::latest()->take(6)->get();
-    $freeProducts = \App\Models\Product::where('price', 0)
-                    ->where('status', 'published')
+    $latestProducts = \App\Models\Product::where('status', 'published')
                     ->latest()
-                    ->paginate(3);
+                    ->take(6)
+                    ->get();
+    $freeProducts = \App\Models\Product::where('price', 0)
+        ->where('status', 'published')
+        ->latest()
+        ->paginate(3, ['*'], 'free_page');
     $userCount = \App\Models\User::count();
     $featuredProduct = \App\Models\Product::withCount('orderItems')
                         ->orderByDesc('order_items_count')

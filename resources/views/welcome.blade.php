@@ -74,25 +74,25 @@
     </section>
 
     {{-- 🌟 FEATURED PRODUCT --}}
-    {{-- @if(isset($featuredProduct))
+    @if(isset($featuredProduct))
     <section class="py-24 bg-gray-50 relative">
         <h2 class="text-3xl md:text-4xl font-extrabold text-emerald-800 mb-16 text-center uppercase tracking-wider">
             Top Pick for the Relentless
         </h2>
 
-        <div class="container mx-auto px-6 flex flex-col md:flex-row gap-12 items-center"> --}}
+        <div class="container mx-auto px-6 flex flex-col md:flex-row gap-12 items-center">
             {{-- Product Image with modal --}}
-            {{-- <div class="md:w-1/2 cursor-pointer" 
+            <div class="md:w-1/2 cursor-pointer" 
                 x-data="{ open: false, index: 0, images: ['{{ asset('storage/' . $featuredProduct->cover_image) }}'] }">
                 <img src="{{ asset('storage/' . $featuredProduct->cover_image) }}" 
                     alt="{{ $featuredProduct->title }}" 
                     class="rounded-2xl shadow-2xl object-cover w-full h-full transform hover:scale-105 transition duration-500"
                     loading="lazy"
                     @click="open = true">
-            </div> --}}
+            </div>
 
             {{-- Product Details --}}
-            {{-- <div class="md:w-1/2 flex flex-col gap-6">
+            <div class="md:w-1/2 flex flex-col gap-6">
                 <h2 class="text-4xl md:text-5xl font-extrabold text-emerald-800 leading-tight">
                     {{ $featuredProduct->title }}
                 </h2>
@@ -101,18 +101,18 @@
                     {!! strip_tags($featuredProduct->description) !!}
                 </p>
 
-                <div class="flex flex-col sm:flex-row sm:items-center sm:gap-6 mt-4"> --}}
+                <div class="flex flex-col sm:flex-row sm:items-center sm:gap-6 mt-4">
                     {{-- Price --}}
-                    {{-- <span class="text-2xl md:text-3xl font-extrabold text-emerald-700">
+                    <span class="text-2xl md:text-3xl font-extrabold text-emerald-700">
                         @if ($featuredProduct->price == 0)
                             Free
                         @else
                             {{ display_price($featuredProduct->price) }}
                         @endif
-                    </span> --}}
+                    </span>
 
                     {{-- CTA Button --}}
-                    {{-- <a href="{{ route('products.show', $featuredProduct->slug) }}" 
+                    <a href="{{ route('products.show', $featuredProduct->slug) }}" 
                     class="mt-3 sm:mt-0 inline-flex items-center justify-center px-8 py-4 bg-emerald-600 text-white font-semibold rounded-full shadow-lg hover:bg-emerald-700 hover:shadow-xl transition text-lg">
                         Get It Now
                         <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"
@@ -127,7 +127,7 @@
             </div>
         </div>
     </section>
-    @endif --}}
+    @endif
 
     {{-- 🎁 FREE RESOURCES --}}
     <section class="py-20 bg-white">

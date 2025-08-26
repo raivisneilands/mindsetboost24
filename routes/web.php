@@ -71,6 +71,7 @@ Route::get('/', function () {
         ->paginate(3, ['*'], 'free_page');
     $userCount = \App\Models\User::count();
     $featuredProduct = \App\Models\Product::withCount('orderItems')
+                        ->where('status', 'published')
                         ->orderByDesc('order_items_count')
                         ->first();
 

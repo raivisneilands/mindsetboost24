@@ -202,10 +202,10 @@
                                 </div>
                                 <div class="flex items-center justify-between pt-2">
                                     <span class="text-emerald-800 font-semibold text-base">
-                                        @if ($featuredProduct->price == 0)
+                                        @if ($product->price == 0)
                                             Free
                                         @else
-                                            {{ display_price($featuredProduct->price) }}
+                                            {{ display_price($product->price) }}
                                         @endif
                                     </span>
                                     <a href="{{ route('products.show', $product->slug) }}"

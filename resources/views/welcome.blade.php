@@ -201,7 +201,13 @@
                                     <p class="text-sm text-gray-700 line-clamp-3">{!! strip_tags($product->description) !!}</p>
                                 </div>
                                 <div class="flex items-center justify-between pt-2">
-                                    <span class="text-emerald-800 font-semibold text-base">{{ display_price($product->price) }}</span>
+                                    <span class="text-emerald-800 font-semibold text-base">
+                                        @if ($featuredProduct->price == 0)
+                                            Free
+                                        @else
+                                            {{ display_price($featuredProduct->price) }}
+                                        @endif
+                                    </span>
                                     <a href="{{ route('products.show', $product->slug) }}"
                                     class="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-full hover:bg-emerald-700 transition">
                                         View

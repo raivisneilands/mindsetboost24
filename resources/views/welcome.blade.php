@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Home | Mindset Boost 24')
+@section('meta_description', 'Mindset Boost 24 helps you build unstoppable discipline, focus, and routines with digital tools, challenges, and guides. Start your transformation today with free resources and proven systems.')
 
 @section('content')
 <div class="bg-emerald-50 min-h-screen">

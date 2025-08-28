@@ -1,11 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Browse Motivational Products | Mindset Boost 24')
-
-@push('meta')
-    <meta name="description" content="Discover powerful motivational and mindset-boosting digital products to transform your life today.">
-    <meta name="keywords" content="motivation, self-help, productivity, mindset, ebooks, digital downloads">
-@endpush
+@section('meta_description', 'Discover powerful motivational and mindset-boosting digital products to transform your life today.')
 
 @section('content')
 <div class="max-w-7xl mx-auto py-12 px-6">

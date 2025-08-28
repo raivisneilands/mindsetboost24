@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('title', $product->title . ' | Mindset Boost 24')
+@section('meta_description', Str::limit(strip_tags($product->description), 160) )
 
 @push('meta')
-    <meta name="description" content="{{ Str::limit(strip_tags($product->description), 160) }}">
     <meta name="keywords" content="{{ $product->keywords }}">
     <meta property="og:title" content="{{ $product->title }}">
     <meta property="og:description" content="{{ Str::limit(strip_tags($product->description), 160) }}">

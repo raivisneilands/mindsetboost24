@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'About Page | Mindset Boost 24')
+@section('meta_description', 'Discover the story behind Mindset Boost 24. Learn why we created tools to help you build discipline, focus, and lasting success in life.')
+
 @section('content')
 
 <style>

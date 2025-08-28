@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title', 'Express Your Thoughts | Mindset Boost 24')
+@section('meta_description', 'Keep track of your personal growth and reflections with your private journal on Mindset Boost 24. Your space for focus and self-improvement.')
+
+
 @section('content')
 <div class="max-w-6xl mx-auto px-4 my-10 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center mb-10">

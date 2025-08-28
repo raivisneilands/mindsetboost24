@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Terms of Service')
+@section('title', 'Terms of Service | Mindset Boost 24')
+@section('meta_description', 'Review the terms of service for using Mindset Boost 24 and our digital products.')
 
 @section('content')
 <div class="bg-emerald-50 py-20">

@@ -12,12 +12,14 @@
         gtag('config', 'G-MND8WHRQNG');
     </script>
     <meta charset="UTF-8">
-    <title>{{ config('app.name') }}</title>
+    <title>@yield('title', 'Mindset Boost 24')</title>
     <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
     @vite('resources/css/app.css')
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="p:domain_verify" content="2ba039dbb7916a34ad3f6064fbdabcba"/>
+    <meta name="description" content="@yield('meta_description', 'Digital products for discipline, focus, and productivity')">
+    <meta name="keywords" content="@yield('meta_keywords', 'discipline, focus, productivity, mindset, digital products')">
     @stack('meta')
 
     {{-- Trix Editor --}}

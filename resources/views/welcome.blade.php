@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Home | Mindset Boost 24')
+
 @section('content')
 <div class="bg-emerald-50 min-h-screen">
 

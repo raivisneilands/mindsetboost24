@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Support')
+@section('title', 'Contact Support | Mindset Boost 24')
+@section('meta_description', 'Need help? Reach out to the Mindset Boost 24 support team for quick assistance with your account, purchases, or downloads.')
 
 @section('content')
 <div class="max-w-2xl mx-auto py-12 px-6">

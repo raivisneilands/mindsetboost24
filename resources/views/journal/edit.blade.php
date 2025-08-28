@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Entry | Mindset Boost 24')
+
 @section('content')
 <div class="max-w-6xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
     <h1 class="text-2xl font-semibold text-emerald-700 mb-6">Edit Entry</h1>

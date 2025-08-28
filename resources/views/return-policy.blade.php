@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Return & Refund Policy')
+@section('title', 'Return & Refund Policy | Mindset Boost 24')
+@section('meta_description', 'Understand our refund and return policy for digital products at Mindset Boost 24.')
 
 @section('content')
 <div class="bg-emerald-50 py-20">

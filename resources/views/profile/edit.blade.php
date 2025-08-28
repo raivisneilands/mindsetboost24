@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title',  'Edit Profile | Mindset Boost 24')
+
 @section('content')
 <div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg mt-8 p-6 border border-emerald-200">
     <h2 class="text-2xl font-bold text-emerald-700 mb-6">Edit Your Profile</h2>

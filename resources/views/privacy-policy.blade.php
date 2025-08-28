@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Privacy Policy')
+@section('title', 'Privacy Policy | Mindset Boost 24')
+@section('meta_description', 'Read the Mindset Boost 24 Privacy Policy to learn how we protect your data and respect your privacy.')
 
 @section('content')
 <div class="bg-emerald-50 py-20">

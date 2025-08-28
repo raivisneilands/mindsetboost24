@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title', 'Share Your Progress with Others | Mindset Boost 24')
+@section('meta_description', 'Join The Ascend — a positive space to share progress, connect with like-minded achievers, and stay motivated on your discipline journey.')
+
+
 @section('content')
 <style>
     .fade-in {

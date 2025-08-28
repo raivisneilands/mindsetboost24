@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'My Profile | Mindset Boost 24')
+@section('meta_description', 'Manage your account, track your progress, and personalize your experience on Mindset Boost 24.')
+
 @section('content')
 <div class="max-w-3xl mx-auto mt-10 bg-white/10 backdrop-blur-md shadow-xl border border-emerald-300/40 rounded-2xl p-8 text-center transition-all duration-300">
 

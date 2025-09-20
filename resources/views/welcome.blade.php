@@ -34,7 +34,7 @@
         <div class="container mx-auto px-6 text-center relative z-10 max-w-5xl">
             {{-- Headline --}}
             <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight drop-shadow-lg">
-                Master Your Mind.<br class="hidden md:block"> Transform Your Life.
+                Build Discipline, Focus & Routines.<br class="hidden md:block"> Master Your Mindset with Digital Tools & Challenges.
             </h1>
 
             {{-- Subheadline --}}
@@ -46,7 +46,7 @@
 
             {{-- CTA Buttons --}}
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 mb-8">
-                <a href="#free-products" class="px-8 py-4 bg-emerald-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:bg-emerald-700 transition text-lg w-full sm:w-auto">
+                <a href="#free-products" class="px-8 py-4 bg-emerald-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:bg-emerald-700 transition text-lg w-full sm:w-auto" title="Download free discipline and productivity tools">
                     Claim Free Resources
                 </a>
                 <a href="{{ route('products.index') }}" class="px-8 py-4 bg-white text-emerald-800 font-semibold rounded-full shadow-lg hover:shadow-xl hover:bg-gray-100 transition text-lg w-full sm:w-auto">
@@ -80,7 +80,7 @@
     @if(isset($featuredProduct))
     <section class="py-24 bg-gray-50 relative">
         <h2 class="text-3xl md:text-4xl font-extrabold text-emerald-800 mb-16 text-center uppercase tracking-wider">
-            Top Pick for the Relentless
+            Featured Self-Discipline & Productivity Product
         </h2>
 
         <div class="container mx-auto px-6 flex flex-col md:flex-row gap-12 items-center">
@@ -88,7 +88,7 @@
             <div class="md:w-1/2 cursor-pointer" 
                 x-data="{ open: false, index: 0, images: ['{{ asset('storage/' . $featuredProduct->cover_image) }}'] }">
                 <img src="{{ asset('storage/' . $featuredProduct->cover_image) }}" 
-                    alt="{{ $featuredProduct->title }}" 
+                    alt="{{ $featuredProduct->title }} - Productivity Digital Resource" 
                     class="rounded-2xl shadow-2xl object-cover w-full h-full transform hover:scale-105 transition duration-500"
                     loading="lazy"
                     @click="open = true">
@@ -136,7 +136,7 @@
     <section class="py-20 bg-white">
         <div class="container mx-auto px-6 text-center">
             <h2 class="text-3xl font-extrabold text-emerald-700 mb-4 uppercase tracking-wide">
-                Multiple Free Resources Await You
+                Free Discipline & Focus Resources to Boost Your Mindset
             </h2>
             <p class="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
                 Build unstoppable momentum with <strong>exclusive free downloads</strong>.  
@@ -188,7 +188,7 @@
     {{-- 🧰 LATEST DROPS --}}
     <section class="py-20 bg-emerald-50">
         <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-extrabold text-emerald-700 mb-12 text-center uppercase tracking-wide">Latest Drops</h2>
+            <h2 class="text-3xl font-extrabold text-emerald-700 mb-12 text-center uppercase tracking-wide">New Digital Tools & Challenges for Building Discipline</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                 @forelse ($latestProducts as $product)
                     @if ($product->status == 'published')

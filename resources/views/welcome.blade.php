@@ -10,10 +10,10 @@
     <section class="relative bg-cover bg-center bg-no-repeat text-white py-32 overflow-hidden" style="background-image: url('{{ asset('images/hero-background.jpg') }}');">
         {{-- Pre-signup welcome gift message --}}
         @guest
-            <div class="relative z-20 max-w-3xl mx-auto px-4 py-4 mb-8 
+            <div class="relative z-20 max-w-3xl mx-auto px-4 sm:px-6 py-4 mb-8
                         bg-emerald-600/95 text-white rounded-2xl shadow-xl 
                         border border-emerald-400 text-center text-base sm:text-lg 
-                        animate-pulse-slow">
+                        animate-pulse-slow mx-3 sm:mx-auto">
                 🎁 <strong>Sign up today</strong> and unlock 
                 <span class="font-semibold">multiple free resources</span> instantly after verifying your email!
             </div>
@@ -33,15 +33,19 @@
 
         <div class="container mx-auto px-6 text-center relative z-10 max-w-5xl">
             {{-- Headline --}}
-            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight drop-shadow-lg">
-                Build Discipline, Focus & Routines.<br class="hidden md:block"> Master Your Mindset with Digital Tools & Challenges.
+            <h1 class="font-extrabold tracking-tight mb-6 leading-tight drop-shadow-lg 
+                    text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+                <span class="block sm:inline">Build Discipline, Focus and Routines.</span>
+                <br class="hidden md:block">
+                <span class="block sm:inline">Master Your Mindset with Digital Tools & Challenges.</span>
             </h1>
 
+
             {{-- Subheadline --}}
-            <p class="text-lg md:text-2xl font-light mb-10 text-white/90">
+            <h2 class="text-lg md:text-2xl font-light mb-10 text-white/90">
                 Stop waiting. Build strong <span class="font-semibold text-emerald-200">habits, focus, and routines</span> that actually move the needle.  
                 <span class="font-bold text-emerald-100 block mt-2">🔥 Grab your free starter resources and take the first step today.</span>
-            </p>
+            </h2>
 
 
             {{-- CTA Buttons --}}

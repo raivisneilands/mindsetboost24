@@ -6,64 +6,63 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
-use Log;
 use Stripe\Stripe;
-use Stripe\Checkout\Session;
-use App\Mail\OrderConfirmation;
-use Illuminate\Support\Facades\Mail;
+use Stripe\PaymentIntent;
 
 class CheckoutController extends Controller
 {
     public function show(Product $product)
     {
-        return view('checkout.show', compact('product'));
-    }
-
-    public function process(Request $request, Product $product)
-    {
         Stripe::setApiKey(config('services.stripe.secret'));
 
-        $session = Session::create([
+        $intent = PaymentIntent::create([
+            'amount' => intval($product->price * 100),
+            'currency' => 'eur',
             'metadata' => [
                 'user_id' => auth()->id(),
                 'product_id' => $product->id,
             ],
-            'payment_method_types' => ['card'],
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => 'eur',  // or your currency
-                    'product_data' => [
-                        'name' => $product->title,
-                    ],
-                    'unit_amount' => intval($product->price * 100), // amount in cents
-                ],
-                'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-            'success_url' => url("/checkout/{$product->slug}/success") . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => route('checkout.show', $product->slug),
         ]);
 
-        return redirect($session->url);
+        // Create a pending order right away
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'status' => 'pending',
+            'total_price' => $product->price,
+            'stripe_payment_intent_id' => $intent->id,
+        ]);
+
+        OrderItem::create([
+            'order_id' => $order->id,
+            'product_id' => $product->id,
+            'quantity' => 1,
+            'price' => $product->price,
+        ]);
+
+        return view('checkout.show', [
+            'product' => $product,
+            'clientSecret' => $intent->client_secret,
+            'paymentIntentId' => $intent->id,
+        ]);
     }
 
-    public function success(Request $request)
+    public function success(Request $request, Product $product)
     {
-        $sessionId = $request->query('session_id');
+        $paymentIntentId = $request->query('payment_intent');
 
-        if (!$sessionId) {
-            abort(400, 'Missing session_id');
+        if (!$paymentIntentId) {
+            abort(400, 'Missing payment_intent');
         }
 
-        $order = Order::where('stripe_session_id', $sessionId)->first();
+        $order = Order::where('stripe_payment_intent_id', $paymentIntentId)->first();
 
         if (!$order) {
             abort(404, 'Order not found');
         }
 
-        $product = $order->orderItems->first()?->product; // Load product through relationship
+        // Mark order as paid
+        $order->update(['status' => 'paid']);
 
         return view('checkout.success', compact('order', 'product'));
     }
-
 }

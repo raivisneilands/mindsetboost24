@@ -21,6 +21,8 @@ class StripeWebhookController extends Controller
         $sigHeader = $request->header('Stripe-Signature');
         $secret = config('services.stripe.webhook_secret');
 
+        Log::info('Stripe webhook hit', ['payload' => $payload]);
+
         try {
             $event = Webhook::constructEvent($payload, $sigHeader, $secret);
         } catch (\UnexpectedValueException $e) {
@@ -31,20 +33,14 @@ class StripeWebhookController extends Controller
             return response('Invalid signature', 400);
         }
 
-        if ($event->type === 'checkout.session.completed') {
-            $session = $event->data->object;
+        if ($event->type === 'payment_intent.succeeded') {
+            $intent = $event->data->object;
 
-            Log::info('Webhook received', [
-                'type' => $event->type,
-                'metadata' => $session->metadata ?? null,
-                'session_id' => $session->id,
-            ]);
-
-            $userId = $session->metadata->user_id ?? null;
-            $productId = $session->metadata->product_id ?? null;
+            $userId = $intent->metadata->user_id ?? null;
+            $productId = $intent->metadata->product_id ?? null;
 
             if (!$userId || !$productId) {
-                Log::error('Missing user_id or product_id in metadata', ['metadata' => $session->metadata ?? null]);
+                Log::error('Missing user_id or product_id in metadata', ['metadata' => $intent->metadata ?? null]);
                 return response('Missing metadata', 400);
             }
 
@@ -52,24 +48,20 @@ class StripeWebhookController extends Controller
             $product = Product::find($productId);
 
             if (!$user || !$product) {
-                Log::error('User or Product not found', [
-                    'user_id' => $userId,
-                    'product_id' => $productId,
-                ]);
+                Log::error('User or Product not found', ['user_id' => $userId, 'product_id' => $productId]);
                 return response('User or product not found', 404);
             }
 
-            // Check if order already exists
-            $existing = Order::where('stripe_session_id', $session->id)->first();
+            // Prevent duplicates
+            $existing = Order::where('stripe_session_id', $intent->id)->first();
             if ($existing) {
                 Log::info('Order already exists, skipping creation.', ['order_id' => $existing->id]);
                 return response('Order already exists', 200);
             }
 
-            // Create the order
             $order = Order::create([
                 'user_id' => $user->id,
-                'stripe_session_id' => $session->id,
+                'stripe_session_id' => $intent->id, // reusing this field
                 'total_price' => $product->price,
                 'status' => 'Completed',
             ]);
@@ -83,7 +75,7 @@ class StripeWebhookController extends Controller
 
             Mail::to($user->email)->send(new OrderConfirmation($order, $product));
 
-            Log::info('Order created successfully, email job dispatched', ['order_id' => $order->id]);
+            Log::info('Order created successfully via PaymentIntent', ['order_id' => $order->id]);
         }
 
         return response('Webhook handled', 200);

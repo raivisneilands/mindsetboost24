@@ -19,7 +19,7 @@
                 <div class="bg-white rounded-xl shadow p-6 flex justify-between items-center">
                     <div>
                         <h2 class="text-xl font-semibold">{{ $product->title }}</h2>
-                        <p class="text-gray-600 text-sm">Purchased on {{ $order->created_at->format('M d, Y') }}</p>
+                        <p class="text-gray-600 text-sm">Purchased on {{ $order->created_at->format('F j, Y, g:i a') }}</p>
                         @if ($product->price == 0)
                             <span class="text-green-600 font-medium text-sm">Free Gift</span>
                         @endif

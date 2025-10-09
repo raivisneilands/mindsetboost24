@@ -31,28 +31,25 @@
         <div class="absolute inset-0 bg-gradient-to-br from-emerald-700/80 via-emerald-800/70 to-emerald-900/70"></div>
         <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent opacity-40 animate-pulse pointer-events-none"></div>
 
-        <div class="container mx-auto px-6 text-center relative z-10 max-w-5xl">
+        <div class="container mx-auto px-6 text-center relative z-10 max-w-6xl">
             {{-- Headline --}}
             <h1 class="font-extrabold tracking-tight mb-6 leading-tight drop-shadow-lg 
-                    text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
-                <span class="block sm:inline">Build Discipline, Focus and Routines.</span>
+                    text-3xl sm:text-3xl md:text-4xl lg:text-5xl">
+                <span class="block sm:inline">Build Relentless Discipline, Focus & Routines</span>
                 <br class="hidden md:block">
-                <span class="block sm:inline">Master Your Mindset with Digital Tools & Challenges.</span>
+                <span class="block sm:inline">Start Mastering Your Mindset</span>
             </h1>
 
 
             {{-- Subheadline --}}
-            <h2 class="text-lg md:text-2xl font-light mb-10 text-white/90">
-                Stop waiting. Build strong <span class="font-semibold text-emerald-200">habits, focus, and routines</span> that actually move the needle.  
-                <span class="font-bold text-emerald-100 block mt-2">🔥 Grab your free starter resources and take the first step today.</span>
+            <h2 class="text-lg md:text-2xl font-light my-10 text-white/90">
+                Stop waiting. Build unbreakable <span class="font-semibold text-emerald-200">habits, focus, and routines</span> that move the needle.  
+                <span class="font-bold text-emerald-100 block">🔥 Grab your <span class="underline text-emerald-200"><a href="#free-products">free starter tools </a></span> and begin your ascent.</span>
             </h2>
 
 
             {{-- CTA Buttons --}}
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 mb-8">
-                <a href="#free-products" class="px-8 py-4 bg-emerald-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:bg-emerald-700 transition text-lg w-full sm:w-auto" title="Download free discipline and productivity tools">
-                    Claim Free Resources
-                </a>
                 <a href="{{ route('products.index') }}" class="px-8 py-4 bg-white text-emerald-800 font-semibold rounded-full shadow-lg hover:shadow-xl hover:bg-gray-100 transition text-lg w-full sm:w-auto">
                     Browse All Products
                 </a>
@@ -74,8 +71,8 @@
             @endguest
 
             {{-- Closing tagline --}}
-            <p class="mt-12 text-sm text-white/70">
-                Every moment you wait is a moment wasted. Take control now.
+            <p class="mt-16 italic text-white/60">
+                Every moment you wait is a step backwards. Take control now.
             </p>
         </div>
     </section>

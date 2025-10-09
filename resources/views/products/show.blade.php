@@ -43,7 +43,7 @@
                         Download Now
                         </a>
                     @else
-                        <form action="{{ route('checkout.process', $product) }}" method="POST" class="w-full md:w-auto">
+                        <form action="{{ route('checkout.show', $product) }}" class="w-full md:w-auto">
                             @csrf
                             <button type="submit" 
                                 class="w-full md:w-auto px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition">

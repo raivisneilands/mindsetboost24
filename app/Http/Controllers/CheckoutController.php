@@ -16,7 +16,7 @@ class CheckoutController extends Controller
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $intent = PaymentIntent::create([
-            'amount' => intval($product->price * 100),
+            'amount' => intval($product->active_price * 100),
             'currency' => 'eur',
             'metadata' => [
                 'user_id' => auth()->id(),
@@ -28,7 +28,7 @@ class CheckoutController extends Controller
         $order = Order::create([
             'user_id' => auth()->id(),
             'status' => 'pending',
-            'total_price' => $product->price,
+            'total_price' => $product->active_price,
             'stripe_payment_intent_id' => $intent->id,
         ]);
 
@@ -36,7 +36,7 @@ class CheckoutController extends Controller
             'order_id' => $order->id,
             'product_id' => $product->id,
             'quantity' => 1,
-            'price' => $product->price,
+            'price' => $product->active_price,
         ]);
 
         return view('checkout.show', [

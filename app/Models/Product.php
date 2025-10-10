@@ -14,7 +14,13 @@ class Product extends Model
 
     protected $fillable = [
         'title', 'slug', 'description', 'price',
-        'cover_image', 'file_path', 'status', 'keywords',
+        'cover_image', 'file_path', 'status', 'keywords', 'discount_price',
+        'discount_start', 'discount_end',
+    ];
+
+    protected $casts = [
+        'discount_start' => 'datetime',
+        'discount_end' => 'datetime',
     ];
 
     public function categories()
@@ -39,6 +45,32 @@ class Product extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function getActivePriceAttribute()
+    {
+        $now = now();
+        if (
+            $this->discount_price &&
+            $this->discount_start &&
+            $this->discount_end &&
+            $now->between($this->discount_start, $this->discount_end)
+        ) {
+            return $this->discount_price;
+        }
+
+        return $this->price;
+    }
+
+    public function getIsDiscountActiveAttribute()
+    {
+        $now = now();
+        return (
+            $this->discount_price &&
+            $this->discount_start &&
+            $this->discount_end &&
+            $now->between($this->discount_start, $this->discount_end)
+        );
     }
 
 }

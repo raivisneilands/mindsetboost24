@@ -35,6 +35,27 @@
             <input type="number" step="0.01" name="price" id="price" value="{{ old('price') }}" class="w-full border px-3 py-2 rounded">
         </div>
 
+        <div class="mt-4">
+            <label for="discount_price" class="block font-medium">Discount Price (€)</label>
+            <input type="number" step="0.01" name="discount_price" id="discount_price" 
+                class="border p-2 w-full rounded" value="{{ old('discount_price', $product->discount_price ?? '') }}">
+        </div>
+
+        <div class="mt-4 grid grid-cols-2 gap-4">
+            <div>
+                <label for="discount_start" class="block font-medium">Discount Start</label>
+                <input type="date" name="discount_start" id="discount_start" 
+                    class="border p-2 w-full rounded" value="{{ old('discount_start', $product->discount_start ?? '') }}">
+            </div>
+
+            <div>
+                <label for="discount_end" class="block font-medium">Discount End</label>
+                <input type="date" name="discount_end" id="discount_end" 
+                    class="border p-2 w-full rounded" value="{{ old('discount_end', $product->discount_end ?? '') }}">
+            </div>
+        </div>
+
+
         <div class="mb-4">
             <label for="status" class="block font-semibold">Status</label>
             <select name="status" id="status" class="w-full border px-3 py-2 rounded">

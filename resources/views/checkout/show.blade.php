@@ -12,7 +12,18 @@
             @endif
             <h2 class="text-3xl font-bold text-emerald-700">{{ $product->title }}</h2>
             <p class="text-xl text-gray-800 font-semibold">
-                Price: <span class="text-emerald-600">{{ display_price($product->price) }}</span>
+                <span class="text-emerald-600">
+                    @if ($product->is_discount_active)
+                        <p class="text-lg">
+                            <span class="line-through text-gray-400 text-sm">{{ display_price($product->price) }}</span>
+                            <span class="text-emerald-500 font-bold text-2xl">{{ display_price($product->active_price) }}</span>
+                            <br>
+                            <span class="font-bold text-sm text-red-500/60">Sale ends {{ $product->discount_end->format('M j') }}</span>
+                        </p>
+                    @else
+                        <p class="text-lg font-semibold">{{ display_price($product->active_price) }}</p>
+                    @endif
+                </span>
             </p>
             <p class="text-gray-600 text-sm leading-relaxed">
                 Lifetime access. Instant digital delivery. Refunds are not available.

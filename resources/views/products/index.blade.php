@@ -147,15 +147,24 @@
                                 @if ($product->price == 0)
                                     Free
                                 @else
-                                    {{ display_price($product->price) }}
+                                    @if ($product->is_discount_active)
+                                        <p class="text-lg">
+                                            <span class="line-through text-gray-400 text-sm">{{ display_price($product->price) }}</span>
+                                            <span class="text-emerald-500 font-bold text-2xl">{{ display_price($product->active_price) }}</span>
+                                            <br>
+                                            <span class="text-sm text-red-500/60">Sale ends {{ $product->discount_end->format('M j') }}</span>
+                                        </p>
+                                    @else
+                                        <p class="text-lg font-semibold">{{ display_price($product->active_price) }}</p>
+                                    @endif
                                 @endif
-                                <span class="text-sm font-medium text-gray-500 block">— Instant Download</span>
+                                <span class="text-sm font-medium text-gray-500 block mt-3">— Instant Download</span>
                             </div>
 
                             <a href="{{ route('products.show', $product->slug) }}"
                                 class="w-full sm:w-auto text-center whitespace-nowrap px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md transition-transform transform hover:scale-105"
                                 aria-label="View details for {{ $product->title }}">
-                                @if ($product->price == 0)
+                                @if ($product->active_price == 0)
                                     Download
                                 @else
                                     Buy
@@ -170,7 +179,7 @@
                         {{-- Social Proof --}}
                         <div class="p-4 border-t border-emerald-100 text-sm text-gray-600 select-none">
                             @if($product->order_items_count > 0)
-                                🔥 {{ $product->order_items_count }} {{ Str::plural('person', $product->order_items_count) }} purchased
+                                {{ $product->order_items_count }} {{ Str::plural('person', $product->order_items_count) }} purchased
                             @else
                                 <span class="italic text-gray-400">Be the first to grab this!</span>
                             @endif

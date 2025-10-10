@@ -35,6 +35,9 @@ class ProductController extends Controller
             'categories' => 'required|array',
             'categories.*' => 'exists:categories,id',
             'keywords' => 'nullable|string',
+            'discount_price' => 'nullable|numeric|min:0',
+            'discount_start' => 'nullable|date',
+            'discount_end' => 'nullable|date|after_or_equal:start_date',
         ]);
 
         // create slug from title
@@ -92,6 +95,9 @@ class ProductController extends Controller
             'categories' => 'required|array',
             'categories.*' => 'exists:categories,id',
             'keywords' => 'nullable|string',
+            'discount_price' => 'nullable|numeric|min:0',
+            'discount_start' => 'nullable|date',
+            'discount_end' => 'nullable|date|after_or_equal:start_date',
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);

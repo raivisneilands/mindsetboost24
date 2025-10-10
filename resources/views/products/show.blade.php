@@ -33,20 +33,29 @@
                     @if ($product->price == 0)
                         Free
                     @else
-                        {{ display_price($product->price) }} - Lifetime Access
+                        @if ($product->is_discount_active)
+                            <p class="text-lg">
+                                <span class="line-through text-gray-400 text-sm">{{ display_price($product->price) }}</span>
+                                <span class="text-emerald-500 font-bold text-2xl">{{ display_price($product->active_price) }}</span>
+                                <br>
+                                <span class="text-sm text-red-500/60">Sale ends {{ $product->discount_end->format('M j') }}</span>
+                            </p>
+                        @else
+                            <p class="text-lg font-semibold">{{ display_price($product->active_price) }}</p>
+                        @endif
                     @endif
                     </span>
 
                     @if ($product->price == 0)
                         <a href="{{ route('download.free', $product) }}" 
-                        class="w-full md:w-auto px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition">
+                        class="w-full md:w-auto px-6 py-3 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition">
                         Download Now
                         </a>
                     @else
                         <form action="{{ route('checkout.show', $product) }}" class="w-full md:w-auto">
                             @csrf
                             <button type="submit" 
-                                class="w-full md:w-auto px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition">
+                                class="w-full md:w-auto px-6 py-3 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition">
                                 Buy now
                             </button>
                         </form>

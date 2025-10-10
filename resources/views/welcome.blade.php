@@ -108,10 +108,20 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:gap-6 mt-4">
                     {{-- Price --}}
                     <span class="text-2xl md:text-3xl font-extrabold text-emerald-700">
-                        @if ($featuredProduct->price == 0)
+                        @if ($featuredProduct->active_price == 0)
                             Free
                         @else
-                            {{ display_price($featuredProduct->price) }}
+                            @if ($featuredProduct->is_discount_active)
+                                <p class="text-lg">
+                                    <span class="line-through text-gray-400 text-sm">{{ display_price($featuredProduct->price) }}</span>
+                                    <br>
+                                    <span class="text-emerald-500 font-bold text-2xl">{{ display_price($featuredProduct->active_price) }}</span>
+                                    <br>
+                                    <span class="text-sm text-red-500/60">Sale ends {{ $featuredProduct->discount_end->format('M j') }}</span>
+                                </p>
+                            @else
+                                <p class="text-lg font-semibold">{{ display_price($product->active_price) }}</p>
+                            @endif
                         @endif
                     </span>
 
@@ -206,10 +216,19 @@
                                 </div>
                                 <div class="flex items-center justify-between pt-2">
                                     <span class="text-emerald-800 font-semibold text-base">
-                                        @if ($product->price == 0)
+                                        @if ($product->active_price == 0)
                                             Free
                                         @else
-                                            {{ display_price($product->price) }}
+                                            @if ($product->is_discount_active)
+                                                <p class="text-lg">
+                                                    <span class="line-through text-gray-400 text-sm">{{ display_price($product->price) }}</span>
+                                                    <span class="text-emerald-500 font-bold text-2xl">{{ display_price($product->active_price) }}</span>
+                                                    <br>
+                                                    <span class="text-sm text-red-500/60">Sale ends {{ $product->discount_end->format('M j') }}</span>
+                                                </p>
+                                            @else
+                                                <p class="text-lg font-semibold">{{ display_price($product->active_price) }}</p>
+                                            @endif
                                         @endif
                                     </span>
                                     <a href="{{ route('products.show', $product->slug) }}"

@@ -15,23 +15,40 @@ class CheckoutController extends Controller
     {
         Stripe::setApiKey(config('services.stripe.secret'));
 
+        $user = auth()->user();
+
+        // ✅ Check if this user already bought this product
+        $existingOrder = Order::where('user_id', $user->id)
+            ->whereHas('orderItems', function ($query) use ($product) {
+                $query->where('product_id', $product->id);
+            })
+            ->whereIn('status', ['paid', 'completed'])
+            ->first();
+
+        if ($existingOrder) {
+            return redirect()->route('purchases.index')
+                ->with('message', 'You already own this product.');
+        }
+
+        // ✅ Create a PaymentIntent
         $intent = PaymentIntent::create([
             'amount' => intval($product->active_price * 100),
             'currency' => 'eur',
             'metadata' => [
-                'user_id' => auth()->id(),
+                'user_id' => $user->id,
                 'product_id' => $product->id,
             ],
         ]);
 
-        // Create a pending order right away
+        // ✅ Create a pending order right away
         $order = Order::create([
-            'user_id' => auth()->id(),
+            'user_id' => $user->id,
             'status' => 'pending',
             'total_price' => $product->active_price,
             'stripe_payment_intent_id' => $intent->id,
         ]);
 
+        // ✅ Attach product through OrderItem
         OrderItem::create([
             'order_id' => $order->id,
             'product_id' => $product->id,
@@ -57,11 +74,15 @@ class CheckoutController extends Controller
         $order = Order::where('stripe_payment_intent_id', $paymentIntentId)->first();
 
         if (!$order) {
-            abort(404, 'Order not found');
+            // Webhook may not have processed yet
+            return redirect()->route('purchases.index')
+                ->with('message', 'Your payment was successful! Your order will appear shortly.');
         }
 
-        // Mark order as paid
-        $order->update(['status' => 'paid']);
+        // If order exists but wasn’t updated yet
+        if ($order->status !== 'paid') {
+            $order->update(['status' => 'paid']);
+        }
 
         return view('checkout.success', compact('order', 'product'));
     }

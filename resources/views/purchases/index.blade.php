@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto px-4 py-10">
+    @if (session('message'))
+        <div class="mb-4 p-4 bg-green-100 border border-green-300 text-green-700 rounded-lg">
+            {{ session('message') }}
+        </div>
+    @endif
     <h1 class="text-3xl font-bold mb-6 text-emerald-500">My Purchases</h1>
 
     @php

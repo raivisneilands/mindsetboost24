@@ -21,63 +21,25 @@ class StripeWebhookController extends Controller
         $sigHeader = $request->header('Stripe-Signature');
         $secret = config('services.stripe.webhook_secret');
 
-        Log::info('Stripe webhook hit', ['payload' => $payload]);
-
         try {
             $event = Webhook::constructEvent($payload, $sigHeader, $secret);
-        } catch (\UnexpectedValueException $e) {
-            Log::error('Invalid payload');
+        } catch (\Exception $e) {
             return response('Invalid payload', 400);
-        } catch (\Stripe\Exception\SignatureVerificationException $e) {
-            Log::error('Invalid signature');
-            return response('Invalid signature', 400);
         }
 
         if ($event->type === 'payment_intent.succeeded') {
             $intent = $event->data->object;
 
-            $userId = $intent->metadata->user_id ?? null;
-            $productId = $intent->metadata->product_id ?? null;
+            $order = Order::where('stripe_payment_intent_id', $intent->id)->first();
 
-            if (!$userId || !$productId) {
-                Log::error('Missing user_id or product_id in metadata', ['metadata' => $intent->metadata ?? null]);
-                return response('Missing metadata', 400);
+            if ($order) {
+                $order->update(['status' => 'paid']);
+                Log::info('Order marked as paid', ['order_id' => $order->id]);
+                return response('Order updated', 200);
             }
-
-            $user = User::find($userId);
-            $product = Product::find($productId);
-
-            if (!$user || !$product) {
-                Log::error('User or Product not found', ['user_id' => $userId, 'product_id' => $productId]);
-                return response('User or product not found', 404);
-            }
-
-            // Prevent duplicates
-            $existing = Order::where('stripe_session_id', $intent->id)->first();
-            if ($existing) {
-                Log::info('Order already exists, skipping creation.', ['order_id' => $existing->id]);
-                return response('Order already exists', 200);
-            }
-
-            $order = Order::create([
-                'user_id' => $user->id,
-                'stripe_session_id' => $intent->id, // reusing this field
-                'total_price' => $product->price,
-                'status' => 'Completed',
-            ]);
-
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $product->id,
-                'price' => $product->price,
-                'quantity' => 1,
-            ]);
-
-            Mail::to($user->email)->send(new OrderConfirmation($order, $product));
-
-            Log::info('Order created successfully via PaymentIntent', ['order_id' => $order->id]);
         }
 
         return response('Webhook handled', 200);
     }
+
 }

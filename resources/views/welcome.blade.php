@@ -56,6 +56,9 @@
                 <a href="{{ route('ascend.index') }}" class="px-8 py-4 bg-white/20 border border-white text-white backdrop-blur-md rounded-full font-medium hover:bg-white/30 transition text-lg w-full sm:w-auto">
                     Share Your Journey
                 </a>
+                <a href="{{ route('about') }}" class="px-8 py-4 bg-white/20 border border-white text-white backdrop-blur-md rounded-full font-medium hover:bg-white/30 transition text-lg w-full sm:w-auto">
+                    How It All Started
+                </a>
             </div>
 
             {{-- Auth Buttons --}}

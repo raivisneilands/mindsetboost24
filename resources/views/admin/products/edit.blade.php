@@ -27,7 +27,7 @@
         <div class="mb-4">
             <label class="block font-semibold ">Description</label>
             <input id="description" type="hidden" name="description" value="{{ old('description', $product->description) }}">
-            <trix-editor input="description" class="trix-content rounded"></trix-editor>
+            <trix-editor input="description" class="trix-content rounded bg-white border-gray-500"></trix-editor>
         </div>
 
         <div class="mb-4">

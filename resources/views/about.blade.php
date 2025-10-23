@@ -5,95 +5,65 @@
 
 @section('content')
 
-<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    background-color: #6EE7B7; /* emerald-300 fallback */
-  }
+<div class="bg-emerald-50 text-emerald-500 font-inter">
 
-  section {
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin: 0;
-    padding: 0;
-  }
-
-  .parallax {
-    will-change: background-position;
-  }
-
-  .overlay {
-    background-color: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(6px);
-    padding: 2.5rem;
-    border-radius: 1.5rem;
-    color: white;
-    max-width: 800px;
-    margin: auto;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  }
-</style>
-
-{{-- Section 1 --}}
-<section
-  id="section1"
-  class="parallax flex items-center justify-center px-6"
-  style="background-image: url('{{ asset('images/mission.jpg') }}');"
->
-  <div class="overlay text-center" data-aos="fade-up">
-    <h2 class="text-4xl font-bold mb-4">Our Mission</h2>
-    <p class="text-lg leading-relaxed">
-      We’re building a space where anyone can access digital resources that spark action and drive clarity.
-      From habit trackers to growth journals, every product is crafted with care and intention.
+  {{-- Section 1 --}}
+  <section class="max-w-3xl mx-auto px-6 py-24 text-center" data-aos="fade-up">
+    <h2 class="text-3xl md:text-4xl font-bold mb-6">How It All Began</h2>
+    <p class="text-lg text-slate-600 leading-relaxed">
+      I was struggling — stuck in routines that didn’t fulfill me.
+      Everyone around me seemed content with the 
+      <span class="text-emerald-400 font-semibold">9-to-5 cycle</span>,
+      but deep down I knew that wasn’t the life I wanted.
+      I wanted to live with clarity, freedom, and purpose — 
+      to build real discipline and take control of my time.
     </p>
-  </div>
-</section>
+  </section>
 
-{{-- Section 2 --}}
-<section
-  id="section2"
-  class="parallax flex items-center justify-center px-6"
-  style="background-image: url('{{ asset('images/growth.jpg') }}');"
->
-  <div class="overlay text-center" data-aos="fade-up">
-    <h2 class="text-4xl font-bold mb-4">Growth With Every File</h2>
-    <p class="text-lg leading-relaxed">
-      Each product is more than just a file — it's a step forward. Our expanding library evolves with your needs,
-      staying focused on helping you build structure, improve mindset, and take ownership of your journey.
+  <div class="h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent max-w-2xl mx-auto"></div>
+
+  {{-- Section 2 --}}
+  <section class="max-w-3xl mx-auto px-6 py-24 text-center" data-aos="fade-up">
+    <h2 class="text-3xl md:text-4xl font-bold mb-6">The Turning Point</h2>
+    <p class="text-lg text-slate-600 leading-relaxed">
+      I searched endlessly online for something that would truly help me change,
+      but everything felt repetitive and surface-level. Nothing really spoke to me.
+      That was when I decided to create my own path — 
+      using my background in design and web building to make 
+      <span class="text-emerald-400 font-semibold">digital tools that actually drive change</span>.
     </p>
-  </div>
-</section>
+  </section>
 
-{{-- Section 3 --}}
-<section
-  id="section3"
-  class="parallax flex items-center justify-center px-6"
-  style="background-image: url('{{ asset('images/impact.jpg') }}');"
->
-  <div class="overlay text-center" data-aos="fade-up">
-    <h2 class="text-4xl font-bold mb-4">Why We Exist</h2>
-    <p class="text-lg leading-relaxed">
-      We believe digital products should be functional, beautiful, and motivating. This isn’t just about downloads —
-      it’s about impact. We’re here to make tools that give you momentum, not noise.
+  <div class="h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent max-w-2xl mx-auto"></div>
+
+  {{-- Section 3 --}}
+  <section class="max-w-3xl mx-auto px-6 py-24 text-center" data-aos="fade-up">
+    <h2 class="text-3xl md:text-4xl font-bold mb-6">The Mission Behind Mindset Boost 24</h2>
+    <p class="text-lg text-slate-600 leading-relaxed">
+      Mindset Boost 24 exists for people who are ready to 
+      <span class="text-emerald-400 font-semibold">take action</span> 
+      and build themselves piece by piece.
+      It’s not about quick motivation or empty inspiration —
+      it’s about structure, clarity, and consistent effort.
+      Every product is crafted to help you move forward in a focused, disciplined way.
     </p>
-  </div>
-</section>
+  </section>
 
-<script>
-  // Simple parallax effect
-  const parallaxSections = document.querySelectorAll('.parallax');
+  <div class="h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent max-w-2xl mx-auto"></div>
 
-  window.addEventListener('scroll', () => {
-    parallaxSections.forEach(section => {
-      const speed = 0.12;
-      const offset = window.scrollY;
-      section.style.backgroundPositionY = `${-offset * speed}px`;
-    });
-  });
-</script>
+  {{-- Section 4 --}}
+  <section class="max-w-3xl mx-auto px-6 py-24 text-center" data-aos="fade-up">
+    <h2 class="text-3xl md:text-4xl font-bold mb-6">What You Can Expect</h2>
+    <p class="text-lg text-slate-600 leading-relaxed">
+      Expect honesty. No fake positivity — only 
+      <span class="text-emerald-400 font-semibold">practical tools</span> 
+      designed to push you toward progress.
+      Whether you’re starting your first challenge or refining your mindset systems,
+      everything here is made to help you build momentum 
+      and take back control of your life.
+    </p>
+  </section>
+
+</div>
 
 @endsection

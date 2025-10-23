@@ -77,7 +77,7 @@
         @yield('content')
     </main>
 
-    <footer class="bg-emerald-800 text-white py-8 mt-16">
+    <footer class="bg-emerald-800 text-white py-8">
         <div class="container mx-auto px-6 flex flex-col sm:flex-row justify-between items-center text-sm">
             <p>&copy; {{ date('Y') }} Mindset Boost 24. All rights reserved.</p>
             <div class="flex gap-6 mt-4 sm:mt-0">

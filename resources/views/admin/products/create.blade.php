@@ -26,7 +26,7 @@
         <div class="mb-4">
             <label for="description" class="block font-semibold">Description</label>
             <input id="description" type="hidden" name="description" value="{{ old('description') }}" class="w-full border px-3 py-2 rounded">
-            <trix-editor input="description" class="trix-content rounded"></trix-editor>
+            <trix-editor input="description" class="trix-content rounded bg-white border-gray-500"></trix-editor>
             @error('description') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 

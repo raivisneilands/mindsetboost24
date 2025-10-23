@@ -2,7 +2,7 @@
 <nav x-data="{ open: false }" class="bg-gradient-to-br from-emerald-600 via-emerald-400 to-emerald-500 px-6 py-4 shadow-sm">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <!-- Logo / Title -->
-        <a href="{{ route('home') }}" class="text-white font-bold text-2xl">Admin Panel</a>
+        <a href="{{ route('admin.dashboard') }}" class="text-white font-bold text-2xl">Admin Panel</a>
 
         <!-- Hamburger (Mobile) -->
         <button @click="open = !open" class="text-white md:hidden focus:outline-none" aria-label="Toggle navigation menu">

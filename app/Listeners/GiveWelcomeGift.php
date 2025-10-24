@@ -32,7 +32,7 @@ class GiveWelcomeGift
         // Create order with gift
         $order = Order::create([
             'user_id' => $user->id,
-            'status' => 'completed',
+            'status' => 'welcome gift',
             'total_price' => 0,
         ]);
 

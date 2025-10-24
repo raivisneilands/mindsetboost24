@@ -42,6 +42,10 @@
                     <li>
                         <a href="{{ route('admin.download_logs.index') }}" class="text-blue-600 hover:text-blue-800 hover:underline">📥 Download Logs</a>
                     </li>
+                    <li>
+                        <a href="{{ route('admin.packs.index') }}" class="text-blue-600 hover:text-blue-800 hover:underline">🎁 Manage Product Packs</a>
+                    </li>
+
                 </ul>
             </div>
 

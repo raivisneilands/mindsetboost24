@@ -19,6 +19,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\ProductPackController;
 
 Route::get('/contact-support', [SupportController::class, 'showForm'])->name('support.form');
 Route::post('/contact-support', [SupportController::class, 'submitForm'])->name('support.submit');
@@ -85,6 +86,10 @@ Route::view('/return-policy', 'return-policy')->name('return.policy');
 Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy');
 Route::view('/terms', 'terms')->name('terms');
 
+Route::get('/packs', [ProductPackController::class, 'index'])->name('packs.index');
+Route::get('/packs/{slug}', [ProductPackController::class, 'show'])->name('packs.show');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
@@ -92,6 +97,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout/{product}', [CheckoutController::class, 'show'])->name('checkout.show');
     Route::post('/checkout/{product}', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/checkout/{product}/success', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/checkout/pack/{pack:slug}', [CheckoutController::class, 'showPack'])->name('checkout.pack');
+    // Pack success
+    Route::get('/checkout/pack/{slug}/success', [CheckoutController::class, 'success'])
+        ->name('checkout.pack.success');
     Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
     Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::get('/products/{product}/reviews/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
@@ -115,6 +124,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/{user}/follow', [ProfileController::class, 'toggle'])->name('users.follow');
     Route::post('/posts/{post}/comments', [PostController::class, 'storeComment'])->middleware('auth')->name('comments.store');
     Route::get('/posts/{post}/comments', [PostController::class, 'indexComments']);
+
 
 });
 
@@ -140,6 +150,9 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
 
     // Download Logs
     Route::get('/download-logs', [App\Http\Controllers\Admin\DownloadLogController::class, 'index'])->name('download_logs.index');
+
+    // Product packs
+    Route::resource('packs', App\Http\Controllers\Admin\ProductPackController::class);
 
 
 });

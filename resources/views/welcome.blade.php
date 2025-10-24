@@ -59,6 +59,10 @@
                 <a href="{{ route('about') }}" class="px-8 py-4 bg-white/20 border border-white text-white backdrop-blur-md rounded-full font-medium hover:bg-white/30 transition text-lg w-full sm:w-auto">
                     How It All Started
                 </a>
+                <a href="{{ route('packs.index') }}" 
+                    class="px-8 py-4 bg-white/20 border border-white text-white backdrop-blur-md rounded-full font-medium hover:bg-white/30 transition text-lg w-full sm:w-auto">
+                    View Product Packs
+                </a>
             </div>
 
             {{-- Auth Buttons --}}
@@ -123,7 +127,7 @@
                                     <span class="text-sm text-red-500/60">Sale ends {{ $featuredProduct->discount_end->format('M j') }}</span>
                                 </p>
                             @else
-                                <p class="text-lg font-semibold">{{ display_price($product->active_price) }}</p>
+                                <p class="text-lg font-semibold">{{ display_price($featuredProduct->active_price) }}</p>
                             @endif
                         @endif
                     </span>

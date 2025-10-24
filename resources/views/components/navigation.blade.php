@@ -16,6 +16,7 @@
         </button>
 
         <div class="hidden md:flex space-x-4 items-center">
+            <a href="{{ route('packs.index') }}" class="hover:underline hover:text-green-900 transition">Browse Packs</a>
             <a href="{{ route('products.index') }}" class="hover:underline hover:text-green-900 transition">Browse Products</a>
             <a href="{{ route('about') }}" class="hover:underline hover:text-green-900 transition">About</a>
             <a href="{{ route('ascend.index') }}" class="hover:underline hover:text-green-900 transition">The Ascend</a>
@@ -94,6 +95,7 @@
                 </select>
             </form>
         </div>
+        <a href="{{ route('packs.index') }}" class="block hover:bg-emerald-600 px-4 py-2 rounded">Browse Packs</a>
         <a href="{{ route('products.index') }}" class="block hover:bg-emerald-600 px-4 py-2 rounded">Browse Products</a>
         <a href="{{ route('about') }}" class="block hover:bg-emerald-600 px-4 py-2 rounded">About</a>
         <a href="{{ route('ascend.index') }}" class="block hover:bg-emerald-600 px-4 py-2 rounded">The Ascend</a>

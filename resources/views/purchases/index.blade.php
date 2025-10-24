@@ -1,43 +1,51 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-4xl mx-auto px-4 py-10">
+<div class="max-w-5xl mx-auto px-4 py-10">
     @if (session('message'))
-        <div class="mb-4 p-4 bg-green-100 border border-green-300 text-green-700 rounded-lg">
+        <div class="mb-6 p-4 bg-green-100 border border-green-300 text-green-700 rounded-lg">
             {{ session('message') }}
         </div>
     @endif
-    <h1 class="text-3xl font-bold mb-6 text-emerald-500">My Purchases</h1>
 
-    @php
-        // Collect all products from all orders
-        $allProducts = $orders->flatMap(fn($order) => $order->products);
-    @endphp
+    <h1 class="text-3xl font-bold mb-8 text-emerald-600">🛒 My Purchases</h1>
 
-    @if ($allProducts->count())
-        <div class="space-y-4">
-            @foreach ($allProducts as $product)
-                @php
-                    // Find the order this product belongs to
-                    $order = $orders->first(fn($o) => $o->products->contains($product));
-                @endphp
-                <div class="bg-white rounded-xl shadow p-6 flex justify-between items-center">
-                    <div>
-                        <h2 class="text-xl font-semibold">{{ $product->title }}</h2>
-                        <p class="text-gray-600 text-sm">Purchased on {{ $order->created_at->format('F j, Y, g:i a') }}</p>
-                        @if ($product->price == 0)
-                            <span class="text-green-600 font-medium text-sm">Free Gift</span>
-                        @endif
+    @if ($orders->isEmpty())
+        <p class="text-gray-500 text-center">You haven’t purchased any products yet.</p>
+    @else
+        <div class="space-y-8">
+            @foreach ($orders as $order)
+                @if ($order->products->isNotEmpty())
+                    <div class="bg-white shadow-lg rounded-2xl p-6 border border-gray-100">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                            <div>
+                                <h2 class="text-lg font-semibold text-emerald-700">Order #{{ $order->id }}</h2>
+                                <p class="text-gray-500 text-sm">
+                                    {{ $order->created_at->format('F j, Y, g:i a') }}
+                                </p>
+                            </div>
+                            <span class="text-emerald-600 font-bold mt-2 sm:mt-0">
+                                €{{ number_format($order->total_price, 2) }}
+                            </span>
+                        </div>
+
+                        <div class="border-t border-gray-200 pt-4 space-y-3">
+                            @foreach ($order->products as $product)
+                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                                    <div>
+                                        <p class="font-medium text-gray-900">{{ $product->title }}</p>
+                                    </div>
+                                    <a href="{{ URL::signedRoute('download.file', ['order' => $order->id, 'product' => $product->slug]) }}"
+                                       class="mt-2 sm:mt-0 inline-block bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-md text-sm font-semibold transition">
+                                        Download
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
-                    <a href="{{ URL::signedRoute('download.file', ['order' => $order->id, 'product' => $product->slug]) }}"
-                       class="bg-emerald-500 text-white p-4 rounded block text-center my-3">
-                        Download
-                    </a>
-                </div>
+                @endif
             @endforeach
         </div>
-    @else
-        <p class="text-gray-500">You haven't purchased any products yet.</p>
     @endif
 </div>
 @endsection

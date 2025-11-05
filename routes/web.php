@@ -122,8 +122,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/journey/{post}', [PostController::class, 'destroy'])->name('journey.destroy');
     Route::post('/posts/{post}/like', [PostController::class, 'toggle'])->name('posts.like');
     Route::post('/users/{user}/follow', [ProfileController::class, 'toggle'])->name('users.follow');
-    Route::post('/posts/{post}/comments', [PostController::class, 'storeComment'])->middleware('auth')->name('comments.store');
     Route::get('/posts/{post}/comments', [PostController::class, 'indexComments']);
+    Route::post('/posts/{post}/comments', [PostController::class, 'storeComment'])->name('comments.store');
+    Route::delete('/posts/{post}/comments/{comment}', [PostController::class, 'destroyComment'])->name('comments.destroy');
 
 
 });

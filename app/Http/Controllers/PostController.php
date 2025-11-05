@@ -113,24 +113,6 @@ class PostController extends Controller
             'liked' => $liked,
         ]);
     }
-    public function storeComment(Request $request, Post $post)
-    {
-        $request->validate([
-            'body' => 'required|string|max:1000',
-        ]);
-
-        $comment = $post->comments()->create([
-            'user_id' => auth()->id(),
-            'body' => $request->body,
-        ]);
-
-        return response()->json([
-            'user' => $comment->user->username,
-            'body' => $comment->body,
-            'time' => $comment->created_at->diffForHumans(),
-            'count' => $post->comments()->count(),
-        ]);
-    }
     public function indexComments(Post $post)
     {
         return response()->json([
@@ -142,6 +124,43 @@ class PostController extends Controller
                 ];
             }),
             'count' => $post->comments()->count(),
+        ]);
+    }
+    public function storeComment(Request $request, Post $post)
+    {
+        $request->validate([
+            'body' => 'required|string|max:1000',
+        ]);
+
+        $comment = $post->comments()->create([
+            'user_id' => auth()->id(),
+            'body' => $request->body,
+        ]);
+
+        $comment->load('user');
+
+        return response()->json([
+            'id' => $comment->id,
+            'user' => $comment->user->username,
+            'profile_image' => $comment->user->profile_image ? asset('storage/' . $comment->user->profile_image) : null,
+            'body' => $comment->body,
+            'time' => $comment->created_at->diffForHumans(),
+            'count' => $post->comments()->count(),
+        ]);
+    }
+
+    public function destroyComment(Post $post, $commentId)
+    {
+        $comment = $post->comments()->findOrFail($commentId);
+
+        if ($comment->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $comment->delete();
+
+        return response()->json([
+            'count' => $post->comments()->count()
         ]);
     }
 }

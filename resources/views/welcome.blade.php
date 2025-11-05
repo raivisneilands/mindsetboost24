@@ -4,85 +4,135 @@
 @section('meta_description', 'Mindset Boost 24 helps you build unstoppable discipline, focus, and routines with digital tools, challenges, and guides.')
 
 @section('content')
+<nav class="absolute top-0 left-0 w-full bg-transparent text-white z-50" x-data="{ open: false }">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        {{-- Logo --}}
+        <a href="{{ route('home') }}" class="text-2xl font-bold flex items-center gap-2">
+            <img src="{{ asset('favicon.png') }}" alt="Mindset Boost 24" class="w-10 h-10">
+            <span>Mindset Boost 24</span>
+        </a>
+
+        {{-- Desktop Menu --}}
+        <div class="hidden md:flex items-center gap-6">
+            <a href="{{ route('products.index') }}" class="hover:text-emerald-400 transition">Products</a>
+            <a href="{{ route('packs.index') }}" class="hover:text-emerald-400 transition">Packs</a>
+            <a href="#free-products" class="hover:text-emerald-400 transition">Free Tools</a>
+
+            @guest
+                <a href="{{ route('register') }}" class="px-4 py-2 bg-emerald-500 text-white rounded-full font-medium hover:bg-emerald-600 transition">Sign Up</a>
+                <a href="{{ route('login') }}" class="px-4 py-2 text-white rounded-full font-medium hover:bg-emerald-500 transition border border-white">Login</a>
+            @endguest
+        </div>
+
+        {{-- Mobile Hamburger --}}
+        <div class="md:hidden flex items-center">
+            <button @click="open = !open" class="focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    <path x-show="open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    {{-- Mobile Menu --}}
+    <div x-show="open" x-transition class="md:hidden bg-emerald-700/90 text-white">
+        <a href="{{ route('products.index') }}" class="block px-6 py-3 hover:bg-emerald-600 transition">Products</a>
+        <a href="{{ route('packs.index') }}" class="block px-6 py-3 hover:bg-emerald-600 transition">Packs</a>
+        <a href="#free-products" class="block px-6 py-3 hover:bg-emerald-600 transition">Free Tools</a>
+
+        @guest
+            <a href="{{ route('register') }}" class="block px-6 py-3 bg-emerald-500 text-white font-medium hover:bg-emerald-600 transition rounded-b-md">Sign Up</a>
+            <a href="{{ route('login') }}" class="block px-6 py-3 text-white font-medium hover:bg-emerald-500 transition border-t border-white">Login</a>
+        @endguest
+    </div>
+</nav>
+
+
+
 <div class="bg-emerald-50 min-h-screen">
 
     {{-- 🔥 HERO: Attention-Grabbing Start --}}
-    <section class="relative bg-cover bg-center bg-no-repeat text-white py-32 overflow-hidden" style="background-image: url('{{ asset('images/hero-background.jpg') }}');">
-        {{-- Pre-signup welcome gift message --}}
-        @guest
-            <div class="relative z-20 max-w-3xl mx-auto px-4 sm:px-6 py-4 mb-8
-                        bg-emerald-600/95 text-white rounded-2xl shadow-xl 
-                        border border-emerald-400 text-center text-base sm:text-lg 
-                        animate-pulse-slow mx-3 sm:mx-auto">
-                🎁 <strong>Sign up today</strong> and unlock 
-                <span class="font-semibold">multiple free resources</span> instantly after verifying your email!
-            </div>
-        @endguest
-
-        @if(session('gift'))
-            <div class="relative z-20 max-w-3xl mx-auto px-4 py-4 mb-8 
-                        bg-emerald-500/95 text-white rounded-2xl shadow-xl 
-                        border border-emerald-300 text-center text-base sm:text-lg">
-                {!! session('gift') !!}
-            </div>
-        @endif
+    <section class="relative bg-cover bg-center bg-no-repeat text-white py-32 overflow-hidden" 
+    style="background-image: url('{{ asset('images/hero-background.jpg') }}');">
 
         {{-- Gradient overlays --}}
-        <div class="absolute inset-0 bg-gradient-to-br from-emerald-700/80 via-emerald-800/70 to-emerald-900/70"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent opacity-40 animate-pulse pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-emerald-800/80 via-emerald-900/80 to-black/70"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent opacity-40 pointer-events-none"></div>
 
-        <div class="container mx-auto px-6 text-center relative z-10 max-w-6xl">
+        <div class="container mx-auto px-6 text-center relative z-10 max-w-5xl">
+
             {{-- Headline --}}
-            <h1 class="font-extrabold tracking-tight mb-6 leading-tight drop-shadow-lg 
-                    text-3xl sm:text-3xl md:text-4xl lg:text-5xl">
-                <span class="block sm:inline">Build Relentless Discipline, Focus & Routines</span>
-                <br class="hidden md:block">
-                <span class="block sm:inline">Start Mastering Your Mindset</span>
+            <h1 class="font-extrabold tracking-tight mb-6 leading-tight drop-shadow-lg text-3xl sm:text-4xl md:text-5xl">
+                Build Relentless Discipline, Focus, Routines
             </h1>
 
-
             {{-- Subheadline --}}
-            <h2 class="text-lg md:text-2xl font-light my-10 text-white/90">
-                Stop waiting. Build unbreakable <span class="font-semibold text-emerald-200">habits, focus, and routines</span> that move the needle.  
-                <span class="font-bold text-emerald-100 block">🔥 Grab your <span class="underline text-emerald-200"><a href="#free-products">free starter tools </a></span> and begin your ascent.</span>
-            </h2>
-
+            <p class="text-lg md:text-xl font-light text-white/90 mb-10 max-w-3xl mx-auto">
+                Stop drifting. Strengthen your mindset, one system at a time — and see your discipline transform into daily momentum.
+            </p>
 
             {{-- CTA Buttons --}}
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 mb-8">
-                <a href="{{ route('products.index') }}" class="px-8 py-4 bg-white text-emerald-800 font-semibold rounded-full shadow-lg hover:shadow-xl hover:bg-gray-100 transition text-lg w-full sm:w-auto">
+            <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
+                <a href="{{ route('products.index') }}" 
+                class="px-8 py-4 bg-white text-emerald-800 font-semibold rounded-full shadow-lg hover:shadow-xl hover:bg-gray-100 transition text-lg w-full sm:w-auto">
                     Browse All Products
                 </a>
-                <a href="{{ route('ascend.index') }}" class="px-8 py-4 bg-white/20 border border-white text-white backdrop-blur-md rounded-full font-medium hover:bg-white/30 transition text-lg w-full sm:w-auto">
-                    Share Your Journey
-                </a>
-                <a href="{{ route('about') }}" class="px-8 py-4 bg-white/20 border border-white text-white backdrop-blur-md rounded-full font-medium hover:bg-white/30 transition text-lg w-full sm:w-auto">
-                    How It All Started
-                </a>
-                <a href="{{ route('packs.index') }}" 
-                    class="px-8 py-4 bg-white/20 border border-white text-white backdrop-blur-md rounded-full font-medium hover:bg-white/30 transition text-lg w-full sm:w-auto">
-                    View Product Packs
+
+                <a href="#free-products" 
+                class="px-8 py-4 bg-emerald-500/20 border border-white text-white rounded-full backdrop-blur-md font-medium hover:bg-white/20 transition text-lg w-full sm:w-auto">
+                    Get Free Starter Tools
                 </a>
             </div>
 
-            {{-- Auth Buttons --}}
             @guest
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-3 text-sm mt-4">
-                    <a href="{{ route('login') }}" class="px-6 py-2 bg-white/10 border border-white/20 rounded-full hover:bg-white/20 transition">
-                        Log in
-                    </a>
-                    <a href="{{ route('register') }}" class="px-6 py-2 bg-emerald-500 text-white rounded-full shadow hover:bg-emerald-600 transition">
-                        Register Free
-                    </a>
+                <div class="mt-10 text-sm sm:text-base text-white/80">
+                    🎁 Create a free account and unlock your first downloads instantly.
                 </div>
             @endguest
 
-            {{-- Closing tagline --}}
-            <p class="mt-16 italic text-white/60">
-                Every moment you wait is a step backwards. Take control now.
+            <p class="mt-12 italic text-white/60">
+                Every moment you wait is a step backward. Begin your ascent now.
             </p>
         </div>
     </section>
+
+    {{-- 💪 WHAT YOU’LL BUILD --}}
+    <section class="py-24 bg-white text-center">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-emerald-800 mb-6 uppercase tracking-wide">
+                What You’ll Build With Mindset Boost 24
+            </h2>
+            <p class="text-lg text-gray-700 mb-12 max-w-3xl mx-auto">
+                These tools aren’t just downloads — they’re blueprints for a stronger, more focused version of you.  
+                Step by step, you’ll create habits that outlast motivation.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 text-left">
+                <div class="p-8 bg-emerald-50 border border-emerald-100 rounded-2xl shadow hover:shadow-lg transition">
+                    <h3 class="text-xl font-bold text-emerald-800 mb-2">Unbreakable Discipline</h3>
+                    <p class="text-gray-700">Master the art of consistency. Build the discipline to act even when you don’t feel like it.</p>
+                </div>
+                <div class="p-8 bg-emerald-50 border border-emerald-100 rounded-2xl shadow hover:shadow-lg transition">
+                    <h3 class="text-xl font-bold text-emerald-800 mb-2">Laser-Sharp Focus</h3>
+                    <p class="text-gray-700">Cut distractions and train your mind to lock onto what truly matters each day.</p>
+                </div>
+                <div class="p-8 bg-emerald-50 border border-emerald-100 rounded-2xl shadow hover:shadow-lg transition">
+                    <h3 class="text-xl font-bold text-emerald-800 mb-2">Sustainable Routines</h3>
+                    <p class="text-gray-700">Build morning and evening systems that keep you on track without burnout.</p>
+                </div>
+            </div>
+
+            <div class="mt-12">
+                <a href="{{ route('products.index') }}" 
+                class="inline-block px-8 py-4 bg-emerald-600 text-white font-semibold rounded-full shadow-lg hover:bg-emerald-700 transition text-lg">
+                    Start Building Today
+                </a>
+            </div>
+        </div>
+    </section>
+
+
 
     {{-- 🌟 FEATURED PRODUCT --}}
     @if(isset($featuredProduct))

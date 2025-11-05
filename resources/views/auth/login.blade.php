@@ -6,38 +6,25 @@
     @vite('resources/css/app.css')
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
+<body class="min-h-screen bg-gradient-to-br from-emerald-700 via-emerald-500 to-emerald-300 flex items-center justify-center relative overflow-hidden">
 
-<body class="min-h-screen bg-gradient-to-tr from-emerald-600 via-emerald-400 to-emerald-500 flex items-center justify-center relative overflow-hidden">
+    {{-- Subtle radial glow --}}
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.2),transparent_60%)] animate-pulse-slow"></div>
 
-    {{-- Decorative subtle glow --}}
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(255,255,255,0.2),transparent_60%)]"></div>
-
-    {{-- Floating motivational quote --}}
-    <div class="absolute top-8 text-center w-full text-white/80 text-sm tracking-wide animate-pulse">
-        “Discipline begins the moment you decide to act.”
-    </div>
-
-    <div class="relative backdrop-blur-2xl bg-white/15 border border-white/20 rounded-2xl shadow-2xl w-full max-w-md p-10 mx-4 text-white">
+    <div class="relative w-full max-w-md bg-white/20 backdrop-blur-3xl border border-white/20 rounded-3xl shadow-lg p-6 sm:p-8 flex flex-col items-center">
 
         {{-- Logo --}}
-        <div class="flex justify-center mb-4">
-            <img src="{{ asset('favicon.png') }}" alt="Mindset Boost 24 Logo" class="h-10 opacity-90">
+        <div class="mb-4 flex justify-center">
+            <img src="{{ asset('favicon.png') }}" alt="Mindset Boost 24" class="w-12 h-12">
         </div>
 
-        {{-- Headline --}}
-        <h2 class="text-3xl font-extrabold text-center mb-2 drop-shadow-sm">Welcome Back</h2>
-        <p class="text-center text-white/80 text-sm mb-6">
-            Log in to continue your <span class="text-emerald-200 font-semibold">Mindset Mastery</span> journey.
-        </p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-center text-white mb-2">Welcome Back</h2>
+        <p class="text-center text-white/70 mb-6 text-sm sm:text-base">Log in to continue your growth journey.</p>
 
         {{-- Error messages --}}
         @if ($errors->any())
-            <div class="mb-4 rounded-md bg-red-100 border border-red-400 px-4 py-3 text-red-700 relative">
-                <button class="absolute top-2 right-3 text-red-500 hover:text-red-700" onclick="this.parentElement.remove();">
-                    &times;
-                </button>
+            <div class="mb-4 rounded-md bg-red-100/20 border border-red-400 px-4 py-3 text-red-200 relative w-full">
                 <ul class="list-disc list-inside">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -46,36 +33,40 @@
             </div>
         @endif
 
-        {{-- Login form --}}
-        <form method="POST" action="{{ route('login') }}" class="space-y-5">
+        <form method="POST" action="{{ route('login') }}" class="space-y-4 w-full">
             @csrf
 
-            <div>
-                <label for="email" class="block mb-1 text-white/80 font-medium">Email</label>
-                <input id="email" type="email" name="email" required autofocus
-                    class="w-full px-4 py-2 border border-white/30 bg-white/10 text-white placeholder-white/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300">
+            <input type="email" name="email" placeholder="Email" required autofocus
+                class="w-full px-4 py-2.5 rounded-lg border border-white/30 bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-emerald-300 transition">
+
+            <input type="password" name="password" placeholder="Password" required
+                class="w-full px-4 py-2.5 rounded-lg border border-white/30 bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-emerald-300 transition">
+
+            <div class="flex justify-between text-sm text-white/80">
+                <a href="{{ route('password.request') }}" class="hover:underline">Forgot password?</a>
             </div>
 
-            <div>
-                <label for="password" class="block mb-1 text-white/80 font-medium">Password</label>
-                <input id="password" type="password" name="password" required
-                    class="w-full px-4 py-2 border border-white/30 bg-white/10 text-white placeholder-white/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300">
-            </div>
-
-            <div class="flex items-center justify-between text-sm">
-                <a href="{{ route('password.request') }}" class="text-emerald-100 hover:underline">Forgot password?</a>
-            </div>
-
-            <button type="submit"
-                class="w-full bg-emerald-500/90 text-white py-3 px-4 rounded-lg font-semibold hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-400/30 transition-all duration-300">
+            <button type="submit" class="w-full bg-emerald-500 text-white py-2.5 rounded-lg font-semibold hover:bg-emerald-600 transition">
                 Log In
             </button>
 
-            <p class="text-center text-sm text-white/80 mt-4">
-                Don’t have an account?
-                <a href="{{ route('register') }}" class="text-emerald-100 hover:underline">Join the movement</a>
+            <p class="text-center text-sm text-white/80 mt-3">
+                Don’t have an account? <a href="{{ route('register') }}" class="text-white font-semibold hover:underline">Join the Ascent</a>
             </p>
         </form>
+
     </div>
+
+    <style>
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        .animate-pulse-slow { animation: pulse-slow 3s infinite; }
+    </style>
 </body>
 </html>

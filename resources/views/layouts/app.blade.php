@@ -70,7 +70,10 @@
     @endif
     
     @if(auth()->check() && auth()->user()->is_admin)
-        @include('components.admin-navigation')
+        @if (!Request::is('/'))
+            @include('components.admin-navigation')
+    
+            @endif
     @endif
 
     <main class="flex-grow">

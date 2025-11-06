@@ -105,22 +105,26 @@ class CheckoutController extends Controller
 
         // Determine the total amount in cents
         $amount = intval(($pack->discounted_price ?? $pack->total_price) * 100);
-
+        
         // Handle free pack (or below Stripe minimum)
         if ($amount < 50) {
-            // Create order if it doesn’t exist
-            $pendingOrder = Order::firstOrCreate(
-                [
-                    'user_id' => $user->id,
-                    'status' => 'completed', // mark as completed immediately for free
-                ],
-                [
-                    'total_price' => 0,
-                ]
-            );
+            // Check if user already has a completed order for THIS pack
+            $pendingOrder = Order::where('user_id', $user->id)
+                ->where('status', 'completed')
+                ->whereHas('orderItems', function($q) use ($pack) {
+                    $q->whereIn('product_id', $pack->products->pluck('id'));
+                })
+                ->first();
 
-            foreach ($pack->products as $product) {
-                if (!OrderItem::where('order_id', $pendingOrder->id)->where('product_id', $product->id)->exists()) {
+            if (!$pendingOrder) {
+                // Create a new completed order for this pack
+                $pendingOrder = Order::create([
+                    'user_id' => $user->id,
+                    'status' => 'completed',
+                    'total_price' => 0,
+                ]);
+
+                foreach ($pack->products as $product) {
                     OrderItem::create([
                         'order_id' => $pendingOrder->id,
                         'product_id' => $product->id,

@@ -87,14 +87,13 @@ class CheckoutController extends Controller
 
     public function showPack(ProductPack $pack)
     {
-        Stripe::setApiKey(config('services.stripe.secret'));
         $user = auth()->user();
 
-        // ✅ Skip if user already owns all products
+        // ✅ Check if user already owns all products in the pack
         $alreadyOwned = $pack->products->every(fn($p) =>
             Order::where('user_id', $user->id)
                 ->whereHas('orderItems', fn($q) => $q->where('product_id', $p->id))
-                ->whereIn('status', ['paid', 'completed'])
+                ->whereIn('status', ['paid', 'completed', 'welcome gift', 'free'])
                 ->exists()
         );
 
@@ -103,42 +102,42 @@ class CheckoutController extends Controller
                 ->with('message', 'You already own all products in this pack.');
         }
 
-        // Determine the total amount in cents
-        $amount = intval(($pack->discounted_price ?? $pack->total_price) * 100);
-        
-        // Handle free pack (or below Stripe minimum)
-        if ($amount < 50) {
-            // Check if user already has a completed order for THIS pack
-            $pendingOrder = Order::where('user_id', $user->id)
-                ->where('status', 'completed')
-                ->whereHas('orderItems', function($q) use ($pack) {
-                    $q->whereIn('product_id', $pack->products->pluck('id'));
-                })
-                ->first();
-
-            if (!$pendingOrder) {
-                // Create a new completed order for this pack
-                $pendingOrder = Order::create([
+        // ✅ Handle free packs
+        if (($pack->discounted_price ?? $pack->total_price) <= 0) {
+            // Create a free order if not already exists
+            $freeOrder = Order::firstOrCreate(
+                [
                     'user_id' => $user->id,
-                    'status' => 'completed',
+                    'status' => 'free',
                     'total_price' => 0,
-                ]);
+                ],
+                [
+                    'stripe_payment_intent_id' => null,
+                ]
+            );
 
-                foreach ($pack->products as $product) {
-                    OrderItem::create([
-                        'order_id' => $pendingOrder->id,
+            foreach ($pack->products as $product) {
+                // Avoid duplicate entries
+                OrderItem::firstOrCreate(
+                    [
+                        'order_id' => $freeOrder->id,
                         'product_id' => $product->id,
+                    ],
+                    [
                         'quantity' => 1,
                         'price' => 0,
-                    ]);
-                }
+                    ]
+                );
             }
 
             return redirect()->route('purchases.index')
-                ->with('message', 'Free pack added to your account!');
+                ->with('message', 'You have successfully claimed your free pack!');
         }
 
-        // ✅ Reuse pending order if exists
+        // ✅ Paid pack flow with Stripe
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        // Reuse pending order if exists
         $pendingOrder = Order::where('user_id', $user->id)
             ->where('status', 'pending')
             ->whereHas('orderItems', function ($q) use ($pack) {
@@ -146,25 +145,13 @@ class CheckoutController extends Controller
             })
             ->first();
 
-        try {
-            if ($pendingOrder && $pendingOrder->stripe_payment_intent_id) {
-                $intent = PaymentIntent::retrieve($pendingOrder->stripe_payment_intent_id);
+        $amount = intval(($pack->discounted_price ?? $pack->total_price) * 100);
 
-                if (!in_array($intent->status, ['requires_payment_method', 'requires_confirmation'])) {
-                    // Create new intent if old one is used/cancelled
-                    $intent = PaymentIntent::create([
-                        'amount' => $amount,
-                        'currency' => 'eur',
-                        'metadata' => [
-                            'user_id' => $user->id,
-                            'pack_id' => $pack->id,
-                            'type' => 'pack',
-                        ],
-                    ]);
-                    $pendingOrder->update(['stripe_payment_intent_id' => $intent->id]);
-                }
-            } else {
-                // Create new PaymentIntent and pending order
+        if ($pendingOrder) {
+            $intent = PaymentIntent::retrieve($pendingOrder->stripe_payment_intent_id);
+
+            if (!in_array($intent->status, ['requires_payment_method', 'requires_confirmation'])) {
+                // Create a new intent if old one is used or canceled
                 $intent = PaymentIntent::create([
                     'amount' => $amount,
                     'currency' => 'eur',
@@ -174,26 +161,35 @@ class CheckoutController extends Controller
                         'type' => 'pack',
                     ],
                 ]);
-
-                $pendingOrder = Order::create([
-                    'user_id' => $user->id,
-                    'status' => 'pending',
-                    'total_price' => $pack->discounted_price ?? $pack->total_price,
-                    'stripe_payment_intent_id' => $intent->id,
-                ]);
-
-                foreach ($pack->products as $product) {
-                    OrderItem::create([
-                        'order_id' => $pendingOrder->id,
-                        'product_id' => $product->id,
-                        'quantity' => 1,
-                        'price' => $product->active_price ?? 0,
-                    ]);
-                }
+                $pendingOrder->update(['stripe_payment_intent_id' => $intent->id]);
             }
-        } catch (\Exception $e) {
-            \Log::error('Stripe PaymentIntent error: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Unable to create payment. Please try again later.');
+        } else {
+            // Create new PaymentIntent and order
+            $intent = PaymentIntent::create([
+                'amount' => $amount,
+                'currency' => 'eur',
+                'metadata' => [
+                    'user_id' => $user->id,
+                    'pack_id' => $pack->id,
+                    'type' => 'pack',
+                ],
+            ]);
+
+            $pendingOrder = Order::create([
+                'user_id' => $user->id,
+                'status' => 'pending',
+                'total_price' => $pack->discounted_price ?? $pack->total_price,
+                'stripe_payment_intent_id' => $intent->id,
+            ]);
+
+            foreach ($pack->products as $product) {
+                OrderItem::create([
+                    'order_id' => $pendingOrder->id,
+                    'product_id' => $product->id,
+                    'quantity' => 1,
+                    'price' => $product->active_price,
+                ]);
+            }
         }
 
         return view('checkout.pack', [
@@ -202,6 +198,7 @@ class CheckoutController extends Controller
             'paymentIntentId' => $intent->id,
         ]);
     }
+
 
 
     public function success(Request $request)

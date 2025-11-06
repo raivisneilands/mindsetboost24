@@ -11,11 +11,12 @@ class PurchaseController extends Controller
     {
         $user = auth()->user();
 
+        // ✅ Get all relevant orders, including free packs
         $orders = $user->orders()
             ->with(['products' => function ($q) {
                 $q->select('products.id', 'title', 'slug');
             }])
-            ->whereIn('status', ['paid', 'completed', 'welcome gift'])
+            ->whereIn('status', ['paid', 'completed', 'welcome gift', 'free'])
             ->latest()
             ->get();
 
@@ -33,4 +34,5 @@ class PurchaseController extends Controller
 
         return view('purchases.index', compact('orders'));
     }
+
 }

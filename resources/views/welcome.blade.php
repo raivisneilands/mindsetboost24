@@ -54,7 +54,7 @@
 
     {{-- 🔥 HERO: Attention-Grabbing Start --}}
     <section class="relative bg-cover bg-center bg-no-repeat text-white py-32 overflow-hidden" 
-    style="background-image: url('{{ asset('images/hero-background.jpg') }}');">
+        style="background-image: url('{{ asset('images/hero-background.jpg') }}');">
 
         {{-- Gradient overlays --}}
         <div class="absolute inset-0 bg-gradient-to-br from-emerald-800/80 via-emerald-900/80 to-black/70"></div>
@@ -79,9 +79,9 @@
                     Browse All Products
                 </a>
 
-                <a href="#free-products" 
+                <a href="{{ route('packs.show', 'mindset-boost-free-starter-pack') }}" 
                 class="px-8 py-4 bg-emerald-500/20 border border-white text-white rounded-full backdrop-blur-md font-medium hover:bg-white/20 transition text-lg w-full sm:w-auto">
-                    Get Free Starter Tools
+                    Get Started Here
                 </a>
             </div>
 

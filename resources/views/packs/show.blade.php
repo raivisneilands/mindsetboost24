@@ -21,14 +21,17 @@
 
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-lg text-gray-600 mb-2">
-                    Regular price: <span class="line-through text-gray-400">{{ display_price($pack->total_price) }}</span>
-                </p>
-                <p class="text-2xl font-bold text-emerald-600">
-                    Now only: {{ display_price($pack->discounted_price) }}
-                </p>
+                @if($pack->discounted_price == 0)
+                    <p class="text-2xl font-bold text-emerald-600">Free</p>
+                @else
+                    <p class="text-lg text-gray-600 mb-2">
+                        Regular price: <span class="line-through text-gray-400">{{ display_price($pack->total_price) }}</span>
+                    </p>
+                    <p class="text-2xl font-bold text-emerald-600">
+                        Now only: {{ display_price($pack->discounted_price) }}
+                    </p>
+                @endif
             </div>
-
             <a href="{{ route('checkout.pack', $pack->slug) }}" 
                class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-xl transition">
                Get This Pack

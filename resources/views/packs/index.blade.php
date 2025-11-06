@@ -39,17 +39,30 @@
 
                         {{-- Pricing --}}
                         @php
-                            $savings = round((($pack->total_price - $pack->discounted_price) / $pack->total_price) * 100);
+                            $isFree = $pack->discounted_price == 0;
+                            $savings = 0;
+                            if (!$isFree && $pack->total_price > 0) {
+                                $savings = round((($pack->total_price - $pack->discounted_price) / $pack->total_price) * 100);
+                            }
                         @endphp
+
                         <div class="flex items-center justify-between mb-3">
                             <div>
-                                <span class="text-gray-400 line-through text-sm">{{ display_price($pack->total_price) }}</span>
-                                <span class="text-emerald-600 text-2xl font-bold ml-2">{{ display_price($pack->discounted_price) }}</span>
+                                @if($isFree)
+                                    <span class="text-emerald-600 text-2xl font-bold">Free</span>
+                                @else
+                                    <span class="text-gray-400 line-through text-sm">{{ display_price($pack->total_price) }}</span>
+                                    <span class="text-emerald-600 text-2xl font-bold ml-2">{{ display_price($pack->discounted_price) }}</span>
+                                @endif
                             </div>
-                            <span class="bg-emerald-100 text-emerald-700 text-sm font-semibold py-1 px-2 rounded-full">
-                                -{{ $savings }}%
-                            </span>
+
+                            @if(!$isFree && $savings > 0)
+                                <span class="bg-emerald-100 text-emerald-700 text-sm font-semibold py-1 px-2 rounded-full">
+                                    -{{ $savings }}%
+                                </span>
+                            @endif
                         </div>
+
                     </div>
 
                     {{-- CTA --}}

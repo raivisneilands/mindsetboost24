@@ -68,13 +68,6 @@
     @if (!Request::is('/'))
         @include('components.navigation')
     @endif
-    
-    @if(auth()->check() && auth()->user()->is_admin)
-        @if (!Request::is('/'))
-            @include('components.admin-navigation')
-    
-            @endif
-    @endif
 
     <main class="flex-grow">
         @yield('content')

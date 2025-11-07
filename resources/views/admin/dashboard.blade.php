@@ -6,13 +6,14 @@
         <h1 class="text-4xl font-extrabold text-emerald-500 mb-10 text-center">Admin Dashboard</h1>
 
         <!-- Stats Overview -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
             @php
                 $stats = [
                     ['label' => 'Products', 'value' => $totalProducts, 'color' => 'text-emerald-600'],
                     ['label' => 'Orders', 'value' => $totalOrders, 'color' => 'text-lime-600'],
                     ['label' => 'Users', 'value' => $totalUsers, 'color' => 'text-green-600'],
                     ['label' => 'Downloads', 'value' => $totalDownloads, 'color' => 'text-emerald-500'],
+                    ['label' => 'Product Packs', 'value' => $totalPacks, 'color' => 'text-teal-600'],
                 ];
             @endphp
 
@@ -45,26 +46,60 @@
                     <li>
                         <a href="{{ route('admin.packs.index') }}" class="text-blue-600 hover:text-blue-800 hover:underline">🎁 Manage Product Packs</a>
                     </li>
-
                 </ul>
             </div>
 
-            <!-- Recent Products -->
-            <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Products</h2>
-                @if (\App\Models\Product::count())
-                    <ul class="divide-y divide-gray-200">
-                        @foreach (\App\Models\Product::latest()->take(5)->get() as $product)
-                            <li class="py-3 flex justify-between items-center">
-                                <span class="font-medium text-gray-700 truncate max-w-[70%]">{{ $product->title }}</span>
-                                <span class="text-sm text-gray-500">€{{ number_format($product->price, 2) }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                @else
-                    <p class="text-gray-500">No products found yet.</p>
-                @endif
-            </div>
+            <!-- Latest Products & Packs -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- Recent Products -->
+    <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Products</h2>
+        @if ($latestProducts->count())
+            <ul class="divide-y divide-gray-200">
+                @foreach ($latestProducts as $product)
+                    <li class="py-3 flex justify-between items-center">
+                        <span class="font-medium text-gray-700 truncate max-w-[70%]">{{ $product->title }}</span>
+                        <span class="text-sm text-gray-500">
+                            @if($product->price > 0)
+                                €{{ number_format($product->price, 2) }}
+                            @else
+                                Free
+                            @endif
+                        </span>
+                    </li>
+                @endforeach
+            </ul>
+        @else
+            <p class="text-gray-500">No products found yet.</p>
+        @endif
+    </div>
+
+    <!-- Recent Packs -->
+    <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Packs</h2>
+        @if ($latestPacks->count())
+            <ul class="divide-y divide-gray-200">
+                @foreach ($latestPacks as $pack)
+                    <li class="py-3 flex justify-between items-center">
+                        <span class="font-medium text-gray-700 truncate max-w-[70%]">{{ $pack->title }}</span>
+                        <span class="text-sm text-gray-500">
+                            @if($pack->discounted_price > 0)
+                                €{{ number_format($pack->discounted_price, 2) }}
+                            @else
+                                Free
+                            @endif
+                        </span>
+                    </li>
+                @endforeach
+            </ul>
+        @else
+            <p class="text-gray-500">No packs found yet.</p>
+        @endif
+    </div>
+
+</div>
+
         </div>
     </div>
 </div>

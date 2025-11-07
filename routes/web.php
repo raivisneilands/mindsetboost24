@@ -135,7 +135,10 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
             'totalProducts' => \App\Models\Product::count(),
             'totalOrders' => \App\Models\Order::count(),
             'totalUsers' => \App\Models\User::count(),
-            'totalDownloads' => \App\Models\DownloadLog::count(), // or your custom logic
+            'totalDownloads' => \App\Models\DownloadLog::count(), 
+            'totalPacks' => \App\Models\ProductPack::count(),
+            'latestProducts' => \App\Models\Product::latest()->take(5)->get(),
+            'latestPacks' => \App\Models\ProductPack::latest()->take(5)->get(),
         ]);
     })->name('dashboard');
 

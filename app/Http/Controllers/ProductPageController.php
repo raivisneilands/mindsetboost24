@@ -10,7 +10,7 @@ class ProductPageController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::withCount('orderItems') // For purchase count
+        $query = Product::withCount('downloadLogs') // For download count
                     ->withAvg('reviews', 'rating'); // For average rating
 
         // Filter by category if selected
@@ -50,6 +50,7 @@ class ProductPageController extends Controller
 
         $products = $query->paginate(12)->withQueryString(); // <– this preserves filters when paginating
         $categories = Category::orderBy('name')->get();
+
 
         return view('products.index', compact('products', 'categories'));
     }

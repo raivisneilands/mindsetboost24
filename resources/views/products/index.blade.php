@@ -178,8 +178,8 @@
 
                         {{-- Social Proof --}}
                         <div class="p-4 border-t border-emerald-100 text-sm text-gray-600 select-none">
-                            @if($product->order_items_count > 0)
-                                {{ $product->order_items_count }} {{ Str::plural('person', $product->order_items_count) }} purchased
+                            @if($product->download_logs_count > 0)
+                                {{ $product->download_logs_count }} {{ Str::plural('download', $product->download_logs_count) }}
                             @else
                                 <span class="italic text-gray-400">Be the first to grab this!</span>
                             @endif

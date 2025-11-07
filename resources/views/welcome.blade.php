@@ -13,14 +13,49 @@
         </a>
 
         {{-- Desktop Menu --}}
-        <div class="hidden md:flex items-center gap-6">
-            <a href="{{ route('products.index') }}" class="hover:text-emerald-400 transition">Products</a>
-            <a href="{{ route('packs.index') }}" class="hover:text-emerald-400 transition">Packs</a>
-            <a href="#free-products" class="hover:text-emerald-400 transition">Free Tools</a>
+        <div class="hidden md:flex items-center gap-5 mt-3">
+            <a href="{{ route('products.index') }}" class="hover:text-emerald-400 hover:font-semibold transition-all">Products</a>
+            <a href="{{ route('packs.index') }}" class="hover:text-emerald-400 hover:font-semibold transition-all">Packs</a>
+            <a href="#free-products" class="hover:text-emerald-400 hover:font-semibold transition-all">Free Tools</a>
+            @auth
+                <div x-data="{ dropdown: false }" class="relative">
+                    <button @click="dropdown = !dropdown" class="flex items-center gap-2 text-white font-bold hover:text-emerald-400">
+                        @if (auth()->user()->profile_image)
+                            <img src="{{ asset('storage/' . auth()->user()->profile_image) }}"
+                                class="w-8 h-8 rounded-full object-cover border border-gray-200">
+                        @else
+                            <svg class="w-8 h-8 rounded-full bg-white p-1 mr-2 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"> <path d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 110-8 4 4 0 010 8z"/> </svg>
+                        @endif
+
+                        <span>{{ auth()->user()->name }}</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div
+                        x-show="dropdown" @click.away="dropdown = false"
+                        x-transition
+                        class="absolute right-0 mt-3 w-48 bg-white shadow-lg rounded-lg py-2 border border-gray-100"
+                    >
+                        <a href="{{ route('profile.show', auth()->user()->username) }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">My Profile</a>
+                        <a href="{{ route('purchases.index') }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">My Purchases</a>
+                        <a href="{{ route('journal.index') }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">My Journal</a>
+                        @if(auth()->user()->is_admin ?? false)
+                            <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 font-semibold text-emerald-600 hover:bg-emerald-100">
+                                🛠 Admin Dashboard
+                            </a>
+                        @endif
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            @endauth
 
             @guest
-                <a href="{{ route('register') }}" class="px-4 py-2 bg-emerald-500 text-white rounded-full font-medium hover:bg-emerald-600 transition">Sign Up</a>
-                <a href="{{ route('login') }}" class="px-4 py-2 text-white rounded-full font-medium hover:bg-emerald-500 transition border border-white">Login</a>
+                <a href="{{ route('register') }}" class="px-3 py-1 bg-emerald-500 text-white rounded-full font-medium hover:bg-emerald-600 transition">Sign Up</a>
+                <a href="{{ route('login') }}" class="px-3 py-1 text-white rounded-full font-medium hover:bg-emerald-500 transition border border-white">Login</a>
             @endguest
         </div>
 

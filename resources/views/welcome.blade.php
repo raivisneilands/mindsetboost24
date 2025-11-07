@@ -4,38 +4,53 @@
 @section('meta_description', 'Mindset Boost 24 helps you build unstoppable discipline, focus, and routines with digital tools, challenges, and guides.')
 
 @section('content')
-<nav class="absolute top-0 left-0 w-full bg-transparent text-white z-50" x-data="{ open: false }">
+<nav 
+    x-data="{ open: false, scrolled: false }"
+    x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 50 })"
+    :class="scrolled ? 'bg-black/60 backdrop-blur-lg shadow-lg border-b border-white/10' : 'bg-transparent'"
+    class="fixed top-0 left-0 w-full z-50 text-white transition-all duration-500 ease-in-out"
+>
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {{-- Logo --}}
-        <a href="{{ route('home') }}" class="text-2xl font-bold flex items-center gap-2">
-            <img src="{{ asset('favicon.png') }}" alt="Mindset Boost 24" class="w-10 h-10">
-            <span>Mindset Boost 24</span>
+        <a href="{{ route('home') }}" class="text-2xl font-extrabold flex items-center gap-2 group">
+            <img src="{{ asset('favicon.png') }}" alt="Mindset Boost 24" class="w-10 h-10 transition-transform duration-500 group-hover:rotate-6">
+            <span class="tracking-tight group-hover:text-emerald-400 transition-colors">Mindset Boost 24</span>
         </a>
 
         {{-- Desktop Menu --}}
-        <div class="hidden md:flex items-center gap-5 mt-3">
-            <a href="{{ route('products.index') }}" class="hover:text-emerald-400 hover:font-semibold transition-all">Products</a>
-            <a href="{{ route('packs.index') }}" class="hover:text-emerald-400 hover:font-semibold transition-all">Packs</a>
-            <a href="#free-products" class="hover:text-emerald-400 hover:font-semibold transition-all">Free Tools</a>
+        <div class="hidden md:flex items-center gap-7">
+            <a href="{{ route('products.index') }}" class="relative hover:text-emerald-400 transition font-medium after:absolute after:bottom-[-6px] after:left-0 after:w-0 after:h-[2px] after:bg-emerald-400 hover:after:w-full after:transition-all after:duration-300">
+                Products
+            </a>
+            <a href="{{ route('packs.index') }}" class="relative hover:text-emerald-400 transition font-medium after:absolute after:bottom-[-6px] after:left-0 after:w-0 after:h-[2px] after:bg-emerald-400 hover:after:w-full after:transition-all after:duration-300">
+                Packs
+            </a>
+            <a href="#free-products" class="relative hover:text-emerald-400 transition font-medium after:absolute after:bottom-[-6px] after:left-0 after:w-0 after:h-[2px] after:bg-emerald-400 hover:after:w-full after:transition-all after:duration-300">
+                Free Tools
+            </a>
+
+            {{-- Auth --}}
             @auth
                 <div x-data="{ dropdown: false }" class="relative">
-                    <button @click="dropdown = !dropdown" class="flex items-center gap-2 text-white font-bold hover:text-emerald-400">
+                    <button @click="dropdown = !dropdown" class="flex items-center gap-2 font-semibold text-white hover:text-emerald-400 transition">
                         @if (auth()->user()->profile_image)
                             <img src="{{ asset('storage/' . auth()->user()->profile_image) }}"
-                                class="w-8 h-8 rounded-full object-cover border border-gray-200">
+                                class="w-8 h-8 rounded-full object-cover border border-white/30 shadow-sm">
                         @else
-                            <svg class="w-8 h-8 rounded-full bg-white p-1 mr-2 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"> <path d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 110-8 4 4 0 010 8z"/> </svg>
+                            <svg class="w-8 h-8 rounded-full bg-white/90 p-1 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 110-8 4 4 0 010 8z"/>
+                            </svg>
                         @endif
-
                         <span>{{ auth()->user()->name }}</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 mt-[2px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </button>
                     <div
-                        x-show="dropdown" @click.away="dropdown = false"
+                        x-show="dropdown" 
+                        @click.away="dropdown = false"
                         x-transition
-                        class="absolute right-0 mt-3 w-48 bg-white shadow-lg rounded-lg py-2 border border-gray-100"
+                        class="absolute right-0 mt-3 w-52 bg-white/95 backdrop-blur-lg shadow-2xl rounded-xl py-2 border border-gray-100"
                     >
                         <a href="{{ route('profile.show', auth()->user()->username) }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">My Profile</a>
                         <a href="{{ route('purchases.index') }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">My Purchases</a>
@@ -53,35 +68,43 @@
                 </div>
             @endauth
 
+            {{-- Guest --}}
             @guest
-                <a href="{{ route('register') }}" class="px-3 py-1 bg-emerald-500 text-white rounded-full font-medium hover:bg-emerald-600 transition">Sign Up</a>
-                <a href="{{ route('login') }}" class="px-3 py-1 text-white rounded-full font-medium hover:bg-emerald-500 transition border border-white">Login</a>
+                <a href="{{ route('register') }}" class="px-4 py-2 bg-emerald-500 text-white rounded-full font-semibold hover:bg-emerald-600 transition shadow-md hover:shadow-lg">Sign Up</a>
+                <a href="{{ route('login') }}" class="px-4 py-2 border border-white/60 text-white rounded-full font-semibold hover:bg-white hover:text-emerald-700 transition">Login</a>
             @endguest
         </div>
 
-        {{-- Mobile Hamburger --}}
+        {{-- Mobile Button --}}
         <div class="md:hidden flex items-center">
             <button @click="open = !open" class="focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    <path x-show="open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </button>
         </div>
     </div>
 
     {{-- Mobile Menu --}}
-    <div x-show="open" x-transition class="md:hidden bg-emerald-700/90 text-white">
-        <a href="{{ route('products.index') }}" class="block px-6 py-3 hover:bg-emerald-600 transition">Products</a>
-        <a href="{{ route('packs.index') }}" class="block px-6 py-3 hover:bg-emerald-600 transition">Packs</a>
-        <a href="#free-products" class="block px-6 py-3 hover:bg-emerald-600 transition">Free Tools</a>
+    <div 
+        x-show="open" 
+        x-transition
+        class="md:hidden bg-black/80 backdrop-blur-lg border-t border-white/10 text-white"
+    >
+        <a href="{{ route('products.index') }}" class="block px-6 py-3 hover:bg-emerald-600/30 transition">Products</a>
+        <a href="{{ route('packs.index') }}" class="block px-6 py-3 hover:bg-emerald-600/30 transition">Packs</a>
+        <a href="#free-products" class="block px-6 py-3 hover:bg-emerald-600/30 transition">Free Tools</a>
 
         @guest
-            <a href="{{ route('register') }}" class="block px-6 py-3 bg-emerald-500 text-white font-medium hover:bg-emerald-600 transition rounded-b-md">Sign Up</a>
-            <a href="{{ route('login') }}" class="block px-6 py-3 text-white font-medium hover:bg-emerald-500 transition border-t border-white">Login</a>
+            <a href="{{ route('register') }}" class="block px-6 py-3 bg-emerald-500 text-white font-semibold hover:bg-emerald-600 transition">Sign Up</a>
+            <a href="{{ route('login') }}" class="block px-6 py-3 border-t border-white/10 text-white font-semibold hover:bg-emerald-500/30 transition">Login</a>
         @endguest
     </div>
 </nav>
+
 
 
 

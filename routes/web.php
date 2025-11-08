@@ -20,6 +20,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ProductPackController;
+use App\Http\Controllers\HomeController;
 
 Route::get('/contact-support', [SupportController::class, 'showForm'])->name('support.form');
 Route::post('/contact-support', [SupportController::class, 'submitForm'])->name('support.submit');
@@ -60,24 +61,7 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('status', 'verification-link-sent');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-
-Route::get('/', function () {
-    $latestProducts = \App\Models\Product::where('status', 'published')
-                    ->latest()
-                    ->take(6)
-                    ->get();
-    $freeProducts = \App\Models\Product::where('price', 0)
-        ->where('status', 'published')
-        ->latest()
-        ->paginate(3, ['*'], 'free_page');
-    $userCount = \App\Models\User::count();
-    $featuredProduct = \App\Models\Product::withCount('orderItems')
-                        ->where('status', 'published')
-                        ->orderByDesc('order_items_count')
-                        ->first();
-
-    return view('welcome',  compact('latestProducts', 'userCount', 'featuredProduct', 'freeProducts'));
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::view('/about', 'about')->name('about');
 Route::get('/the-ascend', [PostController::class, 'index'])->name('ascend.index');

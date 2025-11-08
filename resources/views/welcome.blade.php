@@ -311,6 +311,52 @@
         </div>
     </section>
 
+    {{-- 🏆 TOP DOWNLOADS SECTION --}}
+    @if($topDownloads->count() > 0)
+    <section class="py-20 bg-gray-100 border-t border-gray-200">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-extrabold text-emerald-700 mb-12 text-center uppercase tracking-wide">
+                Top Downloads This Week
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                @foreach($topDownloads as $product)
+                    <div class="bg-white/70 backdrop-blur-md border border-emerald-100 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-emerald-200 hover:border-emerald-300 transition overflow-hidden flex flex-col">
+                        <div class="relative w-full h-52 bg-emerald-50 flex items-center justify-center border-b border-emerald-100">
+                            @if($product->cover_image)
+                                <img src="{{ asset('storage/' . $product->cover_image) }}" 
+                                    alt="{{ $product->title }}" 
+                                    class="object-contain w-full h-full p-6" 
+                                    loading="lazy" />
+                            @endif
+                        </div>
+                        <div class="flex-grow p-5 flex flex-col justify-between space-y-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-emerald-800 truncate mb-1">{{ $product->title }}</h3>
+                                <p class="text-sm text-gray-700 line-clamp-3">{!! strip_tags($product->description) !!}</p>
+                            </div>
+                            <div class="flex items-center justify-between pt-2">
+                                <span class="text-emerald-800 font-semibold text-base">
+                                    @if ($product->active_price == 0)
+                                        Free
+                                    @else
+                                        {{ display_price($product->active_price) }}
+                                    @endif
+                                </span>
+                                <a href="{{ route('products.show', $product->slug) }}"
+                                    class="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-full hover:bg-emerald-700 transition">
+                                    View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
+
+
     {{-- 🧰 LATEST DROPS --}}
     <section class="py-20 bg-emerald-50">
         <div class="container mx-auto px-6">

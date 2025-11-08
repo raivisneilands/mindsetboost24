@@ -29,21 +29,30 @@ class HomeController extends Controller
             ->orderByDesc('order_items_count')
             ->first();
 
-        $topDownloads = Cache::remember('top_downloads', 300, function () {
-            $popular = DB::table('download_logs')
-                ->select('product_id', DB::raw('COUNT(*) as total_downloads'))
-                ->groupBy('product_id')
-                ->orderByDesc('total_downloads')
-                ->limit(4)
-                ->get();
+    $topDownloads = Cache::remember('top_downloads', 300, function () {
+        // Step 1: Get top downloaded product IDs
+        $popular = DB::table('download_logs')
+            ->select('product_id', DB::raw('COUNT(*) as total_downloads'))
+            ->groupBy('product_id')
+            ->orderByDesc('total_downloads')
+            ->limit(10) // grab more in case some are drafts
+            ->get();
 
-            $productIds = $popular->pluck('product_id');
+        $productIds = $popular->pluck('product_id');
 
-            return Product::whereIn('id', $productIds)
-                ->where('status', 'published')
-                ->get()
-                ->sortByDesc(fn($product) => $popular->firstWhere('product_id', $product->id)->total_downloads);
-        });
+        // Step 2: Get only published products
+        $products = Product::whereIn('id', $productIds)
+            ->where('status', 'published')
+            ->get();
+
+        // Step 3: Sort by download count
+        $products = $products->sortByDesc(fn($product) => 
+            $popular->firstWhere('product_id', $product->id)->total_downloads
+        );
+
+        // Step 4: Limit to 4 products (skip drafts automatically)
+        return $products->take(3);
+    });
 
         return view('welcome', compact('latestProducts', 'userCount', 'featuredProduct', 'freeProducts', 'topDownloads'));
     }

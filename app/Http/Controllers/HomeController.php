@@ -34,7 +34,7 @@ class HomeController extends Controller
                 ->select('product_id', DB::raw('COUNT(*) as total_downloads'))
                 ->groupBy('product_id')
                 ->orderByDesc('total_downloads')
-                ->limit(3)
+                ->limit(4)
                 ->get();
 
             $productIds = $popular->pluck('product_id');

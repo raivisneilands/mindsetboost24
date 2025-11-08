@@ -316,7 +316,7 @@
     <section class="py-20 bg-gray-100 border-t border-gray-200">
         <div class="container mx-auto px-6">
             <h2 class="text-3xl font-extrabold text-emerald-700 mb-12 text-center uppercase tracking-wide">
-                Top Downloads This Week
+                Top Downloads by Community 
             </h2>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">

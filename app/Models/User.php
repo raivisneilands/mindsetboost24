@@ -89,4 +89,29 @@ class User extends Authenticatable implements MustVerifyEmail
     public function comments() {
         return $this->hasMany(Comment::class);
     }
+    public function badges()
+    {
+        return $this->belongsToMany(Badge::class)->withTimestamps();
+    }
+
+    public function hasBadge($slug)
+    {
+        return $this->badges->contains('slug', $slug);
+    }
+
+    public function awardBadge($slug)
+    {
+        $badge = Badge::where('slug', $slug)->first();
+
+        if (!$badge) return false;
+
+        if (!$this->hasBadge($slug)) {
+            $this->badges()->attach($badge->id);
+            session()->flash('badge_earned', $badge);
+            return true;
+        }
+
+        return false;
+    }
+
 }

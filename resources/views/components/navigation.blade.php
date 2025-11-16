@@ -77,6 +77,7 @@
                         <a href="{{ route('profile.show', auth()->user()->username) }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">My Profile</a>
                         <a href="{{ route('purchases.index') }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">My Purchases</a>
                         <a href="{{ route('journal.index') }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">My Journal</a>
+                        <a href="{{ route('badges.index') }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">My Badges</a>
                         @if(auth()->user()->is_admin ?? false)
                             <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 font-semibold text-emerald-600 hover:bg-emerald-100">
                                 🛠 Admin Dashboard
@@ -135,6 +136,7 @@
             <a href="{{ route('profile.show', auth()->user()->username) }}" class="block hover:text-emerald-600">My Profile</a>
             <a href="{{ route('purchases.index') }}" class="block hover:text-emerald-600">My Purchases</a>
             <a href="{{ route('journal.index') }}" class="block hover:text-emerald-600">My Journal</a>
+            <a href="{{ route('badges.index') }}" class="block hover:text-emerald-600">My Badges</a>
             @if(auth()->user()->is_admin ?? false)
                 <a href="{{ route('admin.dashboard') }}" class="block font-semibold text-emerald-600 hover:text-emerald-700">🛠 Admin Dashboard</a>
             @endif

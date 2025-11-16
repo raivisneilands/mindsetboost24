@@ -110,6 +110,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts/{post}/comments', [PostController::class, 'storeComment'])->name('comments.store');
     Route::delete('/posts/{post}/comments/{comment}', [PostController::class, 'destroyComment'])->name('comments.destroy');
 
+    Route::get('/badges', function () {
+        $user = auth()->user();
+
+        $badges = \App\Models\Badge::all();
+        $unlocked = $user ? $user->badges->pluck('id')->toArray() : [];
+
+        return view('badges.index', compact('badges', 'unlocked'));
+    })->name('badges.index');
 
 });
 

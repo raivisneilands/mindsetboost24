@@ -27,6 +27,13 @@
     {{-- AOS (Animate On Scroll) CSS --}}
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "u70117qlpe");
+    </script>
 </head>
 <style>
     /* Hide attachment button */
@@ -84,6 +91,31 @@
             </div>
         </div>
     </footer>
+
+    @if(session('badge_earned'))
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 4000)"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-4"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 translate-y-4"
+        class="fixed bottom-6 right-6 bg-gray-900 text-white p-4 rounded-xl shadow-xl border border-gray-700 flex items-center gap-3 z-50"
+    >
+        <div class="text-3xl">{{ session('badge_earned')->icon }}</div>
+
+        <div>
+            <p class="font-bold text-lg">New Badge Earned!</p>
+            <p class="text-gray-300">{{ session('badge_earned')->name }}</p>
+        </div>
+
+        <button @click="show = false" class="ml-4 text-gray-400 hover:text-white">&times;</button>
+    </div>
+    @endif
+
 
     <!-- Include Alpine.js -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

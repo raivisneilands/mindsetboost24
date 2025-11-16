@@ -53,6 +53,16 @@ class PostController extends Controller
             'image' => $imagePath,
         ]);
 
+        $user = auth()->user();
+        $postCount = $user->posts()->count();
+
+        if ($postCount >= 1) $user->awardBadge('first-post');
+        if ($postCount >= 5) $user->awardBadge('active-contributor');
+        if ($postCount >= 10) $user->awardBadge('writer');
+        if ($postCount >= 20) $user->awardBadge('storyteller');
+        if ($postCount >= 50) $user->awardBadge('community-voice');
+
+
         return redirect()->route('ascend.index');
     }
 

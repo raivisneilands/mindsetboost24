@@ -52,9 +52,10 @@
                         x-transition
                         class="absolute right-0 mt-3 w-52 bg-white/95 backdrop-blur-lg shadow-2xl rounded-xl py-2 border border-gray-100"
                     >
-                        <a href="{{ route('profile.show', auth()->user()->username) }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">My Profile</a>
-                        <a href="{{ route('purchases.index') }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">My Purchases</a>
-                        <a href="{{ route('journal.index') }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">My Journal</a>
+                        <a href="{{ route('profile.show', auth()->user()->username) }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">Profile</a>
+                        <a href="{{ route('purchases.index') }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">Purchases</a>
+                        <a href="{{ route('journal.index') }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">Journal</a>
+                        <a href="{{ route('badges.index') }}" class="block px-4 py-2 hover:bg-emerald-50 text-gray-700">Badges</a>
                         @if(auth()->user()->is_admin ?? false)
                             <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 font-semibold text-emerald-600 hover:bg-emerald-100">
                                 🛠 Admin Dashboard

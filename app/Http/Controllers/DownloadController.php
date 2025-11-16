@@ -30,6 +30,19 @@ class DownloadController extends Controller
             'ip_address' => $request->ip(),
         ]);
 
+        $user = auth()->user();
+
+        if ($user) {
+            $downloadCount = DownloadLog::where('user_id', $user->id)->count();
+
+            if ($downloadCount >= 1) $user->awardBadge('first-download');
+            if ($downloadCount >= 5) $user->awardBadge('explorer');
+            if ($downloadCount >= 10) $user->awardBadge('collector');
+            if ($downloadCount >= 20) $user->awardBadge('power-user');
+            if ($downloadCount >= 50) $user->awardBadge('mindset-master');
+        }
+
+
         // Return file download
         return Storage::download($product->file_path, $product->title . '.pdf');
     }

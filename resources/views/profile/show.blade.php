@@ -22,6 +22,16 @@
     <!-- Username -->
     <h2 class="text-3xl font-extrabold text-emerald-500 tracking-wide mb-1">{{ $user->username }}</h2>
 
+    <div class="flex gap-2">
+        @foreach($user->badges as $badge)
+            <div class="p-2 rounded-lg border border-emerald-700">
+                <span class="text-2xl">{{ $badge->icon }}</span>
+                <p class="text-sm text-emerald-700 font-bold">{{ $badge->name }}</p>
+            </div>
+        @endforeach
+    </div>
+
+
     <!-- Bio -->
     @if($user->bio)
         <p class="text-emerald-800/90 italic text-sm max-w-xl mx-auto mb-6">{{ $user->bio }}</p>

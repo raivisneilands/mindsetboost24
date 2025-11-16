@@ -18,22 +18,57 @@ class AwardExistingBadges extends Command
         User::chunk(50, function ($users) {
             foreach ($users as $user) {
 
-                // Count posts
+                // ------------------------
+                //     POSTING BADGES
+                // ------------------------
+
                 $postCount = $user->posts()->count();
 
                 if ($postCount >= 1) {
-                    $user->awardBadge('first-steps');
+                    $user->awardBadge('first-post');
                 }
 
                 if ($postCount >= 5) {
-                    $user->awardBadge('active-member');
+                    $user->awardBadge('active-contributor');
                 }
 
-                // Count downloads
+                if ($postCount >= 10) {
+                    $user->awardBadge('writer');
+                }
+
+                if ($postCount >= 20) {
+                    $user->awardBadge('storyteller');
+                }
+
+                if ($postCount >= 50) {
+                    $user->awardBadge('community-voice');
+                }
+
+
+                // ------------------------
+                //   DOWNLOAD BADGES
+                // ------------------------
+
                 $downloadCount = DownloadLog::where('user_id', $user->id)->count();
 
                 if ($downloadCount >= 1) {
+                    $user->awardBadge('first-download');
+                }
+
+                if ($downloadCount >= 5) {
                     $user->awardBadge('explorer');
+                }
+
+                if ($downloadCount >= 10) {
+                    $user->awardBadge('collector');
+                }
+
+                if ($downloadCount >= 20) {
+                    $user->awardBadge('power-user');
+                }
+
+                if ($downloadCount >= 50) {
+                    $user->awardBadge('mindset-master');
                 }
             }
         });

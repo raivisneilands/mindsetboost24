@@ -1,52 +1,63 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold text-lime-500 mb-6">Orders</h1>
+<div class="min-h-screen bg-gradient-to-br from-emerald-700 via-emerald-500 to-emerald-300 py-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto bg-white rounded-3xl shadow-lg p-6 sm:p-8">
 
-    @if($orders->count())
-        <div class="bg-white shadow rounded-lg overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-lime-100 text-lime-800 text-sm uppercase">
-                    <tr>
-                        <th class="px-6 py-3 text-left font-semibold">Order ID</th>
-                        <th class="px-6 py-3 text-left font-semibold">User</th>
-                        <th class="px-6 py-3 text-left font-semibold">Total</th>
-                        <th class="px-6 py-3 text-left font-semibold">Status</th>
-                        <th class="px-6 py-3 text-left font-semibold">Placed On</th>
-                        <th class="px-6 py-3 text-left font-semibold">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    @foreach ($orders as $order)
+        {{-- Header --}}
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+            <h1 class="text-3xl font-extrabold text-gray-800">Orders</h1>
+        </div>
+
+        {{-- Table --}}
+        @if($orders->count())
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-800 text-sm uppercase tracking-wider">
                         <tr>
-                            <td class="px-6 py-4 text-sm">{{ $order->id }}</td>
-                            <td class="px-6 py-4 text-sm">{{ $order->user->name ?? 'Guest' }}</td>
-                            <td class="px-6 py-4 text-sm text-green-600 font-semibold">€{{ number_format($order->total_price, 2) }}</td>
-                            <td class="px-6 py-4 text-sm">
-                                <span class="px-2 py-1 rounded-full text-xs font-medium 
-                                    {{ $order->status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-800' }}">
-                                    {{ ucfirst($order->status) }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-sm text-gray-600">{{ $order->created_at->format('d M Y') }}</td>
-                            <td class="px-6 py-4">
-                                <a href="{{ route('admin.orders.show', $order) }}" 
-                                   class="text-lime-600 hover:underline text-sm font-medium">
-                                    View
-                                </a>
-                            </td>
+                            <th class="px-6 py-3 text-left">Order ID</th>
+                            <th class="px-6 py-3 text-left">User</th>
+                            <th class="px-6 py-3 text-left">Total</th>
+                            <th class="px-6 py-3 text-left">Status</th>
+                            <th class="px-6 py-3 text-left">Placed On</th>
+                            <th class="px-6 py-3 text-left">Actions</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @foreach ($orders as $order)
+                            @php
+                                $statusColors = [
+                                    'completed' => 'bg-green-100 text-green-800',
+                                    'pending' => 'bg-yellow-100 text-yellow-800',
+                                    'cancelled' => 'bg-red-100 text-red-700',
+                                ];
+                            @endphp
+                            <tr class="border-t border-gray-200 hover:bg-gray-50 transition">
+                                <td class="px-6 py-3 font-medium text-gray-800">{{ $order->id }}</td>
+                                <td class="px-6 py-3 text-gray-700">{{ $order->user->name ?? 'Guest' }}</td>
+                                <td class="px-6 py-3 text-green-600 font-semibold">€{{ number_format($order->total_price, 2) }}</td>
+                                <td class="px-6 py-3">
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $statusColors[$order->status] ?? 'bg-gray-100 text-gray-700' }}">
+                                        {{ ucfirst($order->status) }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-3 text-gray-500">{{ $order->created_at->format('d M Y, H:i') }}</td>
+                                <td class="px-6 py-3">
+                                    <a href="{{ route('admin.orders.show', $order) }}" class="text-emerald-600 hover:text-emerald-800 font-medium">View</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
-        <div class="mt-6">
-            {{ $orders->links() }}
-        </div>
-    @else
-        <p class="text-gray-600">No orders found.</p>
-    @endif
+            {{-- Pagination --}}
+            <div class="mt-6">
+                {{ $orders->links() }}
+            </div>
+        @else
+            <p class="text-gray-500 text-center py-6">No orders found.</p>
+        @endif
+    </div>
 </div>
 @endsection

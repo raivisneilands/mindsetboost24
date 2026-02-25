@@ -12,7 +12,7 @@ class ProductPackController extends Controller
 {
     public function index()
     {
-        $packs = ProductPack::with('products')->latest()->get();
+        $packs = ProductPack::with('products')->latest()->paginate(15);
         return view('admin.packs.index', compact('packs'));
     }
 

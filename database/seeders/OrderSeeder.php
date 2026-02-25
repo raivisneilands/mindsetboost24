@@ -12,7 +12,7 @@ class OrderSeeder extends Seeder
     {
         // Create 20 orders
         Order::factory()
-            ->count(20)
+            ->count(150)
             ->create()
             ->each(function ($order) {
                 $items = collect();

@@ -103,7 +103,7 @@ class PostController extends Controller
         }
         $post->delete();
 
-        return redirect()->route('ascend.index');
+        return redirect()->back();
     }
     // This is for the liking functionality
     public function toggle(Post $post)

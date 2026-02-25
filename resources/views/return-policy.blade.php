@@ -4,7 +4,7 @@
 @section('meta_description', 'Understand our refund and return policy for digital products at Mindset Boost 24.')
 
 @section('content')
-<div class="bg-emerald-50 py-20">
+<div class="bg-emerald-50 py-20 px-5">
     <div class="container mx-auto px-6 max-w-3xl bg-white rounded-2xl shadow-lg p-10">
         <h1 class="text-3xl font-extrabold text-emerald-800 mb-6">Return & Refund Policy</h1>
 

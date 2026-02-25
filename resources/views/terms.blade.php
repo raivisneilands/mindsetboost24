@@ -4,7 +4,7 @@
 @section('meta_description', 'Review the terms of service for using Mindset Boost 24 and our digital products.')
 
 @section('content')
-<div class="bg-emerald-50 py-20">
+<div class="bg-emerald-50 py-20 px-5">
     <div class="container mx-auto px-6 max-w-3xl bg-white rounded-2xl shadow-lg p-10">
         <h1 class="text-3xl font-extrabold text-emerald-800 mb-6">Terms of Service</h1>
 

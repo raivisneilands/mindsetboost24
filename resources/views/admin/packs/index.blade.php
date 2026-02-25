@@ -1,42 +1,64 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-5xl mx-auto py-10 px-6">
-    <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-emerald-600">🎁 Product Packs</h1>
-        <a href="{{ route('admin.packs.create') }}" class="bg-emerald-500 text-white px-4 py-2 rounded-xl hover:bg-emerald-600 transition">
-            + Create New Pack
-        </a>
-    </div>
+<div class="min-h-screen bg-gradient-to-br from-emerald-700 via-emerald-500 to-emerald-300 py-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto bg-white rounded-3xl shadow-lg p-6 sm:p-8">
 
-    @if (session('success'))
-        <div class="mb-4 p-4 bg-green-100 border border-green-300 text-green-700 rounded-xl">
-            {{ session('success') }}
+        {{-- Header --}}
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">🎁 Product Packs</h1>
+            <a href="{{ route('admin.packs.create') }}" class="mt-4 sm:mt-0 bg-emerald-500 text-white px-4 py-2 rounded-xl hover:bg-emerald-600 transition">
+                + Create New Pack
+            </a>
         </div>
-    @endif
 
-    <div class="bg-white rounded-2xl shadow p-6 divide-y divide-gray-200">
-        @forelse ($packs as $pack)
-            <div class="py-4">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h2 class="text-lg font-semibold text-gray-800">{{ $pack->title }}</h2>
-                        <p class="text-sm text-gray-500 mb-1">{{ $pack->products->count() }} products • {{ $pack->discount_percent }}% off</p>
-                        <p class="text-sm text-gray-700">Final Price: <span class="font-semibold">{{ number_format($pack->final_price, 2) }} €</span></p>
-                    </div>
-                    <div class="flex gap-3">
-                        <a href="{{ route('admin.packs.edit', $pack) }}" class="text-blue-600 hover:underline">Edit</a>
-                        <form action="{{ route('admin.packs.destroy', $pack) }}" method="POST" onsubmit="return confirm('Delete this pack?')">
-                            @csrf
-                            @method('DELETE')
-                            <button class="text-red-600 hover:underline">Delete</button>
-                        </form>
-                    </div>
-                </div>
+        {{-- Flash --}}
+        @if (session('success'))
+            <div class="mb-4 p-4 rounded-lg bg-green-100/30 border border-green-300 text-green-800">
+                {{ session('success') }}
             </div>
-        @empty
-            <p class="text-gray-500 text-center py-10">No product packs yet.</p>
-        @endforelse
+        @endif
+
+        {{-- Table --}}
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto rounded-lg overflow-hidden">
+                <thead class="bg-gray-100 text-gray-800 text-sm uppercase tracking-wider">
+                    <tr>
+                        <th class="px-6 py-3 text-left">Title</th>
+                        <th class="px-6 py-3 text-left">Products</th>
+                        <th class="px-6 py-3 text-left">Discount</th>
+                        <th class="px-6 py-3 text-left">Final Price</th>
+                        <th class="px-6 py-3 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($packs as $pack)
+                        <tr class="border-t border-gray-200 hover:bg-gray-50 transition">
+                            <td class="px-6 py-4 text-gray-800 font-medium">{{ $pack->title }}</td>
+                            <td class="px-6 py-4 text-gray-600">{{ $pack->products->count() }} products</td>
+                            <td class="px-6 py-4 text-gray-600">{{ $pack->discount_percent }}%</td>
+                            <td class="px-6 py-4 text-gray-800 font-semibold">€{{ number_format($pack->final_price, 2) }}</td>
+                            <td class="px-6 py-4 flex justify-start gap-3">
+                                <a href="{{ route('admin.packs.edit', $pack) }}" class="text-blue-500 hover:underline">Edit</a>
+                                <form action="{{ route('admin.packs.destroy', $pack) }}" method="POST" onsubmit="return confirm('Delete this pack?')">
+                                    @csrf @method('DELETE')
+                                    <button class="text-red-500 hover:underline">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-gray-500 py-6">No product packs yet.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        {{-- Pagination --}}
+        <div class="mt-6">
+            {{ $packs->links() }}
+        </div>
     </div>
 </div>
 @endsection

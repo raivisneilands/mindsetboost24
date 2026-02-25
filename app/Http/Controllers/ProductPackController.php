@@ -9,8 +9,7 @@ class ProductPackController extends Controller
 {
     public function index()
     {
-        $packs = ProductPack::with('products')->latest()->paginate(6);
-
+        $packs = ProductPack::with('products')->orderBy('created_at', 'desc')->paginate(10); // 10 per page
         return view('packs.index', compact('packs'));
     }
 

@@ -62,12 +62,18 @@
         @csrf
 
         <div class="flex items-start gap-4">
-            {{-- Optional: Add user avatar here --}}
-            <div class="hidden sm:block">
+        {{-- User Avatar --}}
+        <div class="hidden sm:block">
+            @if(auth()->user()->profile_image)
+                <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" 
+                    alt="{{ auth()->user()->name }}" 
+                    class="w-10 h-10 rounded-full object-cover border border-white/20">
+            @else
                 <div class="w-10 h-10 rounded-full bg-emerald-200 flex items-center justify-center text-white font-bold">
                     {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
                 </div>
-            </div>
+            @endif
+        </div>
 
             <div class="flex-1">
                 <textarea

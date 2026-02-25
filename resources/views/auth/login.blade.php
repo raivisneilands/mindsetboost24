@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
 </head>
-<body class="min-h-screen bg-gradient-to-br from-emerald-700 via-emerald-500 to-emerald-300 flex items-center justify-center relative overflow-hidden">
+<body class="min-h-screen bg-gradient-to-br from-emerald-700 via-emerald-500 to-emerald-300 flex items-center justify-center relative overflow-hidden px-4">
 
     {{-- Subtle radial glow --}}
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.2),transparent_60%)] animate-pulse-slow"></div>
 
-    <div class="relative w-full max-w-md bg-white/20 backdrop-blur-3xl border border-white/20 rounded-3xl shadow-lg p-6 sm:p-8 flex flex-col items-center">
+        <div class="relative bg-white/20 backdrop-blur-3xl border border-white/20 rounded-3xl shadow-lg p-6 sm:p-8 flex flex-col items-center w-full max-w-sm sm:max-w-md">
 
         {{-- Logo --}}
         <div class="mb-4 flex justify-center">

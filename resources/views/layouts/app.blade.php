@@ -71,11 +71,9 @@
         letter-spacing: 0.05em;
     }
 </style>
-<body class="bg-emerald-50 text-gray-800 antialiased min-h-screen flex flex-col {{ !Request::is('/') ? 'pt-16' : '' }}">
-    @if (!Request::is('/'))
-        @include('components.navigation')
-    @endif
-
+<body class="text-gray-800 bg-gray-100 antialiased min-h-screen flex flex-col {{ !request()->is('/') ? 'pt-16' : 'py-0'}}">
+    @include('components.navigation')
+    
     <main class="flex-grow">
         @yield('content')
     </main>
@@ -92,29 +90,34 @@
         </div>
     </footer>
 
-    @if(session('badge_earned'))
-    <div
-        x-data="{ show: true }"
-        x-show="show"
-        x-init="setTimeout(() => show = false, 4000)"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 translate-y-4"
-        x-transition:enter-end="opacity-100 translate-y-0"
-        x-transition:leave="transition ease-in duration-300"
-        x-transition:leave-start="opacity-100 translate-y-0"
-        x-transition:leave-end="opacity-0 translate-y-4"
-        class="fixed bottom-6 right-6 bg-gray-900 text-white p-4 rounded-xl shadow-xl border border-gray-700 flex items-center gap-3 z-50"
-    >
-        <div class="text-3xl">{{ session('badge_earned')->icon }}</div>
-
-        <div>
-            <p class="font-bold text-lg">New Badge Earned!</p>
-            <p class="text-gray-300">{{ session('badge_earned')->name }}</p>
-        </div>
-
-        <button @click="show = false" class="ml-4 text-gray-400 hover:text-white">&times;</button>
+@if(session('badge_earned'))
+<div
+    x-data="{ show: true }"
+    x-show="show"
+    x-init="setTimeout(() => show = false, 5000)"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 translate-y-4"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-300"
+    x-transition:leave-start="opacity-100 translate-y-0"
+    x-transition:leave-end="opacity-0 translate-y-4"
+    class="fixed bottom-6 right-6 bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 text-white p-5 rounded-2xl shadow-2xl border border-white/20 flex items-center gap-4 z-50 max-w-sm"
+>
+    {{-- Badge Icon --}}
+    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-white/20 text-2xl text-white drop-shadow-lg">
+        {{ session('badge_earned')->icon }}
     </div>
-    @endif
+
+    {{-- Badge Text --}}
+    <div class="flex-1">
+        <p class="font-bold text-lg text-white">New Badge Earned!</p>
+        <p class="text-white/90 text-sm">{{ session('badge_earned')->name }}</p>
+    </div>
+
+    {{-- Close Button --}}
+    <button @click="show = false" class="ml-2 text-white/70 hover:text-white text-xl font-bold">&times;</button>
+</div>
+@endif
 
 
     <!-- Include Alpine.js -->

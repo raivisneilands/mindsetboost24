@@ -6,7 +6,7 @@
 @section('content')
 <div class="max-w-4xl mx-auto py-16 px-6">
     <div class="bg-white rounded-2xl shadow-lg p-8">
-        <h1 class="text-4xl font-bold text-emerald-600 mb-4">{{ $pack->name }}</h1>
+        <h1 class="text-4xl font-bold text-emerald-600 mb-4">{{ $pack->title }}</h1>
         <p class="text-gray-700 mb-6">{{ $pack->description }}</p>
 
         <h2 class="text-2xl font-semibold mb-4 text-gray-800">What’s inside:</h2>

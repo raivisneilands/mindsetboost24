@@ -114,4 +114,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return false;
     }
 
+    public function downloads()
+    {
+        return $this->hasMany(DownloadLog::class);
+    }
+
 }

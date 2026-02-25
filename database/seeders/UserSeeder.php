@@ -2,26 +2,42 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Create 1 admin
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'adminuser@example.com',
-            'password' => bcrypt('password'),
-            'is_admin' => true,
-        ]);
+        // -------------------
+        // Predefined Admin / Demo Users
+        // -------------------
+        User::updateOrCreate(
+            ['email' => 'admin@mindsetboost24.com'],
+            [
+                'name' => 'Admin User',
+                'username' => 'admin',
+                'bio' => 'The administrator of Mindset Boost 24.',
+                'password' => Hash::make('password'), // Change in production
+                'email_verified_at' => now(),
+            ]
+        );
 
-        // Create 10 regular users
-        User::factory()->count(10)->create();
+        User::updateOrCreate(
+            ['email' => 'demo@mindsetboost24.com'],
+            [
+                'name' => 'Demo User',
+                'username' => 'demo',
+                'bio' => 'A sample demo user for testing.',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ]
+        );
+
+        // -------------------
+        // Random users via factory
+        // -------------------
+        User::factory()->count(50)->create();
     }
 }
